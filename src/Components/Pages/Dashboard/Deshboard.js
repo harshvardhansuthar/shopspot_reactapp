@@ -23,7 +23,7 @@ export default function Deshboard() {
   // const [resentData, setResentData] = useState([]);
   // const [findShopId, setFindShopId] = useState("");
   // const [showSuggestions, setShowSuggestions] = useState(false);
-  const [colorRed, setColorRed] = useState(true);
+  // const [colorRed, setColorRed] = useState(true);
   const [wishListColor, setWishListColor] = useState({});
   const [resentData, setResentData] = useState([]);
   const [findShopId, setFindShopId] = useState("");
@@ -34,7 +34,7 @@ export default function Deshboard() {
   const [productModal, setProductModal] = useState(false);
   const toggleProductModal = () => setProductModal(!productModal);
   const [selected, setSelected] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  // const [selectedOptions, setSelectedOptions] = useState([]);
   const [option, setOption] = useState([]);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -49,6 +49,8 @@ export default function Deshboard() {
   // const id = useLocation();
 
   const countryNameRedux = useSelector((state) => state?.countryName?.action);
+
+  console.log(countryNameRedux);
 
   useEffect(() => {
     GetData("category/get-category")

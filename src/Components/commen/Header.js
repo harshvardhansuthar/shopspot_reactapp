@@ -106,8 +106,7 @@ export default function Header(props) {
 
   const handleCategoryDetail = (id) => {
     GetData(
-      `business/get-business?lat=${location?.latitude}&lng=${
-        location?.longitude
+      `business/get-business?lat=${location?.latitude}&lng=${location?.longitude
       }&page=${""}&categoryId=${id}&country=${countryName}`
     );
   };
@@ -143,15 +142,13 @@ export default function Header(props) {
     <>
       {/* <!-- HEADER START --> */}
       <header
-        className={`site-header   ${
-          props?.class ? props?.class : "header-style-3"
-        } mobile-sider-drawer-menu`}
+        className={`site-header   ${props?.class ? props?.class : "header-style-3"
+          } mobile-sider-drawer-menu`}
       >
         {/* is-fixed */}
         <div
-          className={`sticky-header main-bar-wraper navbar-expand-lg ${
-            isFixed ? " is-fixed" : ""
-          }`}
+          className={`sticky-header main-bar-wraper navbar-expand-lg ${isFixed ? " is-fixed" : ""
+            }`}
         >
           <div className="main-bar">
             <div className="container-fluid clearfix">
@@ -206,7 +203,7 @@ export default function Header(props) {
                               <Link
                                 key={key}
                                 className="dropdown-item"
-                                to={"business"}
+                                to={"/business"}
                                 state={{ id: item?.id }}
                               >
                                 <span>
@@ -455,7 +452,7 @@ export default function Header(props) {
           Modal
           className="modal-dialog-centered twm-sign-up modal-xl"
           isOpen={countryModal}
-          // toggle={toggleCountryModal}
+        // toggle={toggleCountryModal}
         >
           <ModalBody>
             <form>
