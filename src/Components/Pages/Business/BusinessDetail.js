@@ -950,7 +950,7 @@ export default function BusinessDetail() {
     if (callApi == true && location1?.latitude) {
       setComponentLoader(true);
       GetDataWithToken(
-        `business/business-details/${location.state.id}?lat=${location1?.latitude}&lng=${location1?.longitude}&sub_category=${categoryCallApi}`
+        `business/business-details/${location?.state?.id}?lat=${location1?.latitude}&lng=${location1?.longitude}&sub_category=${categoryCallApi}`
       ).then((res) => {
         setCallApi(false);
         setBusinessDetail(res.data);
