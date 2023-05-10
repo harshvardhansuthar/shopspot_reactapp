@@ -30,24 +30,24 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {
-    if (con) {
-      localStorage.setItem("countryName", JSON.stringify(con));
-    }
+  // useEffect(() => {
+  //   if (con) {
+  //     localStorage.setItem("countryName", JSON.stringify(con));
+  //   }
 
-    let countryName = "";
-    const countryNameString = window.localStorage.getItem("countryName");
+  //   let countryName = "";
+  //   const countryNameString = window.localStorage.getItem("countryName");
 
-    if (countryNameString) {
-      try {
-        countryName = JSON.parse(countryNameString);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  //   if (countryNameString) {
+  //     try {
+  //       countryName = JSON.parse(countryNameString);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
 
-    dispatch(actionCountryName?.countryName(countryName));
-  }, [con]);
+  //   dispatch(actionCountryName?.countryName(countryName));
+  // }, []);
 
   return (
     <>
