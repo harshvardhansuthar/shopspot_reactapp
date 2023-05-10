@@ -25,6 +25,7 @@ export default function Deshboard() {
   // const [findShopId, setFindShopId] = useState("");
   // const [showSuggestions, setShowSuggestions] = useState(false);
   // const [colorRed, setColorRed] = useState(true);
+  const [resentSearch, setResentSearch] = useState([])
   const [wishListColor, setWishListColor] = useState({});
   const [resentData, setResentData] = useState([]);
   const [findShopId, setFindShopId] = useState("");
@@ -91,6 +92,11 @@ export default function Deshboard() {
   // }
 
   useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("resentSearch")) || []
+    setResentSearch(data)
+  }, [])
+
+  useEffect(() => {
     if (currentLocation) {
       GetData(
         `my-location?lat=${currentLocation.latitude}&lng=${currentLocation.longitude}`
@@ -113,7 +119,7 @@ export default function Deshboard() {
 
   useEffect(() => {
     if (query?.length > 0) {
-      GetData(`auth/search-business?name=${query}`).then((data) => {
+      GetData(`auth/search-business?name=${query}&country=${countryNameRedux}`).then((data) => {
         console.log(data);
         setSuggestions(data.data);
       });
@@ -124,19 +130,19 @@ export default function Deshboard() {
         setSuggestions([]);
       }
     }
-    if (countryNameRedux != undefined) {
-      GetData(
-        `auth/search-business?name=${query}&country=${countryNameRedux}`
-      ).then((res) => {
-        setResentData(res.data);
-      });
-    }
+    // if (countryNameRedux != undefined) {
+    //   GetData(
+    //     `auth/search-business?name=${query}&country=${countryNameRedux}`
+    //   ).then((res) => {
+    //     setResentData(res.data);
+    //   });
+    // }
 
-    GetData(
-      `auth/search-business?name=${query}&country=${countryNameRedux}`
-    ).then((res) => {
-      setResentData(res.data);
-    });
+    // GetData(
+    //   `auth/search-business?name=${query}&country=${countryNameRedux}`
+    // ).then((res) => {
+    //   setResentData(res.data);
+    // });
   }, [query, countryNameRedux]);
 
   const handleQueryChange = (event) => {
@@ -210,6 +216,19 @@ export default function Deshboard() {
       console.error(error); // handle the error
     }
   };
+
+  const handleSetResentSearch = (item, id) => {
+    const resentSearch = JSON.parse(localStorage.getItem("resentSearch")) || []
+
+    const resentObject = { name: item, id: id }
+
+    if (resentSearch?.length > 10) {
+      resentSearch.shift()
+    }
+    resentSearch.push(resentObject)
+
+    localStorage.setItem("resentSearch", JSON.stringify(resentSearch))
+  }
 
   return (
     <>
@@ -323,29 +342,20 @@ export default function Deshboard() {
                         </form>
                         {/* Search everything start here... */}
 
-                        {query?.length == 0 && (
+                        {query?.length > 0 && (
                           <div className="search-history show">
                             <div className="Recent-search">
                               <h4 className="mb-3">Recent search</h4>
                               <div className="d-flex flex-wrap">
-                                {/* {resentData &&
-                                  resentData?.business?.length > 0 &&
-                                  resentData?.business?.map((item, key) => (
-                                    <Link
-                                      to={"/businessdetail"}
-                                      state={{ id: item?.id }}
-                                      className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                    >
-                                      <span className="search-img me-2">
-                                        <img
-                                          className=""
-                                          src={item?.business_licence}
-                                          alt=""
-                                        />
+                                {
+                                  resentSearch?.length > 0 &&
+                                  resentSearch?.map((item, key) => (
+                                    <Link to={'/businessdetail'} state={{ id: item?.id }} className="btn btn-light rounded-pill me-2 mb-2">
+                                      <span className="me-2">
+                                        <i className="fas fa-history"></i>
                                       </span>
                                       {item?.name}
-                                    </Link>
-                                  ))} */}
+                                    </Link>))}
                               </div>
                             </div>
                             <div className="popular-search mt-4">
@@ -410,7 +420,7 @@ export default function Deshboard() {
                               <div className="d-flex flex-wrap">
                                 {suggestions?.business?.length > 0 &&
                                   suggestions?.business?.map((item, key) => (
-                                    <Link
+                                    <Link onClick={() => handleSetResentSearch(item?.name, item?.id)}
                                       to={"/businessdetail"}
                                       state={{ id: item?.id }}
                                       className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -431,7 +441,7 @@ export default function Deshboard() {
                               <div className="d-flex flex-wrap">
                                 {suggestions?.carrer?.length > 0 &&
                                   suggestions?.carrer?.map((item, key) => (
-                                    <Link
+                                    <Link onClick={() => handleSetResentSearch(item?.post_name, item?.id)}
                                       to={"/careerdetail"}
                                       state={{ id: item?.id }}
                                       className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -452,7 +462,7 @@ export default function Deshboard() {
                               <div className="d-flex flex-wrap">
                                 {suggestions?.category?.length > 0 &&
                                   suggestions?.category?.map((item, key) => (
-                                    <Link
+                                    <Link onClick={() => handleSetResentSearch(item?.name, item?.id)}
                                       to={"/businessdetail"}
                                       state={{ id: item?.id }}
                                       className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -473,7 +483,7 @@ export default function Deshboard() {
                               <div className="d-flex flex-wrap">
                                 {suggestions?.product?.length > 0 &&
                                   suggestions?.product?.map((item, key) => (
-                                    <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                    <Link to={"/businessdetail"} state={{ id: item?.BusinessId }} onClick={() => handleSetResentSearch(item?.name, item?.id)} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
                                       <span className="search-img me-2">
                                         <img
                                           className=""
@@ -493,7 +503,7 @@ export default function Deshboard() {
                               <div className="d-flex flex-wrap">
                                 {suggestions?.experience?.length > 0 &&
                                   suggestions?.experience?.map((item, key) => (
-                                    <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                    <Link to={"/latestexoerience"} state={{ id: item?.id }} onClick={() => handleSetResentSearch(item?.name, item?.id)} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
                                       <span className="search-img me-2">
                                         <img
                                           className=""
