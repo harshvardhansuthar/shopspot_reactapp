@@ -286,9 +286,9 @@ export default function FreelanceDetail() {
                             <h4 className="job-name-title">{item?.Category?.name}</h4>
                           </div>
                           <div className="aply-btn-area">
-                            <a href="Freelance.html" className="aplybtn">
+                            <Link to={"/freelancedetail"} state={{ id: item?.id }} className="aplybtn">
                               <i className="fas fa-chevron-right"></i>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </div>

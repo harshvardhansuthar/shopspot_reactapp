@@ -156,10 +156,7 @@ export default function Header(props) {
     }
     resentSearch.push(resentObject)
 
-
-
     localStorage.setItem("resentSearch", JSON.stringify(resentSearch))
-
   }
 
 
