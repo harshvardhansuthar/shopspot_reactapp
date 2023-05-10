@@ -32,6 +32,7 @@ export default function Header(props) {
     setQuery(event.target.value);
   };
 
+  const [resentSearch, setResentSearch] = useState([])
   const [countryFlag, setCountryFlag] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [countryName, setCountryName] = useState("");
@@ -73,6 +74,10 @@ export default function Header(props) {
   };
 
   useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("resentSearch")) || []
+
+    setResentSearch(data)
+
     const handleScroll = () => {
       const scrollTop = window.pageYOffset;
       setIsFixed(scrollTop > 0);
@@ -130,6 +135,8 @@ export default function Header(props) {
     }
   }, [query]);
 
+  console.log(resentSearch)
+
   // const handleCategoryDetail = (id) => {
   //   GetData(`business/get-business?lat=${location?.latitude}&lng=${location?.longitude}&page=${""}&categoryId=${id}&country=${countryName}`
   //   ).then((res) => {
@@ -140,17 +147,21 @@ export default function Header(props) {
   // header-style-3
 
   const handleSetResentSearch = (item, id) => {
-    const resentSearch = []
+    const resentSearch = JSON.parse(localStorage.getItem("resentSearch")) || []
+
     const resentObject = { name: item, id: id }
 
-
+    if (resentSearch?.length > 10) {
+      resentSearch.shift()
+    }
     resentSearch.push(resentObject)
 
-    localStorage.setItem("resentSearch", (resentSearch))
-    console.log(resentSearch)
 
+
+    localStorage.setItem("resentSearch", JSON.stringify(resentSearch))
 
   }
+
 
   return (
     <>
@@ -405,17 +416,16 @@ export default function Header(props) {
               {query?.length == 0 && <div className="Recent-search">
                 <h4 className="mb-3">Recent search</h4>
                 <div className="d-flex flex-wrap">
-                  {/* {
-                    query?.length > 0 &&
-                    suggestions?.business?.length > 0 &&
-                    suggestions?.business?.map((item, key) => (
+                  {
+                    resentSearch?.length > 0 &&
+                    resentSearch?.map((item, key) => (
                       <Link to={'/businessdetail'} state={{ id: item?.id }} className="btn btn-light rounded-pill me-2 mb-2">
                         <span className="me-2">
                           <i className="fas fa-history"></i>
                         </span>
                         {item?.name}
                       </Link>))}
-                  {
+                  {/* {
                     query?.length > 0 &&
                     suggestions?.carrer?.length > 0 &&
                     suggestions?.carrer?.map((item, key) => (
@@ -442,7 +452,7 @@ export default function Header(props) {
                     suggestions?.product?.map((item, key) => (
                       <button className="btn btn-light rounded-pill me-2 mb-2">
                         {item?.name}
-                      </button>))} */}
+                      </button>))}  */}
                 </div>
               </div>}
               {query?.length == 0 && <div className="popular-search mt-4">
@@ -487,7 +497,7 @@ export default function Header(props) {
                     {
                       suggestions?.carrer?.length > 0 &&
                       suggestions?.carrer?.map((item, key) => (
-                        <Link
+                        <Link onClick={() => handleSetResentSearch(item?.post_name, item?.id)}
                           to={"/careerdetail"}
                           state={{ id: item?.id }}
                           className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -509,7 +519,7 @@ export default function Header(props) {
                     {
                       suggestions?.category?.length > 0 &&
                       suggestions?.category?.map((item, key) => (
-                        <Link
+                        <Link onClick={() => handleSetResentSearch(item?.name, item?.id)}
                           to={"/business"}
                           state={{ id: item?.id }}
                           className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -532,7 +542,7 @@ export default function Header(props) {
                     {
                       suggestions?.product?.length > 0 &&
                       suggestions?.product?.map((item, key) => (
-                        <Link to={"/businessdetail"} state={{ id: item?.BusinessId }} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                        <Link to={"/businessdetail"} state={{ id: item?.BusinessId }} onClick={() => handleSetResentSearch(item?.name, item?.id)} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
                           <span className="search-img me-2">
                             <img
                               className=""
@@ -549,7 +559,7 @@ export default function Header(props) {
                     {
                       suggestions?.experience?.length > 0 &&
                       suggestions?.experience?.map((item, key) => (
-                        <Link to={"/latestexoerience"} state={{ id: item?.id }} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                        <Link to={"/latestexoerience"} state={{ id: item?.id }} onClick={() => handleSetResentSearch(item?.name, item?.id)} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
                           <span className="search-img me-2">
                             <img
                               className=""
