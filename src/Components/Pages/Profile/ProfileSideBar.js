@@ -85,8 +85,8 @@ export default function ProfileSideBar(props) {
                       <h5>{`${userData?.name
                         ?.split(" ")[0]
                         ?.charAt(0)}${userData?.name
-                        ?.split(" ")[1]
-                        ?.charAt(0)}`}</h5>
+                          ?.split(" ")[1]
+                          ?.charAt(0)}`}</h5>
                     </div>
                     <div className="twm-mid-content text-center">
                       <a href="javascript:void(0)" className="twm-job-title">
@@ -160,7 +160,7 @@ export default function ProfileSideBar(props) {
                             <i class="fas fa-heart"></i> Favourite
                           </NavLink>
                         </NavItem>
-                        <NavItem className={activeTab === "7" ? "active" : ""}>
+                        {/* <NavItem className={activeTab === "7" ? "active" : ""}>
                           <NavLink
                             onClick={() => {
                               toggleTab("7");
@@ -169,7 +169,7 @@ export default function ProfileSideBar(props) {
                             <i class="fa fa-tv"></i>
                             My events
                           </NavLink>
-                        </NavItem>
+                        </NavItem> */}
                         <NavItem className={activeTab === "8" ? "active" : ""}>
                           <NavLink
                             onClick={() => {
@@ -230,11 +230,11 @@ export default function ProfileSideBar(props) {
                       </TabPane>
                     </TabContent>
 
-                    <TabContent activeTab={activeTab}>
+                    {/* <TabContent activeTab={activeTab}>
                       <TabPane tabId="7">
                         <MyEvent />
                       </TabPane>
-                    </TabContent>
+                    </TabContent> */}
 
                     <TabContent activeTab={activeTab}>
                       <TabPane tabId="8">

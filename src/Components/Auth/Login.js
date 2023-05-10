@@ -408,8 +408,8 @@ export default function Login(props) {
                     <div className="col-lg-12">
                       <div className="form-group mb-3">
                         <input
-                          name="email"
-                          type="text"
+                          name="password"
+                          type="password"
                           className="form-control"
                           required=""
                           placeholder="Password*"

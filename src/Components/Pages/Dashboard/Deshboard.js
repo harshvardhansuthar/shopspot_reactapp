@@ -311,7 +311,7 @@ export default function Deshboard() {
                             <div class="form-group col-xl-3 col-lg-6 col-md-6">
                               <Link
                                 type="button"
-                                class="site-button"
+                                class="site-button text-center"
                                 to={query ? "/businessdetail" : "#"}
                                 state={{ id: findShopId }}
                               >
@@ -322,12 +322,12 @@ export default function Deshboard() {
                         </form>
                         {/* Search everything start here... */}
 
-                        {query?.length > 0 && (
+                        {query?.length == 0 && (
                           <div className="search-history show">
                             <div className="Recent-search">
                               <h4 className="mb-3">Recent search</h4>
                               <div className="d-flex flex-wrap">
-                                {resentData &&
+                                {/* {resentData &&
                                   resentData?.business?.length > 0 &&
                                   resentData?.business?.map((item, key) => (
                                     <Link
@@ -344,13 +344,13 @@ export default function Deshboard() {
                                       </span>
                                       {item?.name}
                                     </Link>
-                                  ))}
+                                  ))} */}
                               </div>
                             </div>
                             <div className="popular-search mt-4">
                               <h4 className="mb-3">Popular search</h4>
                               <div className="d-flex flex-wrap">
-                                {resentData &&
+                                {/* {resentData &&
                                   resentData?.product?.length > 0 &&
                                   resentData?.product?.map((item, key) => (
                                     <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
@@ -401,7 +401,113 @@ export default function Deshboard() {
                                         />
                                       </span>
                                       {item?.name}
-                                    </button>))}
+                                    </button>))} */}
+                              </div>
+                            </div>
+                            <div className="search-every mt-4">
+                              <h4 className="my-3">Business</h4>
+                              <div className="d-flex flex-wrap">
+                                {
+                                  suggestions?.business?.length > 0 &&
+                                  suggestions?.business?.map((item, key) => (
+                                    <Link
+                                      to={"/businessdetail"}
+                                      state={{ id: item?.id }}
+                                      className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                    >
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          src={item?.business_licence}
+                                          alt="#"
+                                        />
+                                      </span>
+                                      {item?.name}
+                                    </Link>
+                                  ))}
+                              </div>
+
+                              <h4 className="my-3">Carrer</h4>
+                              <div className="d-flex flex-wrap">
+                                {
+                                  suggestions?.carrer?.length > 0 &&
+                                  suggestions?.carrer?.map((item, key) => (
+                                    <Link
+                                      to={"/careerdetail"}
+                                      state={{ id: item?.id }}
+                                      className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                    >
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          // src={'images/banner/logo(1).png'}
+                                          alt="#"
+                                        />
+                                      </span>
+                                      {item?.post_name}
+                                    </Link>
+                                  ))}
+                              </div>
+
+
+
+                              <h4 className="my-3">Categories</h4>
+                              <div className="d-flex flex-wrap">
+                                {
+                                  suggestions?.category?.length > 0 &&
+                                  suggestions?.category?.map((item, key) => (
+                                    <Link
+                                      to={"/businessdetail"}
+                                      state={{ id: item?.id }}
+                                      className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                    >
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          src={item?.image}
+                                          alt="#"
+                                        />
+                                      </span>
+                                      {item?.name}
+                                    </Link>
+                                  ))}
+                              </div>
+
+
+                              <h4 className="my-3">Products</h4>
+                              <div className="d-flex flex-wrap">
+
+                                {
+                                  suggestions?.product?.length > 0 &&
+                                  suggestions?.product?.map((item, key) => (
+                                    <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          src={item?.images && JSON?.parse(item?.images)[0]}
+                                          alt=""
+                                        />
+                                      </span>
+                                      {item?.name}
+                                    </Link>))}
+                              </div>
+
+
+                              <h4 className="my-3">Experience</h4>
+                              <div className="d-flex flex-wrap">
+                                {
+                                  suggestions?.experience?.length > 0 &&
+                                  suggestions?.experience?.map((item, key) => (
+                                    <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          src={item?.image}
+                                          alt=""
+                                        />
+                                      </span>
+                                      {item?.name}
+                                    </Link>))}
                               </div>
                             </div>
                           </div>

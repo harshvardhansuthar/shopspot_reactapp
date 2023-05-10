@@ -109,7 +109,7 @@ export default function Map(props) {
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={mapLoction()}
-              zoom={10}
+              zoom={2}
             >
               {props?.business?.business?.rows.length > 0 &&
                 props?.business?.business?.rows?.map((item, key) => (

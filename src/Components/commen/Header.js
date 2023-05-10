@@ -7,6 +7,7 @@ import { GetData, GetDataWithToken } from "../../ApiHelper/ApiHelper";
 import Cookies from "js-cookie";
 import { actionCountryName, actionLoginStatus } from "../../store/Action";
 import { Modal, ModalBody } from "reactstrap";
+import { set } from "react-hook-form";
 
 export default function Header(props) {
   // const [countryName, setCountryName] = useState("");
@@ -48,7 +49,6 @@ export default function Header(props) {
   const user = useSelector(
     (state) => state?.userDetail?.action?.userData?.name
   );
-  console.log(user);
   // const setUser = (data) => {
   //   setUserLogo(data);
   // };
@@ -138,6 +138,20 @@ export default function Header(props) {
   // }
 
   // header-style-3
+
+  const handleSetResentSearch = (item, id) => {
+    const resentSearch = []
+    const resentObject = { name: item, id: id }
+
+
+    resentSearch.push(resentObject)
+
+    localStorage.setItem("resentSearch", (resentSearch))
+    console.log(resentSearch)
+
+
+  }
+
   return (
     <>
       {/* <!-- HEADER START --> */}
@@ -388,31 +402,26 @@ export default function Header(props) {
               <span className="close" onClick={() => handleToggle()}></span>
             </div>
             <div className="search-history">
-              <div className="Recent-search">
+              {query?.length == 0 && <div className="Recent-search">
                 <h4 className="mb-3">Recent search</h4>
                 <div className="d-flex flex-wrap">
-                  {
+                  {/* {
                     query?.length > 0 &&
                     suggestions?.business?.length > 0 &&
                     suggestions?.business?.map((item, key) => (
-                      <Link to={'/businessdetail'} className="btn btn-light rounded-pill me-2 mb-2">
+                      <Link to={'/businessdetail'} state={{ id: item?.id }} className="btn btn-light rounded-pill me-2 mb-2">
                         <span className="me-2">
                           <i className="fas fa-history"></i>
                         </span>
                         {item?.name}
                       </Link>))}
-                </div>
-              </div>
-              <div className="popular-search mt-4">
-                <h4 className="mb-3">Popular search</h4>
-                <div className="d-flex flex-wrap">
                   {
                     query?.length > 0 &&
                     suggestions?.carrer?.length > 0 &&
                     suggestions?.carrer?.map((item, key) => (
-                      <button className="btn btn-light rounded-pill me-2 mb-2">
+                      <Link to={'/careerdetail'} state={{ id: item?.id }} className="btn btn-light rounded-pill me-2 mb-2">
                         {item?.post_name}
-                      </button>))}
+                      </Link>))}
                   {
                     query?.length > 0 &&
                     suggestions?.category?.length > 0 &&
@@ -433,10 +442,129 @@ export default function Header(props) {
                     suggestions?.product?.map((item, key) => (
                       <button className="btn btn-light rounded-pill me-2 mb-2">
                         {item?.name}
-                      </button>))}
+                      </button>))} */}
                 </div>
-              </div>
+              </div>}
+              {query?.length == 0 && <div className="popular-search mt-4">
+                <h4 className="mb-3">Popular search</h4>
+                <div className="d-flex flex-wrap">
+                  {/* {
+                    query?.length > 0 &&
+                    suggestions?.product?.length > 0 &&
+                    suggestions?.product?.map((item, key) => (
+                      <button className="btn btn-light rounded-pill me-2 mb-2">
+                        {item?.name}
+                      </button>))} */}
+
+                </div>
+              </div>}
+              {query?.length > 0 &&
+                <div className="search-every mt-4">
+                  {suggestions?.business?.length > 0 && <h4 className="my-3">Business</h4>}
+                  <div className="d-flex flex-wrap">
+                    {
+                      suggestions?.business?.length > 0 &&
+                      suggestions?.business?.map((item, key) => (
+                        <Link onClick={() => handleSetResentSearch(item?.name, item?.id)}
+                          to={"/businessdetail"}
+                          state={{ id: item?.id }}
+                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                        >
+                          <span className="search-img me-2">
+                            <img
+                              className=""
+                              src={item?.business_licence}
+                              alt="#"
+                            />
+                          </span>
+                          {item?.name}
+                        </Link>
+                      ))}
+                  </div>
+
+                  {suggestions?.carrer?.length > 0 && <h4 className="my-3">Carrer</h4>}
+                  <div className="d-flex flex-wrap">
+                    {
+                      suggestions?.carrer?.length > 0 &&
+                      suggestions?.carrer?.map((item, key) => (
+                        <Link
+                          to={"/careerdetail"}
+                          state={{ id: item?.id }}
+                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                        >
+                          <span className="search-img me-2">
+                            <img
+                              className=""
+                              src={'images/banner/logo(1).png'}
+                              alt="#"
+                            />
+                          </span>
+                          {item?.post_name}
+                        </Link>
+                      ))}
+                  </div>
+
+                  {suggestions?.category?.length > 0 && <h4 className="my-3">Categories</h4>}
+                  <div className="d-flex flex-wrap">
+                    {
+                      suggestions?.category?.length > 0 &&
+                      suggestions?.category?.map((item, key) => (
+                        <Link
+                          to={"/business"}
+                          state={{ id: item?.id }}
+                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                        >
+                          <span className="search-img me-2">
+                            <img
+                              className=""
+                              src={item?.image}
+                              alt="#"
+                            />
+                          </span>
+                          {item?.name}
+                        </Link>
+                      ))}
+                  </div>
+
+                  {suggestions?.product?.length > 0 && <h4 className="my-3">Products</h4>}
+                  <div className="d-flex flex-wrap">
+
+                    {
+                      suggestions?.product?.length > 0 &&
+                      suggestions?.product?.map((item, key) => (
+                        <Link to={"/businessdetail"} state={{ id: item?.BusinessId }} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                          <span className="search-img me-2">
+                            <img
+                              className=""
+                              src={item?.images && JSON?.parse(item?.images)[0]}
+                              alt=""
+                            />
+                          </span>
+                          {item?.name}
+                        </Link>))}
+                  </div>
+
+                  {suggestions?.experience?.length > 0 && <h4 className="my-3">Experience</h4>}
+                  <div className="d-flex flex-wrap">
+                    {
+                      suggestions?.experience?.length > 0 &&
+                      suggestions?.experience?.map((item, key) => (
+                        <Link to={"/latestexoerience"} state={{ id: item?.id }} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                          <span className="search-img me-2">
+                            <img
+                              className=""
+                              src={item?.image}
+                              alt=""
+                            />
+                          </span>
+                          {item?.name}
+                        </Link>))}
+                  </div>
+
+                </div>
+              }
             </div>
+
           </div>
         </div>
       </header>

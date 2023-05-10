@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../commen/Header";
 import Footer from "../../commen/Footer";
 import { GetData, GetDataWithToken } from "../../../ApiHelper/ApiHelper";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Map from "../Map/Map";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
@@ -276,9 +276,9 @@ export default function FreelanceDetail() {
                               <img src="images/banner/logo(1).png" alt="#" />
                             </div>
                             <div className="company-info">
-                              <a href="Freelance.html" className="company-name">
+                              <Link to={"/freelancedetail"} state={{ id: item?.id }} className="company-name">
                                 {item?.name}
-                              </a>
+                              </Link>
                               <p className="company-address">{item?.address}</p>
                             </div>
                           </div>
