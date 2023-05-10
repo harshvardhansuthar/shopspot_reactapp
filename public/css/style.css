@@ -27555,6 +27555,27 @@ input :-internal-autofill-selected {
 .search-history .btn-light .search-img img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+}
+
+.wt-post-info .wt-post-meta.product-detail ul .post-author {
+  display: flex;
+  align-items: center;
+}
+
+.wt-post-info .wt-post-meta.product-detail ul .post-author .twm-media {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 8px;
+}
+
+.wt-post-info .wt-post-meta.product-detail ul .post-author .twm-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media screen and (min-width: 992px) {

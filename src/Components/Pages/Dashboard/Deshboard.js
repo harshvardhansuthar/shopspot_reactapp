@@ -18,6 +18,7 @@ import {
   businessDetailIdd,
   countryName,
 } from "../../../store/Action";
+import { StreetViewPanorama } from "react-google-maps";
 
 export default function Deshboard() {
   // const [resentData, setResentData] = useState([]);
@@ -407,8 +408,7 @@ export default function Deshboard() {
                             <div className="search-every mt-4">
                               <h4 className="my-3">Business</h4>
                               <div className="d-flex flex-wrap">
-                                {
-                                  suggestions?.business?.length > 0 &&
+                                {suggestions?.business?.length > 0 &&
                                   suggestions?.business?.map((item, key) => (
                                     <Link
                                       to={"/businessdetail"}
@@ -429,8 +429,7 @@ export default function Deshboard() {
 
                               <h4 className="my-3">Carrer</h4>
                               <div className="d-flex flex-wrap">
-                                {
-                                  suggestions?.carrer?.length > 0 &&
+                                {suggestions?.carrer?.length > 0 &&
                                   suggestions?.carrer?.map((item, key) => (
                                     <Link
                                       to={"/careerdetail"}
@@ -449,12 +448,9 @@ export default function Deshboard() {
                                   ))}
                               </div>
 
-
-
                               <h4 className="my-3">Categories</h4>
                               <div className="d-flex flex-wrap">
-                                {
-                                  suggestions?.category?.length > 0 &&
+                                {suggestions?.category?.length > 0 &&
                                   suggestions?.category?.map((item, key) => (
                                     <Link
                                       to={"/businessdetail"}
@@ -473,30 +469,29 @@ export default function Deshboard() {
                                   ))}
                               </div>
 
-
                               <h4 className="my-3">Products</h4>
                               <div className="d-flex flex-wrap">
-
-                                {
-                                  suggestions?.product?.length > 0 &&
+                                {suggestions?.product?.length > 0 &&
                                   suggestions?.product?.map((item, key) => (
                                     <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
                                       <span className="search-img me-2">
                                         <img
                                           className=""
-                                          src={item?.images && JSON?.parse(item?.images)[0]}
+                                          src={
+                                            item?.images &&
+                                            JSON?.parse(item?.images)[0]
+                                          }
                                           alt=""
                                         />
                                       </span>
                                       {item?.name}
-                                    </Link>))}
+                                    </Link>
+                                  ))}
                               </div>
-
 
                               <h4 className="my-3">Experience</h4>
                               <div className="d-flex flex-wrap">
-                                {
-                                  suggestions?.experience?.length > 0 &&
+                                {suggestions?.experience?.length > 0 &&
                                   suggestions?.experience?.map((item, key) => (
                                     <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
                                       <span className="search-img me-2">
@@ -507,7 +502,8 @@ export default function Deshboard() {
                                         />
                                       </span>
                                       {item?.name}
-                                    </Link>))}
+                                    </Link>
+                                  ))}
                               </div>
                             </div>
                           </div>
@@ -564,9 +560,7 @@ export default function Deshboard() {
                   {/* <!-- Current Location end here... --> */}
                   <div className="twm-bnr-popular-search">
                     <span className="twm-title">Popular Searches:</span>
-                    <a>Bakery</a> ,
-                    <a>Hotel</a> ,
-                    <a>Music and DJ</a> ,
+                    <a>Bakery</a> ,<a>Hotel</a> ,<a>Music and DJ</a> ,
                     <a>Architects</a> ...
                   </div>
                 </div>
@@ -870,11 +864,17 @@ export default function Deshboard() {
                                 </a>
                               </div>
                               <div className="wt-post-info">
-                                <div className="wt-post-meta">
+                                <div className="wt-post-meta product-detail">
                                   <ul>
                                     <li className="post-author">
+                                      <span className="twm-media">
+                                        <img
+                                          src={JSON.parse(item.images)?.[0]}
+                                          alt="#"
+                                        />
+                                      </span>
                                       {"By" + "  "}
-                                      <a>
+                                      <a className="ms-1">
                                         {"   " + item?.Business?.name}
                                       </a>
                                     </li>
@@ -882,9 +882,7 @@ export default function Deshboard() {
                                 </div>
                                 <div className="wt-post-title">
                                   <h4 className="post-title">
-                                    <a>
-                                      {item?.name}
-                                    </a>
+                                    <a>{item?.name}</a>
                                   </h4>
                                 </div>
                               </div>
@@ -1004,10 +1002,7 @@ export default function Deshboard() {
                                         />
                                       </div>
                                       <div className="company-info">
-                                        <a
-
-                                          className="company-name"
-                                        >
+                                        <a className="company-name">
                                           {item?.Business?.name}
                                         </a>
                                         <p className="company-address">
@@ -1110,16 +1105,11 @@ export default function Deshboard() {
                                     </div>
                                     <div className="wt-post-title">
                                       <h4 className="post-title">
-                                        <a>
-                                          {item?.description}
-                                        </a>
+                                        <a>{item?.description}</a>
                                       </h4>
                                     </div>
                                     <div className="wt-post-readmore">
-                                      <a
-
-                                        className="site-button-a site-text-primary"
-                                      >
+                                      <a className="site-button-a site-text-primary">
                                         {item?.place}
                                       </a>
                                     </div>
@@ -1250,11 +1240,7 @@ export default function Deshboard() {
                         </div>
                         {/* <!-- TITLE END--> */}
                         <div className="twm-read-more">
-                          <a
-                            className="site-button"
-                          >
-                            Refer your Friend
-                          </a>
+                          <a className="site-button">Refer your Friend</a>
                         </div>
                       </div>
                     </div>
