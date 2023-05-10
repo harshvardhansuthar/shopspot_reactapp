@@ -350,66 +350,58 @@ export default function Deshboard() {
                             <div className="popular-search mt-4">
                               <h4 className="mb-3">Popular search</h4>
                               <div className="d-flex flex-wrap">
-                                <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
-                                  <span className="search-img me-2">
-                                    <img
-                                      className=""
-                                      src="images/category/Group 1900.png"
-                                      alt=""
-                                    />
-                                  </span>
-                                  Restaurents
-                                </button>
-                                <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
-                                  <span className="search-img me-2">
-                                    <img
-                                      className=""
-                                      src="images/category/Group 1900.png"
-                                      alt=""
-                                    />
-                                  </span>
-                                  Hotels
-                                </button>
-                                <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
-                                  <span className="search-img me-2">
-                                    <img
-                                      className=""
-                                      src="images/category/Group 1900.png"
-                                      alt=""
-                                    />
-                                  </span>
-                                  Retails
-                                </button>
-                                <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
-                                  <span className="search-img me-2">
-                                    <img
-                                      className=""
-                                      src="images/category/Group 1900.png"
-                                      alt=""
-                                    />
-                                  </span>
-                                  Pharmacy
-                                </button>
-                                <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
-                                  <span className="search-img me-2">
-                                    <img
-                                      className=""
-                                      src="images/category/Group 1900.png"
-                                      alt=""
-                                    />
-                                  </span>
-                                  Travels
-                                </button>
-                                <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
-                                  <span className="search-img me-2">
-                                    <img
-                                      className=""
-                                      src="images/category/Group 1900.png"
-                                      alt=""
-                                    />
-                                  </span>
-                                  Service providers
-                                </button>
+                                {resentData &&
+                                  resentData?.product?.length > 0 &&
+                                  resentData?.product?.map((item, key) => (
+                                    <Link className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          src={item?.images && JSON?.parse(item?.images)[0]}
+                                          alt=""
+                                        />
+                                      </span>
+                                      {item?.name}
+                                    </Link>))}
+                                {resentData &&
+                                  resentData?.category?.length > 0 &&
+                                  resentData?.category?.map((item, key) => (
+                                    <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          src={item?.image}
+                                          alt=""
+                                        />
+                                      </span>
+                                      {item?.name}
+                                    </button>))}
+                                {resentData &&
+                                  resentData?.carrer?.length > 0 &&
+                                  resentData?.carrer?.map((item, key) => (
+                                    <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          // src="images/category/Group 1900.png"
+                                          alt=""
+                                        />
+                                      </span>
+                                      {item?.post_name}
+                                    </button>))}
+                                {resentData &&
+                                  resentData?.experience?.length > 0 &&
+                                  resentData?.experience?.map((item, key) => (
+                                    <button className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                      <span className="search-img me-2">
+                                        <img
+                                          className=""
+                                          src={item?.image}
+                                          alt=""
+                                        />
+                                      </span>
+                                      {item?.name}
+                                    </button>))}
                               </div>
                             </div>
                           </div>
@@ -466,10 +458,10 @@ export default function Deshboard() {
                   {/* <!-- Current Location end here... --> */}
                   <div className="twm-bnr-popular-search">
                     <span className="twm-title">Popular Searches:</span>
-                    <a href="job-grid-with-map.html">Bakery</a> ,
-                    <a href="job-grid-with-map.html">Hotel</a> ,
-                    <a href="job-grid-with-map.html">Music and DJ</a> ,
-                    <a href="job-grid-with-map.html">Architects</a> ...
+                    <a>Bakery</a> ,
+                    <a>Hotel</a> ,
+                    <a>Music and DJ</a> ,
+                    <a>Architects</a> ...
                   </div>
                 </div>
               </div>
@@ -776,7 +768,7 @@ export default function Deshboard() {
                                   <ul>
                                     <li className="post-author">
                                       {"By" + "  "}
-                                      <a href="job-detail-v2.html">
+                                      <a>
                                         {"   " + item?.Business?.name}
                                       </a>
                                     </li>
@@ -784,7 +776,7 @@ export default function Deshboard() {
                                 </div>
                                 <div className="wt-post-title">
                                   <h4 className="post-title">
-                                    <a href="employer-detail-v2.html">
+                                    <a>
                                       {item?.name}
                                     </a>
                                   </h4>
@@ -907,7 +899,7 @@ export default function Deshboard() {
                                       </div>
                                       <div className="company-info">
                                         <a
-                                          href="Freelance.html"
+
                                           className="company-name"
                                         >
                                           {item?.Business?.name}
@@ -1012,14 +1004,14 @@ export default function Deshboard() {
                                     </div>
                                     <div className="wt-post-title">
                                       <h4 className="post-title">
-                                        <a href="experience.html">
+                                        <a>
                                           {item?.description}
                                         </a>
                                       </h4>
                                     </div>
                                     <div className="wt-post-readmore">
                                       <a
-                                        href="blog-single.html"
+
                                         className="site-button-a site-text-primary"
                                       >
                                         {item?.place}
@@ -1153,7 +1145,6 @@ export default function Deshboard() {
                         {/* <!-- TITLE END--> */}
                         <div className="twm-read-more">
                           <a
-                            href="Refer&Earn-detail.html"
                             className="site-button"
                           >
                             Refer your Friend

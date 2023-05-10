@@ -803,7 +803,7 @@ export default function SignUp(props) {
 
                           <label className="form-check-label" for="agree1">
                             I agree to the
-                            <a href="#">Terms and conditions</a>
+                            <a>Terms and conditions</a>
                           </label>
                           <p>
                             Already registered?

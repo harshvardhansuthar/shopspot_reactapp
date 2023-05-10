@@ -264,7 +264,9 @@ import EmailVerify from "./EmailVerify";
 import { useDispatch } from "react-redux";
 import { actionLoginStatus } from "../../store/Action";
 import { userDetail } from "../../store/Action";
+
 export default function Login(props) {
+
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -448,6 +450,7 @@ export default function Login(props) {
                                 toggleModal();
                                 toggleEmailVerifyModal();
                               }}
+
                             >
                               Forgot Password ?
                             </Link>

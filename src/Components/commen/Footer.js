@@ -18,9 +18,9 @@ export default function Footer() {
               <div className="col-lg-3 col-md-12">
                 <div className="widget widget_about">
                   <div className="logo-footer clearfix">
-                    <a href="index.html">
+                    <Link to={"/"}>
                       <img src="images/logo.png" alt="" />
-                    </a>
+                    </Link>
                   </div>
                   <p>
                     Many desktop publishing packages and web page editors now.
@@ -60,15 +60,15 @@ export default function Footer() {
                         </li>
 
                         <li>
-                          <a href="contact.html">Contact</a>
+                          <a>Contact</a>
                         </li>
 
                         <li>
-                          <a href="faq.html">FAQs</a>
+                          <a>FAQs</a>
                         </li>
 
                         <li>
-                          <a href="about-1.html">About us</a>
+                          <a>About us</a>
                         </li>
                       </ul>
                     </div>
@@ -78,15 +78,15 @@ export default function Footer() {
                     <div className="widget widget_services ftr-list-center">
                       <ul>
                         <li>
-                          <a href="index.html">Home</a>
+                          <Link to={"/"}>Home</Link>
                         </li>
 
                         <li>
-                          <a href="employer-detail-v2.html">Products</a>
+                          <a>Products</a>
                         </li>
 
                         <li>
-                          <a href="job-detail-v2.html">Business details</a>
+                          <a>Business details</a>
                         </li>
                       </ul>
                     </div>
@@ -105,22 +105,22 @@ export default function Footer() {
               </div>
               <ul className="social-icons">
                 <li>
-                  <a href="javascript:void(0);" className="fab fa-facebook-f"></a>
+                  <a className="fab fa-facebook-f"></a>
                 </li>
                 <li>
-                  <a href="javascript:void(0);" className="fab fa-twitter"></a>
+                  <a className="fab fa-twitter"></a>
                 </li>
                 <li>
-                  <a href="javascript:void(0);" className="fab fa-instagram"></a>
+                  <a className="fab fa-instagram"></a>
                 </li>
                 <li>
-                  <a href="javascript:void(0);" className="fab fa-youtube"></a>
+                  <a className="fab fa-youtube"></a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-      </footer>
+      </footer >
       {/* <!-- FOOTER END --> */}
 
       {/* <!-- BUTTON TOP START --> */}

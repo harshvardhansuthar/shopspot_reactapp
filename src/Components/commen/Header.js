@@ -142,7 +142,7 @@ export default function Header(props) {
     <>
       {/* <!-- HEADER START --> */}
       <header
-        className={`site-header   ${props?.class ? props?.class : "header-style-3"
+        className={`site-header ${props?.class ? props?.class : "header-style-3"
           } mobile-sider-drawer-menu`}
       >
         {/* is-fixed */}
@@ -217,13 +217,13 @@ export default function Header(props) {
                     </div>
                   </li>
                   <li className="has-child">
-                    <a href="javascript:;">Vendors</a>
+                    <a>Vendors</a>
                   </li>
                   <li className="has-child">
-                    <a href="about-1.html">About us</a>
+                    <a>About us</a>
                   </li>
                   <li className="has-child">
-                    <a href="javascript:;">How it Works</a>
+                    <a>How it Works</a>
                   </li>
                   <li className="has-child">
                     <a
@@ -272,9 +272,9 @@ export default function Header(props) {
                             type="button"
                             data-bs-toggle="dropdown"
                           >
-                            {`${user?.split(" ")[0]?.charAt(0)}${user
-                              ?.split(" ")[1]
-                              ?.charAt(0)}`}
+                            {/* {`${user?.split(" ")[0]?.charAt(0)}${user
+                              ?.split(" ")[1] 
+                              ?.charAt(0)}`} */}Em
                           </button>
                           <ul className="dropdown-menu hide">
                             <li className="position-relative">
@@ -331,7 +331,6 @@ export default function Header(props) {
                     </div>
                     <div className="twm-nav-btn-right">
                       <a
-                        href="dash-post-job.html"
                         className="twm-nav-post-a-job"
                       >
                         <i className="feather-briefcase"></i> Become a Vendor
@@ -362,11 +361,11 @@ export default function Header(props) {
                   onChange={handleQueryChange}
                 />
 
-                <div>
-                  {showSuggestions &&
+                {/* <div>
+                  {query?.length > 0 &&
                     suggestions &&
-                    suggestions?.length > 0 &&
-                    suggestions.map((item, key) => (
+                    suggestions?.business?.length > 0 &&
+                    suggestions?.business?.map((item, key) => (
                       <ul key={key}>
                         <li
                           onClick={async (e) => {
@@ -378,7 +377,7 @@ export default function Header(props) {
                         </li>
                       </ul>
                     ))}
-                </div>
+                </div> */}
 
                 <span className="input-group-append">
                   <button type="button" className="search-btn">
@@ -392,53 +391,49 @@ export default function Header(props) {
               <div className="Recent-search">
                 <h4 className="mb-3">Recent search</h4>
                 <div className="d-flex flex-wrap">
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    <span className="me-2">
-                      <i className="fas fa-history"></i>
-                    </span>
-                    hannah bakes
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    <span className="me-2">
-                      <i className="fas fa-history"></i>
-                    </span>
-                    Indian sweets
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    <span className="me-2">
-                      <i className="fas fa-history"></i>
-                    </span>
-                    Cofee shop
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    <span className="me-2">
-                      <i className="fas fa-history"></i>
-                    </span>
-                    Ramee Rose Hotel
-                  </button>
+                  {
+                    query?.length > 0 &&
+                    suggestions?.business?.length > 0 &&
+                    suggestions?.business?.map((item, key) => (
+                      <Link to={'/businessdetail'} className="btn btn-light rounded-pill me-2 mb-2">
+                        <span className="me-2">
+                          <i className="fas fa-history"></i>
+                        </span>
+                        {item?.name}
+                      </Link>))}
                 </div>
               </div>
               <div className="popular-search mt-4">
                 <h4 className="mb-3">Popular search</h4>
                 <div className="d-flex flex-wrap">
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    Restaurents
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    Hotels
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    Retails
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    Pharmacy
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    Travels
-                  </button>
-                  <button className="btn btn-light rounded-pill me-2 mb-2">
-                    Service providers
-                  </button>
+                  {
+                    query?.length > 0 &&
+                    suggestions?.carrer?.length > 0 &&
+                    suggestions?.carrer?.map((item, key) => (
+                      <button className="btn btn-light rounded-pill me-2 mb-2">
+                        {item?.post_name}
+                      </button>))}
+                  {
+                    query?.length > 0 &&
+                    suggestions?.category?.length > 0 &&
+                    suggestions?.category?.map((item, key) => (
+                      <button className="btn btn-light rounded-pill me-2 mb-2">
+                        {item?.name}
+                      </button>))}
+                  {
+                    query?.length > 0 &&
+                    suggestions?.experience?.length > 0 &&
+                    suggestions?.experience?.map((item, key) => (
+                      <button className="btn btn-light rounded-pill me-2 mb-2">
+                        {item?.name}
+                      </button>))}
+                  {
+                    query?.length > 0 &&
+                    suggestions?.product?.length > 0 &&
+                    suggestions?.product?.map((item, key) => (
+                      <button className="btn btn-light rounded-pill me-2 mb-2">
+                        {item?.name}
+                      </button>))}
                 </div>
               </div>
             </div>

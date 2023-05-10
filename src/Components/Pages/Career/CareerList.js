@@ -3,6 +3,7 @@ import Header from '../../commen/Header'
 import Footer from '../../commen/Footer'
 import { GetDataWithToken } from '../../../ApiHelper/ApiHelper'
 import { useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function CareerList() {
     const [careerList, setCareerList] = useState([])
@@ -38,9 +39,9 @@ export default function CareerList() {
                                                         <img src={item?.Business?.business_licence} alt="#" />
                                                     </div>
                                                     <div className="company-info">
-                                                        <a href="career-detail.html" className="company-name"
-                                                        >{item?.Business?.name}</a
-                                                        >
+                                                        <Link to={"/careerdetail"} state={{ id: item?.id }} className="company-name"
+                                                        >{item?.Business?.name}
+                                                        </Link>
                                                         <p className="company-address">{item?.address}</p>
                                                     </div>
                                                 </div>
@@ -48,9 +49,9 @@ export default function CareerList() {
                                                     <h4 className="job-name-title">{item?.post_name}</h4>
                                                 </div>
                                                 <div className="aply-btn-area">
-                                                    <a href="career-detail.html" className="aplybtn">
+                                                    <Link to={"/careerdetail"} state={{ id: item?.id }} className="aplybtn">
                                                         <i className="fas fa-chevron-right"></i>
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>

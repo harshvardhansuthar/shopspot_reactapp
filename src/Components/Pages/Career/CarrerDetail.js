@@ -87,7 +87,7 @@ export default function CarrerDetail() {
                                     <div className="cabdidate-de-info">
                                         <h4 className="twm-s-title m-t0">Overview:</h4>
                                         <p>
-                                            {otherInfo?.Overview}
+                                            {otherInfo?.Overview}ƒ
                                         </p>
                                         <h4 className="twm-s-title">More Detail</h4>
                                         <p>{otherInfo?.More_Detail}</p>
@@ -155,9 +155,8 @@ export default function CarrerDetail() {
                                                                     <img src={item?.Business?.images} alt="#" />
                                                                 </div>
                                                                 <div className="company-info">
-                                                                    <a href="career-detail.html" className="company-name"
-                                                                    >{item?.Business?.name}</a
-                                                                    >
+                                                                    <Link to={"/careerdetail"} state={{ id: item?.id }} className="company-name"
+                                                                    >{item?.Business?.name}</Link >
                                                                     <p className="company-address">{item?.address}</p>
                                                                 </div>
                                                             </div>
@@ -165,9 +164,9 @@ export default function CarrerDetail() {
                                                                 <h4 className="job-name-title">{item?.post_name}</h4>
                                                             </div>
                                                             <div className="aply-btn-area">
-                                                                <a href="career-detail.html" className="aplybtn">
+                                                                <Link to={"/careerdetail"} state={{ id: item?.id }} className="aplybtn">
                                                                     <i className="fas fa-chevron-right"></i>
-                                                                </a>
+                                                                </Link>
                                                             </div>
                                                         </div>
                                                     </div>

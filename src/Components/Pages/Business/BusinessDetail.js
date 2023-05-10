@@ -993,7 +993,6 @@ export default function BusinessDetail() {
   };
 
   const handleWishList = async (id) => {
-    console.log(id)
     try {
       const response = await GetDataWithToken(`product/add-and-delete-wishlist?eventId=${id}`);
       console.log(response)
@@ -1230,7 +1229,7 @@ export default function BusinessDetail() {
                             <div className="row">
                               {businessDetail?.business?.Products &&
                                 businessDetail?.business?.Products?.length >
-                                  0 &&
+                                0 &&
                                 businessDetail?.business?.Products?.map(
                                   (item, key) => (
                                     <div
@@ -1304,7 +1303,7 @@ export default function BusinessDetail() {
                                   </span>
                                   <div className="twm-mid-content">
                                     <a
-                                      href="job-detail-v2.html"
+
                                       className="twm-job-title"
                                     >
                                       <h4>{item?.name}</h4>
@@ -1315,7 +1314,7 @@ export default function BusinessDetail() {
                                   </div>
                                   <div className="twm-right-content justify-content-center">
                                     <a
-                                      href="job-detail-v2.html"
+
                                       className="twm-jobs-browse site-text-primary"
                                     >
                                       {item?.distance.toFixed(2) +

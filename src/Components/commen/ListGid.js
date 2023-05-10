@@ -71,7 +71,6 @@ export default function ListGid() {
                     <h4
                       class="btn panel-tittle m-a0 border-1 rounded-3 border-secondary"
                       data-bs-toggle="collapse"
-                      href="#Filters"
                       role="button"
                       aria-expanded="false"
                       aria-controls="Filters"
@@ -521,10 +520,12 @@ export default function ListGid() {
           <div class="half-map-section">
             <div
               class="user-msg-list-btn-outer"
-              style={{position: 'absolute',
-              top: '10px',
-              right: '133px',
-              zIndex: 99,}}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '133px',
+                zIndex: 99,
+              }}
             >
               <button class="site-button">Close</button>
               <button class="site-button">View Map</button>

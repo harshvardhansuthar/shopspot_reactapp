@@ -128,7 +128,7 @@ export default function FreelanceDetail() {
                           </ul>
                           <h4 className="twm-s-title">Share Profile</h4>
                           <div className="twm-social-tags">
-                            <a href="#" className="fb-clr">
+                            <a href="tel:6350088970" className="fb-clr">
                               <i className="fas fa-phone-alt"></i>
                             </a>
                             <a
