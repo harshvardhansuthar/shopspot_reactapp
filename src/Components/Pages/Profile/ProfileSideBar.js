@@ -57,7 +57,7 @@ export default function ProfileSideBar(props) {
     });
   };
 
-  dispatch(userDetail.userDetails({ userData }));
+  // dispatch(userDetail.userDetails({ userData }));
 
   // setUserLogo(
   //   `${userData?.name?.split(" ")[0]?.charAt(0)}${userData?.name

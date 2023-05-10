@@ -572,7 +572,6 @@
 //                     </div>
 //                   </div>
 
-
 //                   {/* <Modal
 //                     Modal
 //                     className="modal-dialog-centered twm-sign-up"
@@ -613,7 +612,6 @@
 //                           </div>
 //                         </div>
 //                       </div>
-
 
 //                       <div className="description mt-3 position-relative">
 //                         <div className="share-icons">
@@ -712,198 +710,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import Footer from "../../commen/Footer";
 import HeaderMap from "../../commen/HeaderMap";
@@ -924,10 +730,10 @@ import { WhatsappShareButton } from "react-share";
 // import "owl.carousel/dist/assets/owl.carousel.css";
 // import "owl.carousel/dist/assets/owl.theme.default.css";
 export default function BusinessDetail() {
-  const [wishListColor, setWishListColor] = useState({})
-  const [wishListData, setWishListData] = useState({})
-  const [eventModal, setEventModal] = useState(false)
-  const toggleEventModal = () => setEventModal(!eventModal)
+  const [wishListColor, setWishListColor] = useState({});
+  const [wishListData, setWishListData] = useState({});
+  const [eventModal, setEventModal] = useState(false);
+  const toggleEventModal = () => setEventModal(!eventModal);
   const [formetTime, setFormetTime] = useState({});
   const [eventDataImage, setEventDataImage] = useState([]);
   const [eventData, setEventData] = useState([]);
@@ -945,7 +751,7 @@ export default function BusinessDetail() {
   const { id } = useParams();
 
   // const location = useSelector((state) => state.businessDetailId.action);
-
+  console.log("business details", businessDetail);
   useEffect(() => {
     if (callApi == true && location1?.latitude) {
       setComponentLoader(true);
@@ -987,27 +793,40 @@ export default function BusinessDetail() {
       setEventData(res.data?.event);
 
       let time = JSON.parse(res?.data?.event?.time);
-      toggleEventModal()
+      toggleEventModal();
       setFormetTime(time);
     });
   };
 
   const handleWishList = async (id) => {
-    console.log(id)
+    console.log(id);
     try {
-      const response = await GetDataWithToken(`product/add-and-delete-wishlist?eventId=${id}`);
-      console.log(response)
+      const response = await GetDataWithToken(
+        `product/add-and-delete-wishlist?eventId=${id}`
+      );
+      console.log(response);
       if (response.data) {
-        setWishListColor(true)
+        setWishListColor(true);
       } else {
-        setWishListColor(false)
-
+        setWishListColor(false);
       }
       // do something with the response
     } catch (error) {
       console.error(error); // handle the error
     }
   };
+
+  const wishHandler = (id) => {
+    GetDataWithToken(`product/add-and-delete-wishlist?businessId=${id}`).then(
+      (response) => {
+        if (response.status === true) {
+          console.log(response);
+          setCallApi(true);
+        }
+      }
+    );
+  };
+
   return (
     <>
       {componentLoader ? (
@@ -1152,29 +971,77 @@ export default function BusinessDetail() {
                           <h4 className="twm-s-title">Share Profile</h4>
                           <div className="twm-social-tags">
                             <a
-                              href={`tel:${businessDetail?.business?.contact?.phone}`}
+                              href={`tel:${
+                                businessDetail?.business?.contact &&
+                                JSON.parse(businessDetail?.business?.contact)
+                                  ?.phone
+                              }`}
                               className="fb-clr"
                             >
                               <i className="fas fa-phone-alt"></i>
                             </a>
+
                             <a
-                              href="mailto:email@example.com"
+                              target="_blank"
+                              href="mailto:jeetsingh@gmail.com"
+                              // href={`mailto:${
+                              //   businessDetail?.business?.contact &&
+                              //   JSON.parse(businessDetail?.business?.contact)
+                              //     ?.email
+                              // }`}
                               className="tw-clr"
                             >
                               <i className="fas fa-envelope"></i>
                             </a>
+
                             <a
-                              href={`https://wa.me/${businessDetail?.business?.contact?.whatapp}`}
+                              target="_blank"
+                              href={`https://web.whatsapp.com/send?phone=${
+                                businessDetail?.business?.contact &&
+                                JSON.parse(businessDetail?.business?.contact)
+                                  ?.whatsapp
+                              }&text=Hello`}
+                              // href={`https://wa.me/${
+                              //   businessDetail?.business?.contact &&
+                              //   JSON.parse(businessDetail?.business?.contact)
+                              //     ?.whatapp
+                              // }`}
+                              // onClick={() =>
+                              //   whatsappSendHandler(
+                              //     businessDetail?.business?.contact &&
+                              //       JSON.parse(
+                              //         businessDetail?.business?.contact
+                              //       )?.whatapp
+                              //   )
+
                               className="whats-clr"
                             >
                               <i className="fab fa-whatsapp"></i>
                             </a>
-                            <a
-                              href={"https://www.google.com/maps"}
-                              className="pinte-clr"
-                            >
+
+                            <a className="pinte-clr">
                               <i className="fas fa-map-marker-alt"></i>
                             </a>
+                            <a
+                              onClick={() =>
+                                wishHandler(businessDetail?.business?.id)
+                              }
+                              className="pinte-clr"
+                            >
+                              {businessDetail?.wishlist === null && (
+                                <i className="far fa-heart"></i>
+                              )}
+                              {businessDetail?.wishlist && (
+                                <i className="fas fa-heart"></i>
+                              )}
+                            </a>
+                            <WhatsappShareButton
+                              url={`${businessDetail?.business?.website_url} image=${businessDetail?.business?.business_licence} Details=${businessDetail?.business?.description}`}
+                            >
+                              <a className="pinte-clr">
+                                <i className="far fa-share-square"></i>
+                              </a>
+                            </WhatsappShareButton>
                           </div>
 
                           <h4 className="twm-s-title">Location</h4>
@@ -1205,12 +1072,10 @@ export default function BusinessDetail() {
                                       <div className="tw-service-gallery-thumb">
                                         <a
                                           onClick={() => {
-                                            handleEventData(item.id)
-                                            toggleEventModal()
-                                          }
-                                          }
+                                            handleEventData(item.id);
+                                            toggleEventModal();
+                                          }}
                                           className=""
-
                                         >
                                           <img
                                             src={JSON.parse(item?.image)[0]}
@@ -1292,10 +1157,7 @@ export default function BusinessDetail() {
                           {businessDetail?.related_Business?.length > 0 &&
                             businessDetail?.related_Business?.map(
                               (item, key) => (
-                                <div
-                                  className="twm-jobs-grid-style2"
-                                  key={key}
-                                >
+                                <div className="twm-jobs-grid-style2" key={key}>
                                   <div className="twm-media">
                                     <img src={item?.images} alt="#" />
                                   </div>
@@ -1381,9 +1243,7 @@ export default function BusinessDetail() {
                           </div>
                         ))}
                     </OwlCarousel>
-
                   </div>
-
                 </div>
               </div>
 
@@ -1480,8 +1340,19 @@ export default function BusinessDetail() {
               <div className="description mt-3 position-relative">
                 <div className="share-icons">
                   <span className="btn share">
-                    {wishListColor == null && <i className={`${'far fa-heart'}`} onClick={() => handleWishList(product?.id)}></i>}
-                    {wishListColor && <i className={`fas fa-heart ${wishListColor?.id && ""}  `} onClick={() => handleWishList(product?.id)}></i>}                  </span>
+                    {wishListColor == null && (
+                      <i
+                        className={`${"far fa-heart"}`}
+                        onClick={() => handleWishList(product?.id)}
+                      ></i>
+                    )}
+                    {wishListColor && (
+                      <i
+                        className={`fas fa-heart ${wishListColor?.id && ""}  `}
+                        onClick={() => handleWishList(product?.id)}
+                      ></i>
+                    )}{" "}
+                  </span>
                   <span className="btn">
                     <i className="far fa-share-square"></i>
                   </span>
@@ -1527,105 +1398,3 @@ export default function BusinessDetail() {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

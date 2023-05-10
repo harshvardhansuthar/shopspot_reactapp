@@ -16,6 +16,18 @@ export default function Header(props) {
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [countryFlag, setCountryFlag] = useState("");
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [countryName, setCountryName] = useState("");
+  const [category, setCategory] = useState([]);
+  const [country, setCountry] = useState([]);
+  const dispatch = useDispatch();
+  const [isFixed, setIsFixed] = useState(false);
+  const [modal, setModal] = useState(false);
+  const toggleModal = () => setModal(!modal);
+  const [islogin, setIsLogin] = useState(false);
+  const [token, setToken] = useState(null);
+  const [userLogo, setUserLogo] = useState();
 
   const [countryModal, setCountryModal] = useState(
     reduxCountryName ? false : true
@@ -31,24 +43,11 @@ export default function Header(props) {
     setQuery(event.target.value);
   };
 
-  const [countryFlag, setCountryFlag] = useState("");
-  const [showSearchBar, setShowSearchBar] = useState(false);
-  const [countryName, setCountryName] = useState("");
-  const [category, setCategory] = useState([]);
-  const [country, setCountry] = useState([]);
-  const dispatch = useDispatch();
-  const [isFixed, setIsFixed] = useState(false);
-  const [modal, setModal] = useState(false);
-  const toggleModal = () => setModal(!modal);
-  const [islogin, setIsLogin] = useState(false);
-  const [token, setToken] = useState(null);
-  const [userLogo, setUserLogo] = useState();
   const navigate = useNavigate();
   const location = useSelector((state) => state?.loctionn?.action?.location);
-  const user = useSelector(
-    (state) => state?.userDetail?.action?.userData?.name
-  );
-  console.log(user);
+  let user = Cookies.get("userName");
+  console.log("user for initialllssssss", user);
+  // console.log(user);
   // const setUser = (data) => {
   //   setUserLogo(data);
   // };
@@ -66,6 +65,8 @@ export default function Header(props) {
     GetDataWithToken("auth/logout").then((res) => {
       if ((res.status = true)) {
         Cookies.remove("token");
+        Cookies.remove("userDetails");
+        Cookies.remove("userName");
         dispatch(actionLoginStatus.loginStatus(false));
         navigate("/");
       }
@@ -106,7 +107,8 @@ export default function Header(props) {
 
   const handleCategoryDetail = (id) => {
     GetData(
-      `business/get-business?lat=${location?.latitude}&lng=${location?.longitude
+      `business/get-business?lat=${location?.latitude}&lng=${
+        location?.longitude
       }&page=${""}&categoryId=${id}&country=${countryName}`
     );
   };
@@ -142,13 +144,15 @@ export default function Header(props) {
     <>
       {/* <!-- HEADER START --> */}
       <header
-        className={`site-header   ${props?.class ? props?.class : "header-style-3"
-          } mobile-sider-drawer-menu`}
+        className={`site-header   ${
+          props?.class ? props?.class : "header-style-3"
+        } mobile-sider-drawer-menu`}
       >
         {/* is-fixed */}
         <div
-          className={`sticky-header main-bar-wraper navbar-expand-lg ${isFixed ? " is-fixed" : ""
-            }`}
+          className={`sticky-header main-bar-wraper navbar-expand-lg ${
+            isFixed ? " is-fixed" : ""
+          }`}
         >
           <div className="main-bar">
             <div className="container-fluid clearfix">
@@ -452,7 +456,7 @@ export default function Header(props) {
           Modal
           className="modal-dialog-centered twm-sign-up modal-xl"
           isOpen={countryModal}
-        // toggle={toggleCountryModal}
+          // toggle={toggleCountryModal}
         >
           <ModalBody>
             <form>

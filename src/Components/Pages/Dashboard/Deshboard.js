@@ -18,6 +18,7 @@ import {
   businessDetailIdd,
   countryName,
 } from "../../../store/Action";
+import { WhatsappShareButton } from "react-share";
 
 export default function Deshboard() {
   // const [resentData, setResentData] = useState([]);
@@ -42,6 +43,7 @@ export default function Deshboard() {
   const [currentLocationName, setCurrentLocationName] = useState("");
   const [deshboardData, setDeshboardData] = useState([]);
   const [componentLoader, setComponentLoader] = useState(true);
+  const [callApi, setCallApi] = useState(true);
 
   const location = useSelector((state) => state?.loctionn?.action?.location);
   const dispatch = useDispatch();
@@ -166,7 +168,8 @@ export default function Deshboard() {
       let info = JSON.parse(res?.data?.data?.info);
       setImages(img);
       setInfo(info);
-      setProduct(res?.data?.data);
+      setProduct(res?.data);
+      console.log("wishlist productssss", product);
       setWishListColor(res?.data?.wishlist);
       if (res) {
         toggleProductModal();
@@ -199,11 +202,14 @@ export default function Deshboard() {
       const response = await GetDataWithToken(
         `product/add-and-delete-wishlist?productId=${id}`
       );
+      GetDataWithToken(`product/product-details/${id}`).then((res) => {
+        setProduct(res?.data);
+      });
       console.log(response);
       if (response.data) {
-        setWishListColor(true); // do something with the response
-      } else {
-        setWishListColor(false); // do something with the response
+        setWishListColor(response.message);
+
+        // do something with the response
       }
     } catch (error) {
       console.error(error); // handle the error
@@ -1265,26 +1271,31 @@ export default function Deshboard() {
 
                 <div className="description mt-3 position-relative">
                   <div className="share-icons">
-                    <span className="btn share">
-                      {wishListColor == null && (
-                        <i
-                          className={`${"far fa-heart"}`}
-                          onClick={() => handleWishList(product?.id)}
-                        ></i>
+                    <span
+                      className="btn share"
+                      onClick={() => handleWishList(product?.data?.id)}
+                    >
+                      {product?.wishlist === null && (
+                        <i className="far fa-heart"></i>
                       )}
-                      {wishListColor && (
-                        <i
-                          className={`fas fa-heart`}
-                          onClick={() => handleWishList(product?.id)}
-                        ></i>
-                      )}
+
+                      {product?.wishlist && <i className="fas fa-heart"> </i>}
                     </span>
-                    <span className="btn">
-                      <i className="far fa-share-square"></i>
-                    </span>
+                    <WhatsappShareButton
+                      url={`image=${
+                        product?.data?.images &&
+                        JSON.parse(product?.data?.images)?.[0]
+                      } name=${product?.data?.name}price=${
+                        product?.data?.price
+                      }description=${product?.data?.description}`}
+                    >
+                      <span className="btn">
+                        <i className="far fa-share-square"></i>
+                      </span>
+                    </WhatsappShareButton>
                   </div>
-                  <h5>{product?.name}</h5>
-                  <p>{product?.description}</p>
+                  <h5>{product?.data?.name}</h5>
+                  <p>{product?.data?.description}</p>
                   {info &&
                     info.length > 0 &&
                     info.map((item, key) => (
@@ -1298,7 +1309,7 @@ export default function Deshboard() {
                     ))}
                   <div className="d-flex align-items-center justify-content-between">
                     <h5>Price </h5>
-                    <h5>{"BD" + " " + product.price}</h5>
+                    <h5>{"BD" + " " + product?.data?.price}</h5>
                   </div>
                   <div className="text-end">
                     <button
