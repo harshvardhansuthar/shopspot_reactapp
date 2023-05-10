@@ -3,11 +3,13 @@ import "./App.css";
 import AllRoutes from "./routes/AllRoutes";
 import { actionLoction } from "./store/Action";
 import { useEffect, useState } from "react";
+import { userDetail } from "./store/Action";
 import { actionBusinessDetailId } from "./store/Action";
 import LatestExperienceDetail from "./Components/Pages/LatestExperience/LatestExperienceDetail";
 import CareerList from "./Components/Pages/Career/CareerList";
 import CarrerDetail from "./Components/Pages/Career/CarrerDetail";
 import { actionCountryName } from "./store/Action";
+import Cookies from "js-cookie";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +30,9 @@ function App() {
       },
       (error) => console.error(error)
     );
+    if (Cookies.get("userDetails")) {
+      dispatch(userDetail.userDetails(Cookies.get("userDetails")));
+    }
   }, []);
 
   // useEffect(() => {

@@ -309,14 +309,18 @@ export default function Login(props) {
       console.log(response);
       if (response.status) {
         Cookies.set("token", response?.user?.access_token);
+        console.log("consoleeeee userrrr dataaaa------------", response?.user);
+        Cookies.set("userName", response.user.name);
+        Cookies.set("userDetails", response.user);
+        const data = Cookies.get("userDetails");
+        console.log("dataaaaaaaaaaaa", data);
         setIsLogin(true);
-        dispatch(userDetail.userDetails(response.user));
+        dispatch(userDetail.userDetails(response?.user));
         dispatch(actionLoginStatus.loginStatus(true));
         toggleModal();
       }
     });
   };
-
   const onSuccess = (response) => {
     console.log("Login success:", response);
     console.log(response);
