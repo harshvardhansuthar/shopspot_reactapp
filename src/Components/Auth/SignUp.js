@@ -494,14 +494,13 @@ export default function SignUp(props) {
   }, []);
 
   const handlerSignUp = (data) => {
-    console.log(data);
     let signUpData = {
       location: location,
       ...data,
     };
     PostData("auth/signUp", signUpData).then((responce) => {
       console.log(responce);
-      if (responce.status) {
+      if (responce.status == true) {
         // Cookies.set("token", responce.user.access_token);
         navigate("/verifyotp", { state: { data: data } });
       }
@@ -560,6 +559,34 @@ export default function SignUp(props) {
                     <div className="col-lg-12">
                       <div className="form-group mb-3">
                         <input
+                          name="phone"
+                          type="text"
+                          className="form-control"
+                          required=""
+                          placeholder="Email*"
+                          {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                              message: "Incorrect Email format",
+                            },
+                          })}
+                        />
+                        {errors.email && errors.email.message && (
+                          <p
+                            className="f-error m-0"
+                            style={{ color: "red", fontSize: 15 }}
+                          >
+                            <i className="fa-regular fa-circle-xmark" />
+                            {errors.email && errors.email.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="col-lg-6">
+                      <div className="form-group mb-3">
+                        <input
                           name="username"
                           type="text"
                           required=""
@@ -614,34 +641,6 @@ export default function SignUp(props) {
                     </div>
 
                     <div className="col-lg-6">
-                      <div className="form-group mb-3">
-                        <input
-                          name="phone"
-                          type="text"
-                          className="form-control"
-                          required=""
-                          placeholder="Email*"
-                          {...register("email", {
-                            required: "Email is required",
-                            pattern: {
-                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                              message: "Incorrect Email format",
-                            },
-                          })}
-                        />
-                        {errors.email && errors.email.message && (
-                          <p
-                            className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
-                          >
-                            <i className="fa-regular fa-circle-xmark" />
-                            {errors.email && errors.email.message}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
                       <div className="input-group mb-3">
                         <span
                           className="input-group-text p-0 border-0"
@@ -670,7 +669,7 @@ export default function SignUp(props) {
                             {CountryCodeJson &&
                               CountryCodeJson.length > 0 &&
                               CountryCodeJson.map((item, key) => (
-                                <option key={key} value={"+" + item.phonecode}>
+                                <option key={key} value={item.dial_code}>
                                   {`${item?.dial_code}`}
                                 </option>
                               ))}
@@ -754,8 +753,8 @@ export default function SignUp(props) {
                           type="text"
                           className="form-control"
                           required=""
-                          placeholder="Refer Number"
-                          {...register("Refer", {
+                          placeholder="Referral code"
+                          {...register("refer_code", {
                             minLength: {
                               value: 6,
                               message: "refer code min length 6 Character",
@@ -791,6 +790,12 @@ export default function SignUp(props) {
                               required: "This field is required", // Add validation rule(s) here
                             })}
                           />
+
+
+                          <label className="form-check-label" for="agree1">
+                            I agree to the
+                            <a>Terms and conditions</a>
+                          </label>
                           {errors.checkbox && errors.checkbox.message && (
                             <p
                               className="f-error m-0"
@@ -800,16 +805,11 @@ export default function SignUp(props) {
                               {errors.checkbox && errors.checkbox.message}
                             </p>
                           )}
-
-                          <label className="form-check-label" for="agree1">
-                            I agree to the
-                            <a>Terms and conditions</a>
-                          </label>
                           <p>
                             Already registered?
                             <Link
                               to={""}
-                              className="twm-backto-login"
+                              className="twm-backto-login ms-1"
                               onClick={() => {
                                 toggleModalLogin();
                                 toggleModal();
@@ -818,6 +818,7 @@ export default function SignUp(props) {
                               Log in here
                             </Link>
                           </p>
+
                         </div>
                       </div>
                     </div>

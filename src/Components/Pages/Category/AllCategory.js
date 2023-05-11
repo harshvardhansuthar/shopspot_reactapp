@@ -96,11 +96,11 @@ export default function AllCategory() {
                     <div class="row">
                       {/* <!--1--> */}
                       {allCategoryData?.Categories?.length == 0 ? (
-                        <h4>
+                        <h1>
                           {" "}
-                          No business in this category please select another
+                          no business in this category please select another
                           country{" "}
-                        </h4>
+                        </h1>
                       ) : (
                         allCategoryData &&
                         allCategoryData?.Categories?.length > 0 &&
