@@ -8,8 +8,7 @@ import { useSelector } from "react-redux";
 export default function AllCategory() {
   const [allCategory, setAllCategory] = useState({});
   const [allCategoryData, setAllCategoryData] = useState({});
-  const countryNameRedux = useSelector((state) => state?.countryName?.action)
-
+  const countryNameRedux = useSelector((state) => state?.countryName?.action);
 
   useEffect(() => {
     GetData("category/get-main-category").then((res) => {
@@ -18,7 +17,9 @@ export default function AllCategory() {
   }, []);
 
   useEffect(() => {
-    GetData(`category/get-category?id=${allCategory[0]?.id}&country=${countryNameRedux}`).then((res) => {
+    GetData(
+      `category/get-category?id=${allCategory[0]?.id}&country=${countryNameRedux}`
+    ).then((res) => {
       console.log(res);
       setAllCategoryData(res.data);
     });
@@ -26,10 +27,12 @@ export default function AllCategory() {
 
   const handleCategoryData = (id) => {
     console.log(id);
-    GetData(`category/get-category?id=${id}&country=${countryNameRedux}`).then((res) => {
-      console.log(res);
-      setAllCategoryData(res.data);
-    });
+    GetData(`category/get-category?id=${id}&country=${countryNameRedux}`).then(
+      (res) => {
+        console.log(res);
+        setAllCategoryData(res.data);
+      }
+    );
   };
   return (
     <>
@@ -92,7 +95,13 @@ export default function AllCategory() {
                   >
                     <div class="row">
                       {/* <!--1--> */}
-                      {allCategoryData?.Categories?.length == 0 ? <h1> no business in this category please select another country </h1> :
+                      {allCategoryData?.Categories?.length == 0 ? (
+                        <h4>
+                          {" "}
+                          No business in this category please select another
+                          country{" "}
+                        </h4>
+                      ) : (
                         allCategoryData &&
                         allCategoryData?.Categories?.length > 0 &&
                         allCategoryData?.Categories?.map((item, key) => (
@@ -111,7 +120,8 @@ export default function AllCategory() {
                               </div>
                             </div>
                           </div>
-                        ))}
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
