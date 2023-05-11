@@ -726,6 +726,7 @@ import { useParams } from "react-router-dom";
 import Header from "../../commen/Header";
 import { useSearchParams } from "react-router-dom";
 import Cookies from "js-cookie";
+import moment from "moment/moment";
 
 import { WhatsappShareButton } from "react-share";
 // import OwlCarousel from "react-owl-carousel";
@@ -841,6 +842,14 @@ export default function BusinessDetail() {
     );
   };
 
+  const dateHandle = (date) => {
+    var d = (new Date(date) + "").split(" ");
+    d[2] = d[2] + ",";
+    console.log(d);
+    //     Date date = Calendar.getInstance().getTime();
+    //  DateFormat dateFormat = new SimpleDateFormat(businessDetail?.business?.createdAt);
+  };
+
   return (
     <>
       {componentLoader ? (
@@ -924,9 +933,19 @@ export default function BusinessDetail() {
                                       Created Date
                                     </span>
                                     <div className="twm-s-info-discription">
-                                      {businessDetail?.business?.createdAt?.split(
-                                        "T05:54:46.000Z"
-                                      )}
+                                      {
+                                        moment(
+                                          businessDetail?.business?.createdAt
+                                        ).format("MMMM Do YYYY")
+                                        // dateHandle(
+                                        //   businessDetail?.business?.createdAt
+                                        // )
+                                        // new Date(
+                                        //   businessDetail?.business?.createdAt.split(
+                                        //     " "
+                                        //   ).
+                                        // )
+                                      }
                                     </div>
                                   </div>
                                 </li>

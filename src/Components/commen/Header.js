@@ -298,13 +298,15 @@ export default function Header(props) {
                             type="button"
                             data-bs-toggle="dropdown"
                           >
-                            {`${user?.split(" ")[0]?.charAt(0)}${user
-                              ?.split(" ")[1]
-                              ?.charAt(0)}`}
+                            {`${user?.toUpperCase()?.split(" ")[0]?.charAt(0)}${
+                              user?.split(" ")[1]
+                                ? user?.toUpperCase()?.split(" ")[1]?.charAt(0)
+                                : ""
+                            }`}
                           </button>
                           <ul className="dropdown-menu hide">
                             <li className="position-relative">
-                              <p className="userintro">Hello Eveline Morgan!</p>
+                              <p className="userintro">Hello {user}</p>
                               <div className="cardclip"></div>
                             </li>
                             <li>
