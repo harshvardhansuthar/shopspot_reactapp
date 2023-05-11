@@ -28,7 +28,7 @@ const redMarkerIcon = {
 export default function Map(props) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
-  const [showinfoIndex, setShowInfoIndex] = useState();
+  const [showinfoIndex, setShowInfoIndex] = useState(0);
   const [showInfoWindow, setShowInfoWindow] = useState(false);
 
   console.log("user location", props.userLocation);
@@ -78,23 +78,25 @@ export default function Map(props) {
     console.log("infoWindow: ", infoWindow);
   };
 
-  const handleInfoWindow = (index) => {
-    console.log(index);
+  const handleInfoWindow = (data) => {
+    console.log(data);
+    setShowInfoIndex(data);
   };
 
-  const HandleShow = (item, index, businessDetail) => {
-    // alert("");
-    // console.log("mjbń", item?.item?.latitude);
-    // console.log("cccData", item);
+  const HandleShow = (item) => {
+    // setShowInfoIndex(data);
+    // // alert("");
+    // // console.log("mjbń", item?.item?.latitude);
+    // // console.log("cccData", item);
     return (
       <>
         <Marker
-          clickable={true}
+          // clickable={true}
           position={{ lat: item?.item?.latitude, lng: item?.item?.longitude }}
           icon={redMarkerIcon}
-          onClick={() => console.log(index)}
+          onClick={() => handleInfoWindow(item?.item?.id)}
         >
-          {showInfoWindow && item?.item && (
+          {item?.item && showinfoIndex && showinfoIndex === item?.item?.id && (
             <InfoWindow
               // onLoad={onLoad}
               position={{
