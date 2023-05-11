@@ -264,9 +264,9 @@ import EmailVerify from "./EmailVerify";
 import { useDispatch } from "react-redux";
 import { actionLoginStatus } from "../../store/Action";
 import { userDetail } from "../../store/Action";
+import Swal from "sweetalert2";
 
 export default function Login(props) {
-
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -275,6 +275,7 @@ export default function Login(props) {
   const [EmailVerifyModal, setEmailVerifyModal] = useState(false);
   const toggleEmailVerifyModal = () => setEmailVerifyModal(!EmailVerifyModal);
   const [userData, setUserData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [modalSignupMap, setModalSignupMap] = useState(false);
   const toggleModalSignupMap = () => setModalSignupMap(!modalSignupMap);
@@ -305,25 +306,33 @@ export default function Login(props) {
   }
   const handleLoginSubmit = (data) => {
     console.log(data);
+    setLoading(true);
     PostData("auth/login", data).then((response) => {
-      console.log(response);
-      if (response.status) {
+      // console.log(response);
+      if (response.status === true) {
         Cookies.set("token", response?.user?.access_token);
-        console.log("consoleeeee userrrr dataaaa------------", response?.user);
+        // console.log("consoleeeee userrrr dataaaa------------", response?.user);
         Cookies.set("userName", response.user.name);
         Cookies.set("userDetails", response.user);
-        const data = Cookies.get("userDetails");
-        console.log("dataaaaaaaaaaaa", data);
+        // const data = Cookies.get("userDetails");
+        // console.log("dataaaaaaaaaaaa", data);
         setIsLogin(true);
+        Swal.fire("Success", response.message, "success");
         dispatch(userDetail.userDetails(response?.user));
         dispatch(actionLoginStatus.loginStatus(true));
         toggleModal();
+        setLoading(false);
+      } else {
+        setLoading(false);
+        Swal.fire("Login Failed", response.message, "Login Failed");
       }
     });
   };
+
   const onSuccess = (response) => {
     console.log("Login success:", response);
     console.log(response);
+    // setLoading(true);
     if (response) {
       PostData("auth/google-login", { tokenId: response?.tokenId }).then(
         (responce) => {
@@ -331,8 +340,13 @@ export default function Login(props) {
           if (responce?.status === true) {
             Cookies.set("token", responce?.data?.access_token);
             setIsLogin(true);
+            // setLoading(false);
+            Swal.fire("Success", response.message, "success");
             dispatch(actionLoginStatus.loginStatus(true));
             toggleModal();
+          } else {
+            // setLoading(false);
+            Swal.fire("Login Failed", response.message, "Login Failed");
           }
         }
       );
@@ -387,7 +401,7 @@ export default function Login(props) {
                           type="text"
                           required=""
                           className="form-control"
-                          placeholder="Usearname*"
+                          placeholder="Email*"
                           {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -454,7 +468,6 @@ export default function Login(props) {
                                 toggleModal();
                                 toggleEmailVerifyModal();
                               }}
-
                             >
                               Forgot Password ?
                             </Link>
@@ -468,7 +481,11 @@ export default function Login(props) {
                         className="site-button py-2"
                         style={{ width: "auto" }}
                       >
-                        Log in
+                        {loading == true ? (
+                          <span className="spinner-border text-light spinner-border-sm"></span>
+                        ) : (
+                          "Login In"
+                        )}
                       </button>
                       <div className="mt-3 mb-3">
                         Don't have an account ?
