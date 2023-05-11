@@ -63,10 +63,8 @@ export default function Business() {
       setComponentLoader(true);
       if (countryNameRedux) {
         GetData(
-          `business/get-business?lat=${location?.latitude}&lng=${
-            location?.longitude
-          }&page=${classActive}&country=${countryNameRedux}&categoryId=${
-            id?.state?.id ? id?.state?.id : ""
+          `business/get-business?lat=${location?.latitude}&lng=${location?.longitude
+          }&page=${classActive}&country=${countryNameRedux}&categoryId=${id?.state?.id ? id?.state?.id : ""
           }`
         ).then((res) => {
           setBusiness(res.data);
@@ -358,9 +356,9 @@ export default function Business() {
                                     <Link
                                       to={
                                         item?.type?.toLowerCase() ===
-                                        "freelance"
+                                          "freelance"
                                           ? "/freelancedetail"
-                                          : "/businessdetail"
+                                          : `/businessdetail?id=${item?.id}`
                                       }
                                       state={{ id: item?.id }}
                                       className="twm-job-title"
@@ -465,7 +463,7 @@ export default function Business() {
                     {/* <!-- Right part --> */}
                     <div className="half-map-section">
                       <div
-                        className="user-msg-list-btn-outer"
+                        className="user-msg-list-btn-outer d-none"
                         style={{
                           position: "absolute",
                           top: "0px",
@@ -482,7 +480,7 @@ export default function Business() {
                       <div id="map-container">
                         <div id="map" data-map-zoom="9">
                           {/* <!-- map goes here --> */}
-                          <div className="map-height h-100">
+                          <div className="map-height">
                             {loadMap === true && <Map business={business} />}
                           </div>
                         </div>

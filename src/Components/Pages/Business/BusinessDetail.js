@@ -918,6 +918,8 @@ import { Modal, ModalBody } from "reactstrap";
 import Loder from "../../commen/Loder";
 import { useParams } from "react-router-dom";
 import Header from "../../commen/Header";
+import { useSearchParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import { WhatsappShareButton } from "react-share";
 // import OwlCarousel from "react-owl-carousel";
@@ -945,12 +947,24 @@ export default function BusinessDetail() {
   const { id } = useParams();
 
   // const location = useSelector((state) => state.businessDetailId.action);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paramId = searchParams.get('id')
+
+  const url = new URL(window.location.href);
+  const yourParamName = url.searchParams.get('id');
+  const businessId = id?.state?.id || paramId
+  const userId = Cookies.get("userid") || ''
+
+
+  const copyReferral = () => {
+    navigator.clipboard.writeText(`http://localhost:3000/businessdetail?id=${businessId}`);
+  };
 
   useEffect(() => {
     if (callApi == true && location1?.latitude) {
       setComponentLoader(true);
       GetDataWithToken(
-        `business/business-details/${location?.state?.id}?lat=${location1?.latitude}&lng=${location1?.longitude}&sub_category=${categoryCallApi}`
+        `business/business-details/${businessId}?lat=${location1?.latitude}&lng=${location1?.longitude}&sub_category=${categoryCallApi}&userId=${userId}`
       ).then((res) => {
         setCallApi(false);
         setBusinessDetail(res.data);
@@ -1053,10 +1067,18 @@ export default function BusinessDetail() {
                             <div className="twm-job-self-mid">
                               <div className="twm-job-self-mid-left">
                                 <a
-                                  href="https://www.cygalsystems.com/"
+                                  href={`http://localhost:3000/businessdetail?id=${businessId}`}
                                   className="twm-job-websites site-text-primary"
+                                  target="blank"
                                 >
                                   {businessDetail?.business?.website_url}
+                                </a>
+                                <a class="twm-job-title" onClick={copyReferral}>
+                                  <div class="twm-jobs-vacancies">
+                                    <span>
+                                      <img src="images/Vector (3).svg" alt="" />
+                                    </span>
+                                  </div>
                                 </a>
                               </div>
                             </div>
@@ -1082,7 +1104,7 @@ export default function BusinessDetail() {
                                       Created Date
                                     </span>
                                     <div className="twm-s-info-discription">
-                                      {businessDetail?.business?.createdAt.split(
+                                      {businessDetail?.business?.createdAt?.split(
                                         "T05:54:46.000Z"
                                       )}
                                     </div>
@@ -1149,7 +1171,7 @@ export default function BusinessDetail() {
                       </p> */}
 
                           <h4 className="twm-s-title">Share Profile</h4>
-                          <div className="twm-social-tags">
+                          {userId && <div className="twm-social-tags">
                             <a
                               href={`tel:${businessDetail?.business?.contact?.phone}`}
                               className="fb-clr"
@@ -1174,7 +1196,7 @@ export default function BusinessDetail() {
                             >
                               <i className="fas fa-map-marker-alt"></i>
                             </a>
-                          </div>
+                          </div>}
 
                           <h4 className="twm-s-title">Location</h4>
                           <div className="twm-m-map mb-5">
@@ -1296,18 +1318,18 @@ export default function BusinessDetail() {
                                   key={key}
                                 >
                                   <div className="twm-media">
-                                    <img src={item?.images} alt="#" />
+                                    <img src={item?.business_licence} alt="#" />
                                   </div>
                                   <span className="twm-job-post-duration">
                                     {item?.Category?.name}
                                   </span>
                                   <div className="twm-mid-content">
-                                    <a
+                                    <Link to={`/businessdetail?id=${item?.id}`} state={{ id: item?.id }}
 
                                       className="twm-job-title"
                                     >
                                       <h4>{item?.name}</h4>
-                                    </a>
+                                    </Link>
                                     <p className="twm-job-address">
                                       {item?.address}
                                     </p>

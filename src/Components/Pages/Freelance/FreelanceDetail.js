@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import Header from "../../commen/Header";
 import Footer from "../../commen/Footer";
 import { GetData, GetDataWithToken } from "../../../ApiHelper/ApiHelper";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, } from "react-router-dom";
 import Map from "../Map/Map";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
+import Cookies from "js-cookie";
+
 
 
 export default function FreelanceDetail() {
@@ -14,9 +16,10 @@ export default function FreelanceDetail() {
   const [otherinfo, setOtherInfo] = useState({})
   const [images, setImages] = useState([])
   const id = useLocation()
+  const userId = Cookies.get("userid") || ''
 
   useEffect(() => {
-    GetDataWithToken(`freelance/frelance-details/${id?.state?.id}`).then((res) => {
+    GetDataWithToken(`freelance/frelance-details/${id?.state?.id}?freelanceId=${id?.state?.id}&userid=${userId}`).then((res) => {
       console.log(res)
       if (res?.status == true) {
         let info = JSON.parse(res?.data?.freelance?.info)
@@ -27,8 +30,6 @@ export default function FreelanceDetail() {
       }
     })
   }, [])
-  console.log(freeLanceData
-  )
 
   return (
     <>

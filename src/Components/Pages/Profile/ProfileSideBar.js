@@ -52,6 +52,7 @@ export default function ProfileSideBar(props) {
       if (res.status === true) {
         dispatch(actionLoginStatus.loginStatus(false));
         Cookies.remove("token");
+        Cookies.remove("userid")
         navigate("/");
       }
     });

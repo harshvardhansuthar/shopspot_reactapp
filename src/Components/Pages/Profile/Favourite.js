@@ -52,11 +52,12 @@ export default function Favourite(props) {
                       <div className="event-img">
                         <img
                           src={
-                            item?.images
+                            item?.images || item?.image && (item?.images
                               ? JSON.parse(item?.images)[0]
                               : JSON.parse(item?.image)[0]
+                            )
                           }
-                          alt=""
+                          alt="#"
                         />
                       </div>
                       <div className="card-body position-relative">

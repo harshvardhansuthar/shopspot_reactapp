@@ -83,9 +83,12 @@ export default function Map(props) {
         ></Marker>
 
         <Marker position={props?.userLocation} icon={redMarkerIcon}></Marker>
+
       </>
     );
   };
+
+
 
   const mapLoction = () => {
     if (props.businessDetail) {
@@ -96,6 +99,9 @@ export default function Map(props) {
     }
     return currentLocation;
   };
+
+
+
   return (
     <>
       <div>
@@ -114,6 +120,8 @@ export default function Map(props) {
               {props?.business?.business?.rows.length > 0 &&
                 props?.business?.business?.rows?.map((item, key) => (
                   <HandleShow item={item} />
+
+
                 ))}
               {/* This marker is business Detail page  */}
               {props?.businessDetail?.lat && (
@@ -121,6 +129,8 @@ export default function Map(props) {
               )}
 
               {props?.userLocation && <HandleShow />}
+
+
             </GoogleMap>
           ) : (
             // </iframe>
@@ -131,3 +141,45 @@ export default function Map(props) {
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
