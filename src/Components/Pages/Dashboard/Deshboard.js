@@ -986,7 +986,7 @@ export default function Deshboard() {
                             <div className="blog-post twm-blog-post-3-outer">
                               <div className="wt-post-media">
                                 <a onClick={() => {
-                                  handleproductDetail(item.id)
+                                  token ? handleproductDetail(item.id) : setShowLogin(!showLogin)
                                 }}>
                                   <img
                                     className="product-img"
