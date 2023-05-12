@@ -40,6 +40,7 @@ export default function AllRoutes() {
 
         <Route element={<PrivateRoute />}>
           {/* <Route path="logout" element={<Logout />} /> */}
+
         </Route>
 
         {/* <Route path='/maps' element={<SearchSecBar/>}/> */}
