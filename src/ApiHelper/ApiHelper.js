@@ -63,8 +63,8 @@ export const GetDataSkipWarning = (url) => {
 };
 
 export const GetDataWithToken = (url) => {
-
   const token = Cookies.get("token");
+
 
   const headers = {
     Authorization: "Bearer " + token,
