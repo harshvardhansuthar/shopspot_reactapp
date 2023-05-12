@@ -8,7 +8,7 @@ export default function ReferEarnPoint(props) {
   const [offerProduct, setOfferProduct] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
   const [showOfferDetail, setShowOfferDetali] = useState(false);
-  const [OfferDetailData, setOfferDetailData] = useState([])
+  const [OfferDetailData, setOfferDetailData] = useState([]);
 
   useEffect(() => {
     GetDataWithToken("offer/offer-product").then((res) => {
@@ -18,16 +18,16 @@ export default function ReferEarnPoint(props) {
 
   const handleOfferDetail = (id) => {
     GetDataWithToken(`offer/offer-product?id=${id}`).then((res) => {
-      setOfferDetailData(res.data)
-    })
-  }
+      setOfferDetailData(res.data);
+    });
+  };
 
   const toggleTab = (id) => {
     setActiveTab(id);
   };
   return (
     <>
-      {!showOfferDetail &&
+      {!showOfferDetail && (
         <div className="twm-right-section-panel candidate-save-job site-bg-light">
           <div className="twm-candidates-grid-wrap">
             <h5>Your shopspot referral point balance</h5>
@@ -46,7 +46,7 @@ export default function ReferEarnPoint(props) {
                         </div>
                         <div className="twm-jobs-vacancies">
                           <a
-                            href="Refer&Earn-Point.html"
+                            // href="Refer&Earn-Point.html"
                             className="twm-job-title"
                           >
                             <div className="twm-jobs-vacancies">
@@ -55,7 +55,7 @@ export default function ReferEarnPoint(props) {
                             </div>
                           </a>
                           <a
-                            href="Refer&Earn-Point.html"
+                            // href="Refer&Earn-Point.html"
                             className="twm-job-title"
                           >
                             <div className="twm-jobs-vacancies">
@@ -80,7 +80,7 @@ export default function ReferEarnPoint(props) {
                         </div>
                         <div className="twm-jobs-vacancies">
                           <a
-                            href="Refer&Earn-Point.html"
+                            // href="Refer&Earn-Point.html"
                             className="twm-job-title"
                           >
                             <div className="twm-jobs-vacancies">
@@ -88,7 +88,7 @@ export default function ReferEarnPoint(props) {
                             </div>
                           </a>
                           <a
-                            href="Refer&Earn-Point.html"
+                            // href="Refer&Earn-Point.html"
                             className="twm-job-title"
                           >
                             <div className="twm-jobs-vacancies">
@@ -107,7 +107,10 @@ export default function ReferEarnPoint(props) {
 
             <div className="d-flex align-items-center justify-content-between">
               <h5>Available gift items for you</h5>
-              <a href="Refer&Earn-Point.html" className="twm-job-title">
+              <a
+                // href="Refer&Earn-Point.html"
+                className="twm-job-title"
+              >
                 <div className="twm-jobs-vacancies">
                   <span>Show all</span>
                 </div>
@@ -131,7 +134,7 @@ export default function ReferEarnPoint(props) {
                         </div>
                         <div className="twm-mid-content">
                           <a
-                            href="candidate-detail.html"
+                            // href="candidate-detail.html"
                             className="twm-job-title"
                           >
                             <h4>{item?.Product?.name}</h4>
@@ -140,8 +143,8 @@ export default function ReferEarnPoint(props) {
 
                           <div className="twm-fot-content">
                             <div className="twm-left-info justify-content-center">
-                              <a onClick={() => handleOfferDetail(item.id)}
-
+                              <a
+                                onClick={() => handleOfferDetail(item.id)}
                                 className="twm-job-title"
                               >
                                 <div className="twm-jobs-vacancies">
@@ -234,7 +237,7 @@ export default function ReferEarnPoint(props) {
                   >
                     <div className="twm-left-info align-items-center">
                       <div className="twm-jobs-vacancies">
-                        <a href="#" className="twm-job-title">
+                        <a className="twm-job-title">
                           <div className="twm-jobs-vacancies">
                             <span className="referEarn">
                               <i className="fas fa-file-image"></i>
@@ -259,7 +262,7 @@ export default function ReferEarnPoint(props) {
                   >
                     <div className="twm-left-info align-items-center">
                       <div className="twm-jobs-vacancies">
-                        <a href="#" className="twm-job-title">
+                        <a className="twm-job-title">
                           <div className="twm-jobs-vacancies">
                             <span className="referEarn">
                               <i className="fas fa-question"></i>
@@ -277,7 +280,7 @@ export default function ReferEarnPoint(props) {
             </div>
           </div>
         </div>
-      }
+      )}
       <TabContent activeTab={activeTab}>
         <TabPane tabId="3">
           <OfferDetail OfferDetailData={OfferDetailData} />

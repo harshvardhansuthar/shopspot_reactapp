@@ -63,10 +63,8 @@ export default function Business() {
       setComponentLoader(true);
       if (countryNameRedux) {
         GetData(
-          `business/get-business?lat=${location?.latitude}&lng=${
-            location?.longitude
-          }&page=${classActive}&country=${countryNameRedux}&categoryId=${
-            id?.state?.id ? id?.state?.id : ""
+          `business/get-business?lat=${location?.latitude}&lng=${location?.longitude
+          }&page=${classActive}&country=${countryNameRedux}&categoryId=${id?.state?.id ? id?.state?.id : ""
           }`
         ).then((res) => {
           setBusiness(res.data);
@@ -358,9 +356,9 @@ export default function Business() {
                                     <Link
                                       to={
                                         item?.type?.toLowerCase() ===
-                                        "freelance"
+                                          "freelance"
                                           ? "/freelancedetail"
-                                          : "/businessdetail"
+                                          : `/businessdetail?id=${item?.id}`
                                       }
                                       state={{ id: item?.id }}
                                       className="twm-job-title"

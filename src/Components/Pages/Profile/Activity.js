@@ -107,7 +107,7 @@ export default function Activity(props) {
                     <div className="card-body">
                       <div className="details d-flex align-items-center justify-content-between">
                         <div>
-                          <a href="#">{item?.Business?.name}</a>
+                          <a>{item?.Business?.name}</a>
                           <h5>{item?.Business?.Category?.name}</h5>
                         </div>
                         <h4 className="mb-0">{timeFormet(item?.createdAt)}</h4>

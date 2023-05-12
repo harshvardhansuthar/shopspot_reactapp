@@ -135,19 +135,7 @@ export default function Map(props) {
           )}
         </Marker>
 
-        <Marker
-          position={props?.userLocation}
-          icon={redMarkerIcon}
-          // onClick={() => handleInfoWindow("hello", props?.userLocation)}
-        >
-          {/* {props?.userLocation && (
-            <InfoWindow onLoad={onLoad} position={props?.userLocation}>
-              <div style={divStyle}>
-                <h1>{props}</h1>
-              </div>
-            </InfoWindow>
-          )} */}
-        </Marker>
+        <Marker position={props?.userLocation} icon={redMarkerIcon}></Marker>
       </>
     );
   };
@@ -161,6 +149,7 @@ export default function Map(props) {
     }
     return currentLocation;
   };
+
   return (
     <>
       <div>
@@ -177,10 +166,8 @@ export default function Map(props) {
               zoom={2}
             >
               {props?.business?.business?.rows.length > 0 &&
-                props?.business?.business?.rows?.map((item, index) => (
-                  <div style={{ bgColor: "red" }} onClick={() => alert(index)}>
-                    <HandleShow item={item} key={index} />
-                  </div>
+                props?.business?.business?.rows?.map((item, key) => (
+                  <HandleShow item={item} />
                 ))}
               {/* This marker is business Detail page  */}
               {props?.businessDetail?.lat && (

@@ -1,23 +1,28 @@
 import React from "react";
 import { useEffect } from "react";
-import { GetDataWithToken, PostDataWithToken } from "../../../ApiHelper/ApiHelper";
+import {
+  GetDataWithToken,
+  PostDataWithToken,
+} from "../../../ApiHelper/ApiHelper";
 import { useState } from "react";
 
 export default function Favourite(props) {
   const [favouriteData, setFavouriteData] = useState([]);
-  const [callApi, setCallApi] = useState(false);
+  const [callApi, setCallApi] = useState(true);
 
   useEffect(() => {
-
     GetDataWithToken("product/get-my-wishlist").then((res) => {
       setFavouriteData(res.data);
+      setCallApi(false);
     });
   }, [callApi]);
 
   const handleWishList = async (id) => {
     try {
-      const response = await GetDataWithToken(`product/add-and-delete-wishlist?productId=${id}`);
-      console.log(response)
+      const response = await GetDataWithToken(
+        `product/add-and-delete-wishlist?productId=${id}`
+      );
+      console.log(response);
       if (response?.status == true) {
         setCallApi(true);
       }
@@ -44,19 +49,27 @@ export default function Favourite(props) {
                     <div className="activity card">
                       <div className="favourite-badges" key={key}>
                         <div className="share-icons">
-                          <span className="btn">
-                            <i className="far fa-heart" onClick={() => handleWishList(item?.id)}></i>
+                          <span
+                            className="btn"
+                            onClick={() => handleWishList(item?.id)}
+                          >
+                            {/* {item?.id == null && (
+                              <i className="far fa-heart"></i>
+                            )} */}
+                            <i className="fas fa-heart"></i>
                           </span>
                         </div>
                       </div>
                       <div className="event-img">
                         <img
                           src={
-                            item?.images
-                              ? JSON.parse(item?.images)[0]
-                              : JSON.parse(item?.image)[0]
+                            item?.images ||
+                            (item?.image &&
+                              (item?.images
+                                ? JSON.parse(item?.images)[0]
+                                : JSON.parse(item?.image)[0]))
                           }
-                          alt=""
+                          alt="#"
                         />
                       </div>
                       <div className="card-body position-relative">

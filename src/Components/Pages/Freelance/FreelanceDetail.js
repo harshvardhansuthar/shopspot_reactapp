@@ -7,28 +7,31 @@ import Map from "../Map/Map";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-
+import Cookies from "js-cookie";
+import { WhatsappShareButton } from "react-share";
 
 export default function FreelanceDetail() {
-  const [freeLanceData, setFreeLanceData] = useState({})
-  const [otherinfo, setOtherInfo] = useState({})
-  const [images, setImages] = useState([])
-  const id = useLocation()
+  const [freeLanceData, setFreeLanceData] = useState({});
+  const [otherinfo, setOtherInfo] = useState({});
+  const [images, setImages] = useState([]);
+  const id = useLocation();
+  const userId = Cookies.get("userid") || "";
 
   useEffect(() => {
-    GetDataWithToken(`freelance/frelance-details/${id?.state?.id}`).then((res) => {
-      console.log(res)
+    GetDataWithToken(
+      `freelance/frelance-details/${id?.state?.id}?freelanceId=${id?.state?.id}&userId=${userId}`
+    ).then((res) => {
+      console.log(res);
       if (res?.status == true) {
-        let info = JSON.parse(res?.data?.freelance?.info)
-        let img = JSON.parse(res?.data?.freelance?.images)
-        setImages(img)
-        setOtherInfo(info)
-        setFreeLanceData(res?.data)
+        let info = JSON.parse(res?.data?.freelance?.info);
+        let img = JSON.parse(res?.data?.freelance?.images);
+        setImages(img);
+        setOtherInfo(info);
+        setFreeLanceData(res?.data);
+        // console.log("freeeeeee", freeLanceData);
       }
-    })
-  }, [])
-  console.log(freeLanceData
-  )
+    });
+  }, []);
 
   return (
     <>
@@ -128,19 +131,45 @@ export default function FreelanceDetail() {
                           </ul>
                           <h4 className="twm-s-title">Share Profile</h4>
                           <div className="twm-social-tags">
-                            <a href="tel:6350088970" className="fb-clr">
+                            <a
+                              href={`tel:${
+                                freeLanceData?.freelance?.contact &&
+                                JSON.parse(freeLanceData?.freelance?.contact)
+                                  ?.phone
+                              }`}
+                              className="fb-clr"
+                            >
                               <i className="fas fa-phone-alt"></i>
                             </a>
                             <a
-                              href="mailto:email@example.com"
+                              target="_blank"
+                              href={`mailto:${
+                                freeLanceData?.freelance?.contact &&
+                                JSON.parse(freeLanceData?.freelance?.contact)
+                                  ?.email
+                              }`}
                               className="tw-clr"
                             >
                               <i className="fas fa-envelope"></i>
                             </a>
-                            <a href="#" className="whats-clr">
+
+                            <a
+                              target="_blank"
+                              href={`https://web.whatsapp.com/send?phone=${
+                                freeLanceData?.freelance?.contact &&
+                                JSON.parse(freeLanceData?.freelance?.contact)
+                                  ?.whatsapp
+                              }&text=Hello`}
+                              className="whats-clr"
+                            >
                               <i className="fab fa-whatsapp"></i>
                             </a>
-                            <a href="#" className="pinte-clr">
+
+                            <a
+                              target="_blank"
+                              href={`https://www.google.com/maps/@${freeLanceData?.freelance?.latitude},${freeLanceData?.freelance?.longitude},15z`}
+                              className="pinte-clr"
+                            >
                               <i className="fas fa-map-marker-alt"></i>
                             </a>
                           </div>
@@ -182,14 +211,18 @@ export default function FreelanceDetail() {
                       <h4 className="twm-s-title m-t0">Services</h4>
                       <div className="tw-sidebar-gallery-2">
                         <div className="row">
-                          {images && images?.length > 0 && images.map((item, key) => (<div className="col-lg-3 col-md-3 col-sm-6">
-                            <div className="tw-service-gallery-thumb">
-                              <a className="" key={key}>
-                                <img src={item} alt="" />
-                                <i className="fa fa-file-image"></i>
-                              </a>
-                            </div>
-                          </div>))}
+                          {images &&
+                            images?.length > 0 &&
+                            images.map((item, key) => (
+                              <div className="col-lg-3 col-md-3 col-sm-6">
+                                <div className="tw-service-gallery-thumb">
+                                  <a className="" key={key}>
+                                    <img src={item} alt="" />
+                                    <i className="fa fa-file-image"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            ))}
 
                           {/* <div className="col-lg-3 col-md-3 col-sm-6">
                             <div className="tw-service-gallery-thumb">
@@ -225,9 +258,7 @@ export default function FreelanceDetail() {
 
                       <h4 className="twm-s-title m-t0">Description:</h4>
 
-                      <p>
-                        {freeLanceData?.freelance?.description}
-                      </p>
+                      <p>{freeLanceData?.freelance?.description}</p>
                     </div>
                   </div>
                 </div>
@@ -252,7 +283,6 @@ export default function FreelanceDetail() {
             <div className="section-content">
               <div className="  twm-related-jobs-carousel owl-btn-vertical-center">
                 <div className="item">
-
                   <OwlCarousel
                     className="owl-theme"
                     loop
@@ -267,32 +297,44 @@ export default function FreelanceDetail() {
                     // autoplayTimeout={3000}
                     dots={false}
                   >
-
-                    {freeLanceData?.related_frelance && freeLanceData?.related_frelance.map((item, key) => (
-                      <div className="hpage-6-featured-block">
-                        <div className="inner-content">
-                          <div className="mid-content">
-                            <div className="company-logo">
-                              <img src="images/banner/logo(1).png" alt="#" />
+                    {freeLanceData?.related_frelance &&
+                      freeLanceData?.related_frelance.map((item, key) => (
+                        <div className="hpage-6-featured-block">
+                          <div className="inner-content">
+                            <div className="mid-content">
+                              <div className="company-logo">
+                                <img src="images/banner/logo(1).png" alt="#" />
+                              </div>
+                              <div className="company-info">
+                                <Link
+                                  to={"/freelancedetail"}
+                                  state={{ id: item?.id }}
+                                  className="company-name"
+                                >
+                                  {item?.name}
+                                </Link>
+                                <p className="company-address">
+                                  {item?.address}
+                                </p>
+                              </div>
                             </div>
-                            <div className="company-info">
-                              <Link to={"/freelancedetail"} state={{ id: item?.id }} className="company-name">
-                                {item?.name}
+                            <div className="bottom-content">
+                              <h4 className="job-name-title">
+                                {item?.Category?.name}
+                              </h4>
+                            </div>
+                            <div className="aply-btn-area">
+                              <Link
+                                to={"/freelancedetail"}
+                                state={{ id: item?.id }}
+                                className="aplybtn"
+                              >
+                                <i className="fas fa-chevron-right"></i>
                               </Link>
-                              <p className="company-address">{item?.address}</p>
                             </div>
-                          </div>
-                          <div className="bottom-content">
-                            <h4 className="job-name-title">{item?.Category?.name}</h4>
-                          </div>
-                          <div className="aply-btn-area">
-                            <Link to={"/freelancedetail"} state={{ id: item?.id }} className="aplybtn">
-                              <i className="fas fa-chevron-right"></i>
-                            </Link>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                     {/* Add more items as needed */}
                   </OwlCarousel>
                 </div>
@@ -304,7 +346,6 @@ export default function FreelanceDetail() {
         <Footer />
       </div>
       {/* <!-- CONTENT END --></>   */}
-
     </>
   );
 }

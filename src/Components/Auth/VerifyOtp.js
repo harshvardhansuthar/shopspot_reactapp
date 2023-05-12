@@ -48,7 +48,7 @@ export default function VerifyOtp() {
 
     PostData("auth/verify-otp", verifyData).then((responce) => {
       console.log(responce);
-      if (responce.status) {
+      if (responce.status == true) {
         Cookies.set("token", responce.user.access_token);
         setLoading(false);
         Swal.fire({
