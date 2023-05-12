@@ -5,6 +5,7 @@ import { PostData } from "../../ApiHelper/ApiHelper";
 import { useNavigate } from "react-router-dom";
 import NewPassword from "./NewPassword";
 import Swal from "sweetalert2";
+
 export default function EmailVerify(props) {
   const [modalForgetPassword, setmodalForgetPassword] = useState(true);
   const toggleModalForgetPassword = () =>
@@ -119,7 +120,9 @@ export default function EmailVerify(props) {
         </ModalBody>
       </Modal>
       {/* <!--OTP popup --> */}
-      {modalNewPassword && <NewPassword toggle={()=>props.toggle()} email={email && email} />}
+      {modalNewPassword && (
+        <NewPassword toggle={() => props.toggle()} email={email && email} />
+      )}
     </>
   );
 }
