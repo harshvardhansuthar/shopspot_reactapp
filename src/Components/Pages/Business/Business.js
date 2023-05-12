@@ -7,10 +7,11 @@ import HeaderMap from "../../commen/HeaderMap";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-import Loder from "../../commen/Loder";
 import { Link, useLocation } from "react-router-dom";
 import Header from "../../commen/Header";
 import { useForm } from "react-hook-form";
+import Loder from "../../commen/Loder";
+
 
 export default function Business() {
   const [loadMap, setLoadMap] = useState(false);
@@ -494,8 +495,9 @@ export default function Business() {
               {/* <!-- SECTION CONTENT END  --> */}
             </div>
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
     </>
   );
 }

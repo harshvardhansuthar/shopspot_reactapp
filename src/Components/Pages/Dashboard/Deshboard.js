@@ -63,6 +63,8 @@ export default function Deshboard() {
 
   console.log(countryNameRedux);
 
+  let token = Cookies.get("token");
+
   useEffect(() => {
     if (reduxCountryName) {
       GetData(`auth/get-popular-search?country=${reduxCountryName}`).then(
@@ -1063,7 +1065,9 @@ export default function Deshboard() {
                               <div className="wt-post-media">
                                 <a
                                   onClick={() => {
-                                    handleproductDetail(item.id);
+                                    token
+                                      ? handleproductDetail(item.id)
+                                      : setShowLogin(!showLogin);
                                   }}
                                 >
                                   <img
@@ -1611,7 +1615,7 @@ export default function Deshboard() {
               </ModalBody>
             </Modal>
             {/* <!-- Download END --> */}
-            {showLogin && <Login />}
+            {showLogin && <Login toggle={toggleshowLogin} />}
           </div>
           {/* <!-- CONTENT END --> */}
         </Layout>

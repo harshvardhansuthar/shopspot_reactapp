@@ -1,8 +1,11 @@
-import React from "react";
-
+import React, { useState } from "react";
+import Loder from "../../commen/Loder";
 export default function BusinessProfile() {
+  const [componentLoader, setComponentLoader] = useState(false);
+
   return (
     <>
+
       <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12">
           <div class="twm-s-map mb-5">
@@ -37,5 +40,6 @@ export default function BusinessProfile() {
         </div>
       </div>
     </>
+
   );
 }

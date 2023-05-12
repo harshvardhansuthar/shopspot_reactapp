@@ -38,9 +38,11 @@ function App() {
   useEffect(() => {
     if (con) {
       localStorage.setItem("countryName", JSON.stringify(con));
+      Cookies.set("country", con);
     }
 
     let countryName = "";
+
     const countryNameString = window.localStorage.getItem("countryName");
 
     if (countryNameString) {

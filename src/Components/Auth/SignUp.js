@@ -404,7 +404,7 @@ export default function SignUp(props) {
   const [modalLogin, setModalLogin] = useState(false);
   const toggleModalLogin = () => setModalLogin(!modalLogin);
   const [location, setLocation] = useState({ latitude: null, logitude: null });
-  // const [countryVal, setCountryVal] = useState();
+  const [countryCode, setCountryCode] = useState(CountryCodeJson);
   const navigate = useNavigate();
   const {
     register,
@@ -475,7 +475,6 @@ export default function SignUp(props) {
     }
   };
 
-  console.log(CountryCodeJson);
   return (
     <>
       <Modal
@@ -619,9 +618,9 @@ export default function SignUp(props) {
                             <option selected disabled value="">
                               +913
                             </option>
-                            {CountryCodeJson &&
-                              CountryCodeJson.length > 0 &&
-                              CountryCodeJson.map((item, key) => (
+                            {countryCode &&
+                              countryCode.length > 0 &&
+                              countryCode.map((item, key) => (
                                 <option key={key} value={item.dial_code}>
                                   {`${item?.dial_code}`}
                                 </option>
@@ -757,7 +756,6 @@ export default function SignUp(props) {
                             })}
                           />
 
-
                           <label className="form-check-label" for="agree1">
                             I agree to the
                             <a>Terms and conditions</a>
@@ -784,7 +782,6 @@ export default function SignUp(props) {
                               Log in here
                             </Link>
                           </p>
-
                         </div>
                       </div>
                     </div>

@@ -31,7 +31,7 @@ export default function Map(props) {
   const [showinfoIndex, setShowInfoIndex] = useState(0);
   const [showInfoWindow, setShowInfoWindow] = useState(false);
 
-  console.log("user location", props.userLocation);
+  // console.log("user location", props.userLocation);
   console.log("business details", props.businessDetail);
   console.log("current location", props.currentLocation);
 
@@ -187,6 +187,8 @@ export default function Map(props) {
               )}
 
               {props?.userLocation && <HandleShow />}
+
+              {props?.freeLanceDetail?.freelance?.latitude && <HandleShow />}
             </GoogleMap>
           ) : (
             // </iframe>

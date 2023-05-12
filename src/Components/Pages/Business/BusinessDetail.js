@@ -721,13 +721,13 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import { Modal, ModalBody } from "reactstrap";
-import Loder from "../../commen/Loder";
 import { useParams } from "react-router-dom";
 import Header from "../../commen/Header";
 import { useSearchParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import moment from "moment/moment";
 
+import Loder from "../../commen/Loder";
 import { WhatsappShareButton } from "react-share";
 // import OwlCarousel from "react-owl-carousel";
 // import "owl.carousel/dist/assets/owl.carousel.css";
@@ -853,8 +853,10 @@ export default function BusinessDetail() {
   return (
     <>
       {componentLoader ? (
+        // Rendering the Loader component
         <Loder />
       ) : (
+
         <div className="page_wraper">
           <Header class={"header-full-width"} />
           {/* <!-- CONTENT START --> */}

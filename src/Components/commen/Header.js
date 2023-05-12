@@ -31,6 +31,7 @@ export default function Header(props) {
   const [userLogo, setUserLogo] = useState();
   const [resentSearch, setResentSearch] = useState([]);
 
+  const [populerSearch, setPopularSearch] = useState([]);
   const [countryModal, setCountryModal] = useState(
     reduxCountryName ? false : true
   );
@@ -77,9 +78,7 @@ export default function Header(props) {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("resentSearch")) || [];
-
     setResentSearch(data);
-
     const handleScroll = () => {
       const scrollTop = window.pageYOffset;
       setIsFixed(scrollTop > 0);

@@ -163,13 +163,17 @@ import React, { useState } from "react";
 import $ from "jquery";
 import { GetDataWithToken } from "../../../ApiHelper/ApiHelper";
 import { useEffect } from "react";
+import Loder from "../../commen/Loder";
 // import "datatables.net";
 // import "datatables.net-bs4/css/dataTables.bootstrap4.min.css";
 
 export default function EmployerTransaction(props) {
   const [transaction, setTransaction] = useState([]);
+  const [componentLoader, setComponentLoader] = useState(true);
+
 
   useEffect(() => {
+    setComponentLoader(true)
     GetDataWithToken("auth/transaction-history").then((res) => {
       console.log(res);
       // if (res?.data?.length > 0) {
@@ -178,48 +182,57 @@ export default function EmployerTransaction(props) {
       //       $("#table").DataTable();
       //     });
       //   }, 3000);
-      setTransaction(res.data);
-      // }
+      if (res?.status == true) {
+        setTransaction(res.data);
+        setComponentLoader(false)
+        // }
+      }
     });
   }, [props.callApi]);
 
   return (
     <>
-      <div className="table-responsive">
-        <table id="Trantable" className="table table-hover">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Date</th>
-              <th>Gift Name </th>
-              <th >points</th>
-            </tr>
-          </thead>
-          {transaction && transaction.length > 0 && (
-            <tbody>
-              {transaction?.map((data, key) => (
-                <tr key={key} className="text-nowrap">
-                  <td>
-                    <p className="text-wrap">{key + 1}</p>
-                  </td>
-
-                  <td>
-                    <p className="text-wrap">
-                      {data?.createdAt?.split("T")?.[0]}
-                    </p>
-                  </td>
-                  <td>
-                    <p className="text-capitalize">{data?.message}</p>
-                  </td>
-                  <td>
-                    <p className={`text-wrap ${data?.type == "credit" ? "text-clr-green2" : "text-clr-red"}`}>{data?.points}</p>
-                  </td>
+      {componentLoader ? (
+        <Loder />
+      ) : (
+        <>
+          <div className="table-responsive">
+            <table id="Trantable" className="table table-hover">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Gift Name </th>
+                  <th >points</th>
                 </tr>
-              ))}
-            </tbody>
-          )}
-        </table>
-      </div>
+              </thead>
+              {transaction && transaction.length > 0 && (
+                <tbody>
+                  {transaction?.map((data, key) => (
+                    <tr key={key} className="text-nowrap">
+                      <td>
+                        <p className="text-wrap">{key + 1}</p>
+                      </td>
+
+                      <td>
+                        <p className="text-wrap">
+                          {data?.createdAt?.split("T")?.[0]}
+                        </p>
+                      </td>
+                      <td>
+                        <p className="text-capitalize">{data?.message}</p>
+                      </td>
+                      <td>
+                        <p className={`text-wrap ${data?.type == "credit" ? "text-clr-green2" : "text-clr-red"}`}>{data?.points}</p>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
+          </div>
+        </>
+      )}
     </>
   );
 }

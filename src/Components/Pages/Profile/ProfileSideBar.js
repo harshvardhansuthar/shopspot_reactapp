@@ -17,10 +17,13 @@ import { GetDataWithToken } from "../../../ApiHelper/ApiHelper";
 import RefferralPoints from "./RefferralPoints";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import Loder from "../../commen/Loder";
 
 export default function ProfileSideBar(props) {
   const id = useLocation();
   const [callApi, setCallApi] = useState(true);
+  const [componentLoader, setComponentLoader] = useState(true);
+
   const callApiUpdateData = () => setCallApi(!callApi);
   const [userData, setUserData] = useState([]);
   const token = Cookies.get("token");
@@ -37,8 +40,12 @@ export default function ProfileSideBar(props) {
     return state?.loginStatus.action;
   });
   useEffect(() => {
+    setComponentLoader(true)
     GetDataWithToken("auth/my-profile").then((res) => {
-      setUserData(res.data);
+      if (res?.status == true) {
+        setUserData(res.data);
+        setComponentLoader(false)
+      }
     });
   }, [isLogin]);
 
@@ -74,94 +81,98 @@ export default function ProfileSideBar(props) {
 
   return (
     <>
-      <Layout>
-        {/* <!-- OUR BLOG START --> */}
-        <div className="page-content">
-          <div className="section-full p-t120 p-b90 site-bg-white">
-            <div className="container">
-              <div className="row">
-                <div className="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
-                  <div className="side-bar-st-1">
-                    <div class="twm-candidate-profile-pic">
-                      <h5>{`${userData?.name
-                        ?.split(" ")[0]
-                        ?.charAt(0)}${userData?.name
-                          ?.split(" ")[1]
-                          ?.charAt(0)}`}</h5>
-                    </div>
-                    <div className="twm-mid-content text-center">
-                      <a href="javascript:void(0)" className="twm-job-title">
-                        <h4>{userData?.name}</h4>
-                      </a>
-                    </div>
+      {componentLoader ? (
+        <Loder />
+      ) : (
+        <>
+          <Layout>
+            {/* <!-- OUR BLOG START --> */}
+            <div className="page-content">
+              <div className="section-full p-t120 p-b90 site-bg-white">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+                      <div className="side-bar-st-1">
+                        <div class="twm-candidate-profile-pic">
+                          <h5>{`${userData?.name
+                            ?.split(" ")[0]
+                            ?.charAt(0)}${userData?.name
+                              ?.split(" ")[1]
+                              ?.charAt(0)}`}</h5>
+                        </div>
+                        <div className="twm-mid-content text-center">
+                          <a href="javascript:void(0)" className="twm-job-title">
+                            <h4>{userData?.name}</h4>
+                          </a>
+                        </div>
 
-                    <div className="twm-nav-list-1">
-                      <Nav tabs className="d-block border-0">
-                        <NavItem className={activeTab === "1" ? "active" : ""}>
-                          <NavLink
-                            onClick={() => {
-                              toggleTab("1");
-                            }}
-                          >
-                            <i className="fa fa-user"></i>
-                            Profile
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className={activeTab === "2" ? "active" : ""}>
-                          <NavLink
-                            onClick={() => {
-                              toggleTab("2");
-                            }}
-                          >
-                            <i className="fa fa-receipt"></i>
-                            Referral points
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className={activeTab === "3" ? "active" : ""}>
-                          <NavLink
-                            onClick={() => {
-                              toggleTab("3");
-                            }}
-                          >
-                            <i className="fa fa-suitcase"></i>
-                            Business account
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className={activeTab === "4" ? "active" : ""}>
-                          <NavLink
-                            onClick={() => {
-                              toggleTab("4");
-                            }}
-                          >
-                            <i class="fa fa-book-reader"></i> Activity
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className={activeTab === "5" ? "active" : ""}>
-                          <NavLink
-                            onClick={() => {
-                              toggleTab("5");
-                              setTimeout(() => {
-                                $(document).ready(function () {
-                                  $("#Trantable").DataTable();
-                                });
-                              }, 3000);
-                              callApiUpdateData();
-                            }}
-                          >
-                            <i class="fa fa-credit-card"></i>
-                            Transaction
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className={activeTab === "6" ? "active" : ""}>
-                          <NavLink
-                            onClick={() => {
-                              toggleTab("6");
-                            }}
-                          >
-                            <i class="fas fa-heart"></i> Favourite
-                          </NavLink>
-                        </NavItem>
-                        {/* <NavItem className={activeTab === "7" ? "active" : ""}>
+                        <div className="twm-nav-list-1">
+                          <Nav tabs className="d-block border-0">
+                            <NavItem className={activeTab === "1" ? "active" : ""}>
+                              <NavLink
+                                onClick={() => {
+                                  toggleTab("1");
+                                }}
+                              >
+                                <i className="fa fa-user"></i>
+                                Profile
+                              </NavLink>
+                            </NavItem>
+                            <NavItem className={activeTab === "2" ? "active" : ""}>
+                              <NavLink
+                                onClick={() => {
+                                  toggleTab("2");
+                                }}
+                              >
+                                <i className="fa fa-receipt"></i>
+                                Referral points
+                              </NavLink>
+                            </NavItem>
+                            <NavItem className={activeTab === "3" ? "active" : ""}>
+                              <NavLink
+                                onClick={() => {
+                                  toggleTab("3");
+                                }}
+                              >
+                                <i className="fa fa-suitcase"></i>
+                                Business account
+                              </NavLink>
+                            </NavItem>
+                            <NavItem className={activeTab === "4" ? "active" : ""}>
+                              <NavLink
+                                onClick={() => {
+                                  toggleTab("4");
+                                }}
+                              >
+                                <i class="fa fa-book-reader"></i> Activity
+                              </NavLink>
+                            </NavItem>
+                            <NavItem className={activeTab === "5" ? "active" : ""}>
+                              <NavLink
+                                onClick={() => {
+                                  toggleTab("5");
+                                  setTimeout(() => {
+                                    $(document).ready(function () {
+                                      $("#Trantable").DataTable();
+                                    });
+                                  }, 3000);
+                                  callApiUpdateData();
+                                }}
+                              >
+                                <i class="fa fa-credit-card"></i>
+                                Transaction
+                              </NavLink>
+                            </NavItem>
+                            <NavItem className={activeTab === "6" ? "active" : ""}>
+                              <NavLink
+                                onClick={() => {
+                                  toggleTab("6");
+                                }}
+                              >
+                                <i class="fas fa-heart"></i> Favourite
+                              </NavLink>
+                            </NavItem>
+                            {/* <NavItem className={activeTab === "7" ? "active" : ""}>
                           <NavLink
                             onClick={() => {
                               toggleTab("7");
@@ -171,92 +182,92 @@ export default function ProfileSideBar(props) {
                             My events
                           </NavLink>
                         </NavItem> */}
-                        <NavItem className={activeTab === "8" ? "active" : ""}>
-                          <NavLink
-                            onClick={() => {
-                              toggleTab("8");
-                            }}
-                          >
-                            <i class="fa fa-fingerprint"></i>
-                            Change Passeord
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className={activeTab === "9" ? "active" : ""}>
-                          <NavLink onClick={handleLogoutHandler}>
-                            <i class="fa fa-share-square"></i>
-                            Logout
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
+                            <NavItem className={activeTab === "8" ? "active" : ""}>
+                              <NavLink
+                                onClick={() => {
+                                  toggleTab("8");
+                                }}
+                              >
+                                <i class="fa fa-fingerprint"></i>
+                                Change Passeord
+                              </NavLink>
+                            </NavItem>
+                            <NavItem className={activeTab === "9" ? "active" : ""}>
+                              <NavLink onClick={handleLogoutHandler}>
+                                <i class="fa fa-share-square"></i>
+                                Logout
+                              </NavLink>
+                            </NavItem>
+                          </Nav>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="col-xl-9 col-lg-8 col-md-12 m-b30">
-                  {/* <!--Filter Short By--> */}
-                  <div className="twm-right-section-panel site-bg-light">
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="1">
-                        <ProfileForm userData={userData} />
-                      </TabPane>
-                    </TabContent>
+                    <div className="col-xl-9 col-lg-8 col-md-12 m-b30">
+                      {/* <!--Filter Short By--> */}
+                      <div className="twm-right-section-panel site-bg-light">
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="1">
+                            <ProfileForm userData={userData} />
+                          </TabPane>
+                        </TabContent>
 
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="2">
-                        <RefferralPoints userData={userData} />
-                      </TabPane>
-                    </TabContent>
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="2">
+                            <RefferralPoints userData={userData} />
+                          </TabPane>
+                        </TabContent>
 
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="3">
-                        <BusinessProfile />
-                      </TabPane>
-                    </TabContent>
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="3">
+                            <BusinessProfile />
+                          </TabPane>
+                        </TabContent>
 
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="4">
-                        <Activity />
-                      </TabPane>
-                    </TabContent>
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="4">
+                            <Activity />
+                          </TabPane>
+                        </TabContent>
 
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="5">
-                        <EmployerTransaction callApi={callApi} />
-                      </TabPane>
-                    </TabContent>
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="5">
+                            <EmployerTransaction callApi={callApi} />
+                          </TabPane>
+                        </TabContent>
 
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="6">
-                        <Favourite />
-                      </TabPane>
-                    </TabContent>
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="6">
+                            <Favourite />
+                          </TabPane>
+                        </TabContent>
 
-                    {/* <TabContent activeTab={activeTab}>
+                        {/* <TabContent activeTab={activeTab}>
                       <TabPane tabId="7">
                         <MyEvent />
                       </TabPane>
                     </TabContent> */}
 
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="8">
-                        <EmployerChangePassword />
-                      </TabPane>
-                    </TabContent>
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="8">
+                            <EmployerChangePassword />
+                          </TabPane>
+                        </TabContent>
 
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="9">
-                        <h1> not found</h1>
-                      </TabPane>
-                    </TabContent>
+                        <TabContent activeTab={activeTab}>
+                          <TabPane tabId="9">
+                            <h1> not found</h1>
+                          </TabPane>
+                        </TabContent>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </Layout>
+          </Layout>
 
-      {/* 
+          {/* 
       <Nav tabs>
         <NavItem>
           <NavLink
@@ -279,7 +290,7 @@ export default function ProfileSideBar(props) {
           </NavLink>
         </NavItem>
       </Nav> */}
-      {/* <TabContent activeTab={activeTab}>
+          {/* <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
           <p>Tab 1 content</p>
         </TabPane>
@@ -287,6 +298,8 @@ export default function ProfileSideBar(props) {
           <p>Tab 2 content</p>
         </TabPane>
       </TabContent> */}
+        </>
+      )}
     </>
   );
 }
