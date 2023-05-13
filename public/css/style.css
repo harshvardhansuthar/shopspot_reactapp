@@ -27385,6 +27385,7 @@ input :-internal-autofill-selected {
 .nav.category-nav .nav-item .nav-link {
   color: #06309b;
   border: 1px solid transparent;
+  margin: 0px 8px 8px 0px;
 }
 
 .nav.category-nav .nav-item .nav-link:hover {
