@@ -15,6 +15,9 @@ export default function VerifyOtp() {
   const location = useLocation();
   const email = location.state?.data?.email;
   const [resendState, setResendState] = useState(false);
+  const [disable, setDisable] = useState(false)
+  let [countdown, setCountdown] = useState(60); // Initial countdown value in seconds
+
   const {
     register,
     formState: { errors },
@@ -35,6 +38,9 @@ export default function VerifyOtp() {
         navigate("/");
       }
     });
+
+
+
 
   const handlerVerifyOtp = (data) => {
     console.log(data);
@@ -72,16 +78,45 @@ export default function VerifyOtp() {
     });
   };
 
+
+
   const resendHandler = () => {
+    setTimeout(() => {
+      setResendState(false);
+      setDisable(false)
+      // setButtonDisabled(false);
+    }, 60000);
+
     setResendState(true);
     PostData("auth/otp-resend", { email }).then((response) => {
       if (response.status == true) {
         Swal?.fire("OTP resend")
         setResendState(false);
+        setDisable(true)
+
       } else {
         setResendState(false);
       }
     });
+
+    let timer;
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        if (countdown > 0) {
+          setCountdown(countdown = countdown - 1);
+        } else {
+          clearInterval();
+
+        }
+      }, 1000);
+    } else if (timer == 0) {
+      clearInterval()
+    }
+
+
+    // return () => {
+    //   clearInterval(timer);
+    // };
   };
 
   return (
@@ -138,9 +173,9 @@ export default function VerifyOtp() {
                     )}
                   </div>
                 </div>
-                <div class="mb-3" onClick={resendHandler}>
-                  <button class="twm-backto-login">
-                    {resendState ? "Sending OTP" : "Resend OTP"}
+                <div class="mb-3">
+                  <button class="twm-backto-login" onClick={resendHandler} disabled={disable}>
+                    {resendState ? "Sending OTP" : "Resend OTP"} {disable && countdown}
                   </button>
                 </div>
                 <div class="col-lg-3 col-md-4 col-12">

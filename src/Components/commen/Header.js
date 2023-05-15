@@ -31,6 +31,7 @@ export default function Header(props) {
   //   setShowSuggestions(true);
   //   setQuery(event.target.value);
   // };
+  const [allCountry, setAllCountry] = useState([])
   const [searchInput, setSearchInput] = useState('')
   const [countryFlag, setCountryFlag] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -59,19 +60,17 @@ export default function Header(props) {
   };
 
   useEffect(() => {
+
+    if (searchInput?.length == 0) {
+      setCountry(allCountry)
+    }
+
     if (searchInput?.length > 0) {
       GetData(
         `auth/get-my-country?name=${searchInput}`
       ).then((data) => {
-        console.log(data);
         setCountry(data.data);
       });
-
-      if (searchInput.length < 0) {
-        GetData();
-      } else {
-
-      }
     }
 
   }, [searchInput]);
@@ -154,6 +153,7 @@ export default function Header(props) {
     GetData(`auth/get-my-country`).then((res) => {
       if (res?.status == true) {
         setCountry(res?.data);
+        setAllCountry(res?.data)
       }
     });
 

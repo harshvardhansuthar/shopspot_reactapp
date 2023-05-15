@@ -16,6 +16,8 @@ export default function LatestExperienceDetail() {
   const [experienceData, setExperienceData] = useState([]);
   const reduxCountryName = useSelector((state) => state?.countryName?.action);
   const [componentLoader, setComponentLoader] = useState(true);
+  const [reletedExperience, setReletedExperience] = useState([])
+
   const id = useLocation();
 
   console.log(id);
@@ -38,7 +40,19 @@ export default function LatestExperienceDetail() {
         setExperienceData(res.data);
         setComponentLoader(false);
       }
+
+      let arr = []
+      for (let i = 0; i < res?.data?.related_experience?.length; i++) {
+        if (res?.data?.related_experience[i]?.id != res?.data?.experience?.id) {
+          arr.push(res?.data?.related_experience[i])
+        }
+      }
+      console.log("fghjklkjhgfghjklkjhgfghjklkjhgfghjkjhgchjkjhgfghjkjhgfd", arr)
+      setReletedExperience(arr)
     });
+
+
+
   }, []);
 
   const handleReletedBusiness = (id) => {
@@ -200,8 +214,8 @@ export default function LatestExperienceDetail() {
                       dots={false}
                     >
                       <>
-                        {experienceData?.related_experience &&
-                          experienceData?.related_experience.map(
+                        {reletedExperience?.length > 0 &&
+                          reletedExperience?.map(
                             (item, key) => (
                               <div
                                 className="blog-post twm-blog-post-1-outer"

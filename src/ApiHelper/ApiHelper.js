@@ -39,7 +39,7 @@ export const GetData = (url) => {
 export function PostDataWithToken(url, data) {
   // body..
   //
-  Cookies?.get("token")
+  const token = Cookies?.get("token")
   let tokens = "";
   // if (cookie.load("telimedicineToken")) {
   //   tokens = cookie.load("telimedicineToken");

@@ -20,6 +20,8 @@ export default function FreelanceDetail() {
   const userId = Cookies.get("userid") || ''
   const reduxCountryName = useSelector((state) => state?.countryName?.action);
   const [componentLoader, setComponentLoader] = useState(true);
+  const [reletedFreelance, setReletedFreelance] = useState([])
+
 
 
 
@@ -35,6 +37,15 @@ export default function FreelanceDetail() {
         setFreeLanceData(res?.data)
         setComponentLoader(false)
       }
+      let arr = []
+      for (let i = 0; i < res?.data?.related_frelance?.length; i++) {
+        if (res?.data?.related_frelance[i]?.id != res?.data?.freelance?.id) {
+          arr.push(res?.data?.related_frelance[i])
+        }
+      }
+      console.log("fghjklkjhgfghjklkjhgfghjklkjhgfghjkjhgchjkjhgfghjkjhgfd", arr)
+      setReletedFreelance(arr)
+
     });
   }, []);
 
@@ -279,7 +290,7 @@ export default function FreelanceDetail() {
             {/* <!-- Freelance Detail END --> */}
 
             {/* <!-- Related Freelance START --> */}
-            <div className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
+            {reletedFreelance?.length > 0 && <div className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
               {/* <!-- TITLE START--> */}
               <div className="section-head center wt-small-separator-outer">
                 <div className="wt-small-separator site-text-primary">
@@ -310,7 +321,7 @@ export default function FreelanceDetail() {
                       >
 
 
-                        {freeLanceData?.related_frelance && freeLanceData?.related_frelance.map((item, key) => (
+                        {reletedFreelance?.length > 0 && reletedFreelance?.map((item, key) => (
                           <div className="hpage-6-featured-block">
                             <div className="inner-content">
                               <div className="mid-content">
@@ -341,7 +352,7 @@ export default function FreelanceDetail() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div>}
             {/* <!-- Related Freelance END --> */}
             <Footer />
           </div>

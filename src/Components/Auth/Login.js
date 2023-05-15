@@ -231,6 +231,7 @@ export default function Login(props) {
                         type="submit"
                         className="site-button py-2"
                         style={{ width: "auto" }}
+                        disabled={loading}
                       >
                         {loading == true ? (
                           <span className="spinner-border text-light spinner-border-sm"></span>

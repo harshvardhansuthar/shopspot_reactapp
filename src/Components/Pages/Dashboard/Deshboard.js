@@ -58,6 +58,7 @@ export default function Deshboard() {
   const location = useSelector((state) => state?.loctionn?.action?.location);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   // const id = useLocation();
   const countryNameRedux = useSelector((state) => state?.countryName?.action);
 
@@ -269,6 +270,10 @@ export default function Deshboard() {
     localStorage.setItem("resentSearch", JSON.stringify(resentSearch));
   };
 
+  const handleShowResentPopulerSearch = () => {
+
+  }
+
   return (
     <>
       {componentLoader ? (
@@ -360,6 +365,7 @@ export default function Deshboard() {
                                     placeholder="Search Restaurant, Hotels, Food, Business..."
                                     value={query}
                                     onChange={handleQueryChange}
+                                    onClick={handleShowResentPopulerSearch}
                                   />
                                   {/* <!-- <i class="twm-input-icon fas fa-search"></i> --> */}
                                 </div>
@@ -383,164 +389,7 @@ export default function Deshboard() {
 
                         {query?.length > 0 && (
                           <div className="search-history show">
-                            <div className="Recent-search">
-                              <h4 className="mb-3">Recent search</h4>
-                              <div className="d-flex flex-wrap">
-                                {resentSearch?.length > 0 &&
-                                  resentSearch?.map((item, key) => (
-                                    <Link
-                                      to={
-                                        item?.type == "business"
-                                          ? `/businessdetail?id=${item?.id}`
-                                          : item?.type == "Carrer"
-                                            ? "/careerdetail"
-                                            : item?.type == "Freelance"
-                                              ? "/freelancedetail"
-                                              : item?.type == "Experience"
-                                                ? "/latestexperience"
-                                                : item?.type == "Products"
-                                                  ? `/businessdetail?id=${item?.id}`
-                                                  : item?.type == "Categories"
-                                                    ? "/business"
-                                                    : "/"
-                                      }
-                                      state={{ id: item?.id }}
-                                      className="btn btn-light rounded-pill me-2 mb-2"
-                                      key={key}
-                                    >
-                                      <span className="me-2">
-                                        <i className="fas fa-history"></i>
-                                      </span>
-                                      {item?.name}
-                                    </Link>
-                                  ))}
-                              </div>
-                            </div>
-                            <div className="popular-search mt-4">
-                              <h4 className="mb-3">Popular search</h4>
-                              {query?.length > 0 && (
-                                <div className="d-flex flex-wrap">
-                                  {populerSearch?.business?.length > 0 &&
-                                    populerSearch?.business?.map(
-                                      (item, key) => (
-                                        <Link
-                                          to={`/businessdetail?id=${item?.id}`}
-                                          state={{ id: item?.id }}
-                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                        >
-                                          <span className="search-img me-2">
-                                            <img
-                                              className=""
-                                              src={item?.business_licence}
-                                              alt="#"
-                                            />
-                                          </span>
-                                          {item?.name}
-                                        </Link>
-                                      )
-                                    )}
 
-                                  {populerSearch?.carrer?.length > 0 &&
-                                    populerSearch?.carrer?.map((item, key) => (
-                                      <Link
-                                        to={`/careerdetail`}
-                                        state={{ id: item?.id }}
-                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                      >
-                                        <span className="search-img me-2">
-                                          <img
-                                            className=""
-                                            src={"images/banner/logo(1).png"}
-                                            alt="#"
-                                          />
-                                        </span>
-                                        {item?.post_name}
-                                      </Link>
-                                    ))}
-
-                                  {populerSearch?.category?.length > 0 &&
-                                    populerSearch?.category?.map(
-                                      (item, key) => (
-                                        <Link
-                                          to={`/business`}
-                                          state={{ id: item?.id }}
-                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                        >
-                                          <span className="search-img me-2">
-                                            <img
-                                              className=""
-                                              src={item?.image}
-                                              alt="#"
-                                            />
-                                          </span>
-                                          {item?.name}
-                                        </Link>
-                                      )
-                                    )}
-
-                                  {populerSearch?.experience?.length > 0 &&
-                                    populerSearch?.experience?.map(
-                                      (item, key) => (
-                                        <Link
-                                          to={`/latestexoerience`}
-                                          state={{ id: item?.id }}
-                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                        >
-                                          <span className="search-img me-2">
-                                            <img
-                                              className=""
-                                              src={item?.image}
-                                              alt="#"
-                                            />
-                                          </span>
-                                          {item?.name}
-                                        </Link>
-                                      )
-                                    )}
-
-                                  {populerSearch?.freelance?.length > 0 &&
-                                    populerSearch?.freelance?.map(
-                                      (item, key) => (
-                                        <Link
-                                          to={`/freelancedetail`}
-                                          state={{ id: item?.id }}
-                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                        >
-                                          <span className="search-img me-2">
-                                            <img
-                                              className=""
-                                              src={item?.business_licence}
-                                              alt="#"
-                                            />
-                                          </span>
-                                          {item?.name}
-                                        </Link>
-                                      )
-                                    )}
-
-                                  {populerSearch?.product?.length > 0 &&
-                                    populerSearch?.product?.map((item, key) => (
-                                      <Link
-                                        to={`/businessdetail?id=${item?.id}`}
-                                        state={{ id: item?.id }}
-                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                      >
-                                        <span className="search-img me-2">
-                                          <img
-                                            className=""
-                                            src={
-                                              item?.images &&
-                                              JSON?.parse(item?.images)[0]
-                                            }
-                                            alt="#"
-                                          />
-                                        </span>
-                                        {item?.name}
-                                      </Link>
-                                    ))}
-                                </div>
-                              )}
-                            </div>
                             <div className="search-every mt-4">
                               {suggestions?.business?.length > 0 && (
                                 <h4 className="my-3">Business</h4>
@@ -725,6 +574,168 @@ export default function Deshboard() {
                                   ))}
                               </div>
                             </div>
+
+
+
+                            <div className="Recent-search">
+                              <h4 className="mb-3">Recent search</h4>
+                              <div className="d-flex flex-wrap">
+                                {resentSearch?.length > 0 &&
+                                  resentSearch?.map((item, key) => (
+                                    <Link
+                                      to={
+                                        item?.type == "business"
+                                          ? `/businessdetail?id=${item?.id}`
+                                          : item?.type == "Carrer"
+                                            ? "/careerdetail"
+                                            : item?.type == "Freelance"
+                                              ? "/freelancedetail"
+                                              : item?.type == "Experience"
+                                                ? "/latestexperience"
+                                                : item?.type == "Products"
+                                                  ? `/businessdetail?id=${item?.id}`
+                                                  : item?.type == "Categories"
+                                                    ? "/business"
+                                                    : "/"
+                                      }
+                                      state={{ id: item?.id }}
+                                      className="btn btn-light rounded-pill me-2 mb-2"
+                                      key={key}
+                                    >
+                                      <span className="me-2">
+                                        <i className="fas fa-history"></i>
+                                      </span>
+                                      {item?.name}
+                                    </Link>
+                                  ))}
+                              </div>
+                            </div>
+                            <div className="popular-search mt-4">
+                              <h4 className="mb-3">Popular search</h4>
+                              {query?.length > 0 && (
+                                <div className="d-flex flex-wrap">
+                                  {populerSearch?.business?.length > 0 &&
+                                    populerSearch?.business?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/businessdetail?id=${item?.id}`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.business_licence}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
+
+                                  {populerSearch?.carrer?.length > 0 &&
+                                    populerSearch?.carrer?.map((item, key) => (
+                                      <Link
+                                        to={`/careerdetail`}
+                                        state={{ id: item?.id }}
+                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                      >
+                                        <span className="search-img me-2">
+                                          <img
+                                            className=""
+                                            src={"images/banner/logo(1).png"}
+                                            alt="#"
+                                          />
+                                        </span>
+                                        {item?.post_name}
+                                      </Link>
+                                    ))}
+
+                                  {populerSearch?.category?.length > 0 &&
+                                    populerSearch?.category?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/business`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.image}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
+
+                                  {populerSearch?.experience?.length > 0 &&
+                                    populerSearch?.experience?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/latestexoerience`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.image}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
+
+                                  {populerSearch?.freelance?.length > 0 &&
+                                    populerSearch?.freelance?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/freelancedetail`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.business_licence}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
+
+                                  {populerSearch?.product?.length > 0 &&
+                                    populerSearch?.product?.map((item, key) => (
+                                      <Link
+                                        to={`/businessdetail?id=${item?.id}`}
+                                        state={{ id: item?.id }}
+                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                      >
+                                        <span className="search-img me-2">
+                                          <img
+                                            className=""
+                                            src={
+                                              item?.images &&
+                                              JSON?.parse(item?.images)[0]
+                                            }
+                                            alt="#"
+                                          />
+                                        </span>
+                                        {item?.name}
+                                      </Link>
+                                    ))}
+                                </div>
+                              )}
+                            </div>
+
                           </div>
                         )}
                         {/* Search everything end here...  */}
