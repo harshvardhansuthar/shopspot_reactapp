@@ -190,6 +190,16 @@ export default function Deshboard() {
     });
   };
 
+  // const handleShowCarrerOnLogin = (id) => {
+  //   if (token) {
+  //     navigate("/careerdetail", { state: { id: id } })
+  //   } else {
+  //     setShowLogin(!showLogin)
+  //   }
+  //   // onClick={() => handleShowCarrerOnLogin(item?.id)}
+
+  // }
+
   const handleproductDetail = (id) => {
     setComponentLoader(true);
     GetDataWithToken(`product/product-details/${id}`).then((res) => {
@@ -1000,9 +1010,13 @@ export default function Deshboard() {
                               <div className="twm-media">
                                 <img src={item?.business_licence} alt="#" />
                               </div>
-                              <span className="twm-job-post-duration">
+                              <Link
+                                to={"/business"}
+                                state={{ id: item?.Category?.id }}
+                                className="twm-job-post-duration"
+                              >
                                 {item?.Category?.name}
-                              </span>
+                              </Link>
                               <div className="twm-mid-content">
                                 <a
                                   onClick={() => handleSetId(item.id)}
@@ -1220,6 +1234,20 @@ export default function Deshboard() {
                                           {item?.Business?.name}
                                         </a>
                                         <p className="company-address">
+                                          <a
+                                            // to={'/careerdetail'}
+                                            // state={{ id: item.id }}
+                                            onClick={() => {
+                                              token
+                                                ? navigate("/careerdetail", {
+                                                    state: { id: item?.id },
+                                                  })
+                                                : setShowLogin(!showLogin);
+                                            }}
+                                            className="aplybtn"
+                                          >
+                                            <i className="fas fa-chevron-right"></i>
+                                          </a>{" "}
                                           {item?.address}.
                                         </p>
                                       </div>
@@ -1229,15 +1257,7 @@ export default function Deshboard() {
                                         {item?.post_name}
                                       </h4>
                                     </div>
-                                    <div className="aply-btn-area">
-                                      <Link
-                                        to={"/careerdetail"}
-                                        state={{ id: item.id }}
-                                        className="aplybtn"
-                                      >
-                                        <i className="fas fa-chevron-right"></i>
-                                      </Link>
-                                    </div>
+                                    <div className="aply-btn-area"></div>
                                   </div>
                                 </div>
                               </div>
@@ -1247,9 +1267,16 @@ export default function Deshboard() {
                       </div>
                     </div>
                     <div className="text-center job-categories-btn">
-                      <Link to={"/careerlist"} className="site-button">
-                        Show All Freelance
-                      </Link>
+                      <a
+                        onClick={() => {
+                          token
+                            ? navigate("/careerlist")
+                            : setShowLogin(!showLogin);
+                        }}
+                        className="site-button"
+                      >
+                        Show All Career
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1281,7 +1308,7 @@ export default function Deshboard() {
                             margin={10}
                             nav
                             navText={[
-                              `<i className="fas fa-chevron-left"></i>`,
+                              `< i className="fas fa-chevron-left"></i>`,
                               `<i className="fas fa-chevron-right"></i>`,
                             ]}
                             // autoPlay={true}
@@ -1384,13 +1411,20 @@ export default function Deshboard() {
                                 </span>
                               </div>
                               <div className="details">
-                                <Link
-                                  to={"/freelancedetail"}
-                                  state={{ id: item?.id }}
+                                <a
+                                  // to={"/freelancedetail"}
+                                  // state={{ id: item?.id }}
+                                  onClick={() => {
+                                    token
+                                      ? navigate("/freelancedetail", {
+                                          state: { id: item?.id },
+                                        })
+                                      : setShowLogin(!showLogin);
+                                  }}
                                   className="btn stretched-link p-0"
                                 >
                                   {item?.address}
-                                </Link>
+                                </a>
                               </div>
                             </div>
                           </div>
@@ -1454,7 +1488,16 @@ export default function Deshboard() {
                         </div>
                         {/* <!-- TITLE END--> */}
                         <div className="twm-read-more">
-                          <a className="site-button">Refer your Friend</a>
+                          <a
+                            className="site-button"
+                            onClick={() => {
+                              token
+                                ? navigate("/profile", { state: { id: "2" } })
+                                : setShowLogin(!showLogin);
+                            }}
+                          >
+                            Refer your Friend
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -1603,13 +1646,22 @@ export default function Deshboard() {
                     <h5>{"BD" + " " + product?.data?.price}</h5>
                   </div>
                   <div className="text-end">
-                    <button
-                      type="submit"
-                      className="site-button"
-                      style={{ width: "auto", marginLeft: "auto" }}
+                    <WhatsappShareButton
+                      url={`image=${
+                        product?.data?.images &&
+                        JSON.parse(product?.data?.images)?.[0]
+                      } name=${product?.data?.name}price=${
+                        product?.data?.price
+                      }description=${product?.data?.description}`}
                     >
-                      Book Now
-                    </button>
+                      <a
+                        // type="submit"
+                        className="site-button"
+                        style={{ width: "auto", marginLeft: "auto" }}
+                      >
+                        Book Now
+                      </a>
+                    </WhatsappShareButton>
                   </div>
                 </div>
               </ModalBody>

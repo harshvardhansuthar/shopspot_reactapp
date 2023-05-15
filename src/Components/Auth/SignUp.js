@@ -450,16 +450,19 @@ export default function SignUp(props) {
       ...data,
     };
     PostData("auth/signUp", signUpData).then((responce) => {
-      // console.log(responce);
-
-      if (responce.status) {
+      console.log(responce);
+      if (responce.status === true) {
         setLoading(false);
-        Swal.fire("Success", responce.message, "success");
-        // Cookies.set("token", responce.user.access_token);
+        Swal.fire("Success", responce?.message, "success");
         navigate("/verifyotp", { state: { data: data } });
       } else {
-        Swal.fire("Failed", responce.message, "Failed");
         setLoading(false);
+        Swal.fire({
+          title: "Error !",
+          text: `${responce?.data?.message}`,
+          icon: "error",
+          showConfirmButton: true, // Set this option to false to remove the OK button
+        });
       }
     });
   };

@@ -17,15 +17,16 @@ export const PostData = (url, data) => {
   var headers = {
     "Content-Type": "application/json",
     "X-localization": "en",
-    "ngrok-skip-browser-warning": "123456",
+    // "ngrok-skip-browser-warning": "123456",
   };
   return axios
     .post(serverUrl + middleUrl + url, data, { headers: headers })
     .then((responce) => {
-      return responce.data;
+      return responce?.data;
     })
     .catch((error) => {
-      console.log(error);
+      let errorStatus = JSON.parse(JSON.stringify(error.response));
+      return errorStatus;
     });
 };
 
@@ -35,19 +36,48 @@ export const GetData = (url) => {
   });
 };
 
-export const PostDataWithToken = (url, data) => {
+export function PostDataWithToken(url, data) {
+  // body..
+  //
+  Cookies?.get("token");
+  let tokens = "";
+  // if (cookie.load("telimedicineToken")) {
+  //   tokens = cookie.load("telimedicineToken");
+  // }
   var headers = {
     "Content-Type": "application/json",
-    "X-localization": "en",
-    Authorization: `Bearer ${token}`,
+    Authorization: "Bearer " + token,
+    // Authorization: tokens,
   };
-
   return axios
     .post(serverUrl + middleUrl + url, data, { headers: headers })
-    .then((responce) => {
-      return responce.data;
+    .then((response) => {
+      //console.log(res);
+      //console.log(res.data);
+      return response.data;
+    })
+    .catch((error) => {
+      //return error.data;
+      //console.log(error.response);
+      let errorStatus = JSON.parse(JSON.stringify(error.response));
+      //console.log(errorStatus.data);
+      return errorStatus;
     });
-};
+}
+
+// export const PostDataWithToken = (url, data) => {
+//   var headers = {
+//     "Content-Type": "application/json",
+//     "X-localization": "en",
+//     Authorization: `Bearer ${token}`,
+//   };
+
+//   return axios
+//     .post(serverUrl + middleUrl + url, data, { headers: headers })
+//     .then((responce) => {
+//       return responce.data;
+//     });
+// };
 
 export const GetDataSkipWarning = (url) => {
   return axios
@@ -73,11 +103,11 @@ export const GetDataWithToken = (url) => {
     headers: headers,
   })
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
+      // if (response.ok) {
+      return response.json();
+      // } else {
+      throw new Error(`Request failed with status ${response.status}`);
+      // }
     })
     .then((data) => {
       return data;
@@ -102,3 +132,26 @@ export const PutDataWithToken = (url, data) => {
       return errorStatus;
     });
 };
+
+// export function PostData(url, data) {
+//   // body..
+//   //
+//   var headers = {
+//     "Content-Type": "application/json",
+//     "X-localization": "en",
+//   };
+//   return axios
+//     .post(serverUrl + middleUrl, url, data, { headers: headers })
+//     .then((response) => {
+//       //console.log(res);
+//       //console.log(res.data);
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       //return error.data;
+//       //console.log(error.response);
+//       let errorStatus = JSON.parse(JSON.stringify(error.response));
+//       //console.log(errorStatus.data);
+//       return errorStatus;
+//     });
+// }

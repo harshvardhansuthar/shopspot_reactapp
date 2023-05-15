@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../commen/Header";
 import Footer from "../../commen/Footer";
 import { GetData, GetDataWithToken } from "../../../ApiHelper/ApiHelper";
-import { Link, useLocation, } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Map from "../Map/Map";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
@@ -35,8 +35,8 @@ export default function FreelanceDetail() {
         setFreeLanceData(res?.data)
         setComponentLoader(false)
       }
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <>
@@ -140,19 +140,48 @@ export default function FreelanceDetail() {
                               </ul>
                               <h4 className="twm-s-title">Share Profile</h4>
                               <div className="twm-social-tags">
-                                <a href="tel:6350088970" className="fb-clr">
+                                <a
+                                  href={`tel:${freeLanceData?.freelance?.contact &&
+                                    JSON.parse(
+                                      freeLanceData?.freelance?.contact
+                                    )?.phone
+                                    }`}
+                                  className="fb-clr"
+                                >
                                   <i className="fas fa-phone-alt"></i>
                                 </a>
                                 <a
-                                  href="mailto:email@example.com"
+                                  target="_blank"
+                                  href={`mailto:${freeLanceData?.freelance?.contact &&
+                                    JSON.parse(
+                                      freeLanceData?.freelance?.contact
+                                    )?.email
+                                    }`}
                                   className="tw-clr"
                                 >
                                   <i className="fas fa-envelope"></i>
                                 </a>
-                                <a href="#" className="whats-clr">
+
+                                <a
+                                  target="_blank"
+                                  href={`https://web.whatsapp.com/send?phone=${freeLanceData?.freelance?.contact &&
+                                    JSON.parse(
+                                      freeLanceData?.freelance?.contact
+                                    )?.whatsapp
+                                    }&text=Hello`}
+                                  className="whats-clr"
+                                >
                                   <i className="fab fa-whatsapp"></i>
                                 </a>
-                                <a href="#" className="pinte-clr">
+
+                                <a
+                                  target="_blank"
+                                  href={` https://www.google.com/maps/search/?api=1&query=
+                                  ${freeLanceData?.freelance?.latitude},${freeLanceData?.freelance?.longitude}`}
+                                  // href={`https://www.google.com/maps/@
+                                  // ${freeLanceData?.freelance?.latitude},${freeLanceData?.freelance?.longitude},15z`}
+                                  className="pinte-clr"
+                                >
                                   <i className="fas fa-map-marker-alt"></i>
                                 </a>
                               </div>

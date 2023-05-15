@@ -40,11 +40,11 @@ export default function ProfileSideBar(props) {
     return state?.loginStatus.action;
   });
   useEffect(() => {
-    setComponentLoader(true)
+    setComponentLoader(true);
     GetDataWithToken("auth/my-profile").then((res) => {
       if (res?.status == true) {
         setUserData(res.data);
-        setComponentLoader(false)
+        setComponentLoader(false);
       }
     });
   }, [isLogin]);
@@ -59,7 +59,7 @@ export default function ProfileSideBar(props) {
       if (res.status === true) {
         dispatch(actionLoginStatus.loginStatus(false));
         Cookies.remove("token");
-        Cookies.remove("userid")
+        Cookies.remove("userid");
         navigate("/");
       }
     });
@@ -94,21 +94,35 @@ export default function ProfileSideBar(props) {
                     <div className="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
                       <div className="side-bar-st-1">
                         <div class="twm-candidate-profile-pic">
-                          <h5>{`${userData?.name
-                            ?.split(" ")[0]
-                            ?.charAt(0)}${userData?.name
-                              ?.split(" ")[1]
-                              ?.charAt(0)}`}</h5>
+                          <h5>
+                            {" "}
+                            {`${userData?.name
+                              ?.toUpperCase()
+                              ?.split(" ")[0]
+                              ?.charAt(0)}${
+                              userData?.name?.split(" ")[1]
+                                ? userData?.name
+                                    ?.toUpperCase()
+                                    ?.split(" ")[1]
+                                    ?.charAt(0)
+                                : ""
+                            }`}
+                          </h5>
                         </div>
                         <div className="twm-mid-content text-center">
-                          <a href="javascript:void(0)" className="twm-job-title">
+                          <a
+                            href="javascript:void(0)"
+                            className="twm-job-title"
+                          >
                             <h4>{userData?.name}</h4>
                           </a>
                         </div>
 
                         <div className="twm-nav-list-1">
                           <Nav tabs className="d-block border-0">
-                            <NavItem className={activeTab === "1" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "1" ? "active" : ""}
+                            >
                               <NavLink
                                 onClick={() => {
                                   toggleTab("1");
@@ -118,7 +132,9 @@ export default function ProfileSideBar(props) {
                                 Profile
                               </NavLink>
                             </NavItem>
-                            <NavItem className={activeTab === "2" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "2" ? "active" : ""}
+                            >
                               <NavLink
                                 onClick={() => {
                                   toggleTab("2");
@@ -128,7 +144,9 @@ export default function ProfileSideBar(props) {
                                 Referral points
                               </NavLink>
                             </NavItem>
-                            <NavItem className={activeTab === "3" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "3" ? "active" : ""}
+                            >
                               <NavLink
                                 onClick={() => {
                                   toggleTab("3");
@@ -138,7 +156,9 @@ export default function ProfileSideBar(props) {
                                 Business account
                               </NavLink>
                             </NavItem>
-                            <NavItem className={activeTab === "4" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "4" ? "active" : ""}
+                            >
                               <NavLink
                                 onClick={() => {
                                   toggleTab("4");
@@ -147,7 +167,9 @@ export default function ProfileSideBar(props) {
                                 <i class="fa fa-book-reader"></i> Activity
                               </NavLink>
                             </NavItem>
-                            <NavItem className={activeTab === "5" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "5" ? "active" : ""}
+                            >
                               <NavLink
                                 onClick={() => {
                                   toggleTab("5");
@@ -163,7 +185,9 @@ export default function ProfileSideBar(props) {
                                 Transaction
                               </NavLink>
                             </NavItem>
-                            <NavItem className={activeTab === "6" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "6" ? "active" : ""}
+                            >
                               <NavLink
                                 onClick={() => {
                                   toggleTab("6");
@@ -182,7 +206,9 @@ export default function ProfileSideBar(props) {
                             My events
                           </NavLink>
                         </NavItem> */}
-                            <NavItem className={activeTab === "8" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "8" ? "active" : ""}
+                            >
                               <NavLink
                                 onClick={() => {
                                   toggleTab("8");
@@ -192,7 +218,9 @@ export default function ProfileSideBar(props) {
                                 Change Passeord
                               </NavLink>
                             </NavItem>
-                            <NavItem className={activeTab === "9" ? "active" : ""}>
+                            <NavItem
+                              className={activeTab === "9" ? "active" : ""}
+                            >
                               <NavLink onClick={handleLogoutHandler}>
                                 <i class="fa fa-share-square"></i>
                                 Logout

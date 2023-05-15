@@ -31,7 +31,7 @@ export default function Map(props) {
   const [showinfoIndex, setShowInfoIndex] = useState(0);
   const [showInfoWindow, setShowInfoWindow] = useState(false);
 
-  // console.log("user location", props.userLocation);
+  console.log("user location", props.userLocation);
   console.log("business details", props.businessDetail);
   console.log("current location", props.currentLocation);
 
@@ -135,22 +135,20 @@ export default function Map(props) {
           )}
         </Marker>
 
+        <Marker position={props?.userLocation} icon={redMarkerIcon}></Marker>
+
         <Marker
-          position={props?.userLocation}
+          position={{
+            lat: props?.freeLanceDetail?.freelance?.latitude,
+            lng: props?.freeLanceDetail?.freelance?.longitude,
+          }}
           icon={redMarkerIcon}
-          // onClick={() => handleInfoWindow("hello", props?.userLocation)}
-        >
-          {props?.userLocation && (
-            <InfoWindow onLoad={onLoad} position={props?.userLocation}>
-              <div style={divStyle}>
-                <h1>{props}</h1>
-              </div>
-            </InfoWindow>
-          )}
-        </Marker>
+        ></Marker>
       </>
     );
   };
+
+  console.log(props);
 
   const mapLoction = () => {
     if (props.businessDetail) {
@@ -183,7 +181,12 @@ export default function Map(props) {
                 ))}
               {/* This marker is business Detail page  */}
               {props?.businessDetail?.lat && (
-                <HandleShow businessDetail={props?.businessDetail} />
+                <div onClick={() => alert("jitu")}>
+                  <HandleShow
+                    businessDetail={props?.businessDetail}
+                    onClick={() => alert("jitu")}
+                  />
+                </div>
               )}
 
               {props?.userLocation && <HandleShow />}

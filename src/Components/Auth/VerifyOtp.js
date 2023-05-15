@@ -62,15 +62,21 @@ export default function VerifyOtp() {
         navigate("/");
       } else {
         setLoading(false);
-        Swal.fire("Failed", responce.message, "Failed");
+        Swal.fire({
+          title: "Error !",
+          text: `${responce?.data?.message}`,
+          icon: "error",
+          showConfirmButton: true, // Set this option to false to remove the OK button
+        });
       }
     });
   };
 
   const resendHandler = () => {
     setResendState(true);
-    GetData("auth/otp-resend").then((response) => {
+    PostData("auth/otp-resend", { email }).then((response) => {
       if (response.status == true) {
+        Swal?.fire("OTP resend");
         setResendState(false);
       } else {
         setResendState(false);
@@ -104,7 +110,7 @@ export default function VerifyOtp() {
                 Verify your OTP
               </h4>
               <p class="text-center">
-                We have sent you a code at johndoe@gmail.com
+                We have sent you a code at <strong> {email}</strong>
                 <br class="d-none d-md-block" />
                 please check your inbox to verify your account
               </p>

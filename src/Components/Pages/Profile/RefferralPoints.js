@@ -13,6 +13,7 @@ import {
 import Loder from "../../commen/Loder";
 
 export default function RefferralPoints(props) {
+  const [copy, setCopy] = useState(false)
   const [clickPoint, setClickPoint] = useState(false);
   const [offerProduct, setOfferProduct] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
@@ -57,6 +58,10 @@ export default function RefferralPoints(props) {
   let title;
   const copyReferral = () => {
     navigator.clipboard.writeText(props?.userData?.refer_code);
+    setCopy(true)
+
+
+
   };
   const shareReferral = () => {
     url = "example.com";
@@ -135,6 +140,7 @@ export default function RefferralPoints(props) {
                         </h4>
                       </div>
                       <div class="twm-jobs-vacancies">
+                        {copy && <span>copied</span>}
                         <a class="twm-job-title" onClick={copyReferral}>
                           <div class="twm-jobs-vacancies">
                             <span>
@@ -160,11 +166,11 @@ export default function RefferralPoints(props) {
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-12 text-end">
+                  {/* <div class="col-lg-12 text-end">
                     <button type="submit" class="site-button m-r5">
                       Share with contact
                     </button>
-                  </div>
+                  </div> */}
                 </div>
                 <h5>Frequently asked questions</h5>
                 <Accordion open={open} toggle={toggle}>

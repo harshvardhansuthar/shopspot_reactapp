@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { actionCountryName, actionLoginStatus } from "../../store/Action";
 import { Modal, ModalBody } from "reactstrap";
 import { set } from "react-hook-form";
+import { CountryCodeJson } from "./CountryCodeJson";
 
 export default function Header(props) {
   // const [countryName, setCountryName] = useState("");
@@ -17,6 +18,20 @@ export default function Header(props) {
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [countryModal, setCountryModal] = useState(
+    reduxCountryName ? false : true
+  );
+  const toggleCountryModal = () => {
+    if (reduxCountryName) {
+      setCountryModal(!countryModal);
+    }
+  };
+
+  // const handleQueryChange = (event) => {
+  //   setShowSuggestions(true);
+  //   setQuery(event.target.value);
+  // };
+  const [searchInput, setSearchInput] = useState("");
   const [countryFlag, setCountryFlag] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [countryName, setCountryName] = useState("");
@@ -30,25 +45,47 @@ export default function Header(props) {
   const [token, setToken] = useState(null);
   const [userLogo, setUserLogo] = useState();
   const [resentSearch, setResentSearch] = useState([]);
-
   const [populerSearch, setPopularSearch] = useState([]);
-  const [countryModal, setCountryModal] = useState(
-    reduxCountryName ? false : true
-  );
-  const toggleCountryModal = () => {
-    if (reduxCountryName) {
-      setCountryModal(!countryModal);
-    }
+  const [callApi, setCallApi] = useState(true);
+  const navigate = useNavigate();
+  const location = useSelector((state) => state?.loctionn?.action?.location);
+  let user = Cookies.get("userName");
+
+  const handleSearchCountry = (event) => {
+    console.log("hello");
+    setSearchInput(event.target.value);
   };
+
+  useEffect(() => {
+    if (searchInput?.length > 0) {
+      GetData(`auth/get-my-country?name=${searchInput}`).then((data) => {
+        console.log(data);
+        setCountry(data.data);
+      });
+
+      if (searchInput.length < 0) {
+        GetData();
+      } else {
+      }
+    }
+  }, [searchInput]);
+
+  // const location = ((state) => state?.loctionn?.action?.location);
+  // const user = useSelector(
+  //   (state) => state?.userDetail?.action?.userData?.name
+  // );
+
+  // const toggleCountryModal = () => {
+  //   if (reduxCountryName) {
+  //     setCountryModal(!countryModal);
+  //   }
+  // };
 
   const handleQueryChange = (event) => {
     setShowSuggestions(true);
     setQuery(event.target.value);
   };
 
-  const navigate = useNavigate();
-  const location = useSelector((state) => state?.loctionn?.action?.location);
-  let user = Cookies.get("userName");
   // console.log("user for initialllssssss", user);
   // console.log(user);
   // const setUser = (data) => {
@@ -70,6 +107,7 @@ export default function Header(props) {
         Cookies.remove("token");
         Cookies.remove("userDetails");
         Cookies.remove("userName");
+        Cookies.remove("userid");
         dispatch(actionLoginStatus.loginStatus(false));
         navigate("/");
       }
@@ -83,9 +121,7 @@ export default function Header(props) {
       const scrollTop = window.pageYOffset;
       setIsFixed(scrollTop > 0);
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -97,9 +133,21 @@ export default function Header(props) {
   }, [isLogin]);
 
   useEffect(() => {
+    if (reduxCountryName || callApi) {
+      GetData(`auth/get-popular-search?country=${reduxCountryName}`).then(
+        (res) => {
+          console.log(res);
+          if (res.status == true) {
+            setCallApi(false);
+            setPopularSearch(res?.data);
+          }
+        }
+      );
+    }
+
     GetData(`auth/get-my-country`).then((res) => {
       if (res?.status == true) {
-        setCountry(res.data);
+        setCountry(res?.data);
       }
     });
 
@@ -108,7 +156,7 @@ export default function Header(props) {
         setCategory(res.data);
       }
     });
-  }, []);
+  }, [callApi]);
 
   const handleCategoryDetail = (id) => {
     GetData(
@@ -124,7 +172,9 @@ export default function Header(props) {
 
   useEffect(() => {
     if (query?.length > 0) {
-      GetData(`auth/search-business?name=${query}`).then((data) => {
+      GetData(
+        `auth/search-business?name=${query}&country=${reduxCountryName}`
+      ).then((data) => {
         console.log(data);
         setSuggestions(data.data);
       });
@@ -148,10 +198,10 @@ export default function Header(props) {
 
   // header-style-3
 
-  const handleSetResentSearch = (item, id) => {
+  const handleSetResentSearch = (item, id, type) => {
     const resentSearch = JSON.parse(localStorage.getItem("resentSearch")) || [];
 
-    const resentObject = { name: item, id: id };
+    const resentObject = { name: item, id: id, type: type };
 
     if (resentSearch?.length > 10) {
       resentSearch.shift();
@@ -420,9 +470,24 @@ export default function Header(props) {
                     {resentSearch?.length > 0 &&
                       resentSearch?.map((item, key) => (
                         <Link
-                          to={"/businessdetail"}
+                          to={
+                            item?.type == "business"
+                              ? `/businessdetail?id=${item?.id}`
+                              : item?.type == "Carrer"
+                              ? "/careerdetail"
+                              : item?.type == "Freelance"
+                              ? "/freelancedetail"
+                              : item?.type == "Experience"
+                              ? "/latestexperience"
+                              : item?.type == "Products"
+                              ? `/businessdetail?id=${item?.BusinessId}`
+                              : item?.type == "Categories"
+                              ? "/business"
+                              : "/"
+                          }
                           state={{ id: item?.id }}
                           className="btn btn-light rounded-pill me-2 mb-2"
+                          key={key}
                         >
                           <span className="me-2">
                             <i className="fas fa-history"></i>
@@ -430,49 +495,117 @@ export default function Header(props) {
                           {item?.name}
                         </Link>
                       ))}
-                    {/* {
-                    query?.length > 0 &&
-                    suggestions?.carrer?.length > 0 &&
-                    suggestions?.carrer?.map((item, key) => (
-                      <Link to={'/careerdetail'} state={{ id: item?.id }} className="btn btn-light rounded-pill me-2 mb-2">
-                        {item?.post_name}
-                      </Link>))}
-                  {
-                    query?.length > 0 &&
-                    suggestions?.category?.length > 0 &&
-                    suggestions?.category?.map((item, key) => (
-                      <button className="btn btn-light rounded-pill me-2 mb-2">
-                        {item?.name}
-                      </button>))}
-                  {
-                    query?.length > 0 &&
-                    suggestions?.experience?.length > 0 &&
-                    suggestions?.experience?.map((item, key) => (
-                      <button className="btn btn-light rounded-pill me-2 mb-2">
-                        {item?.name}
-                      </button>))}
-                  {
-                    query?.length > 0 &&
-                    suggestions?.product?.length > 0 &&
-                    suggestions?.product?.map((item, key) => (
-                      <button className="btn btn-light rounded-pill me-2 mb-2">
-                        {item?.name}
-                      </button>))}  */}
                   </div>
                 </div>
               )}
               {query?.length == 0 && (
                 <div className="popular-search mt-4">
                   <h4 className="mb-3">Popular search</h4>
-                  <div className="d-flex flex-wrap">
-                    {/* {
-                    query?.length > 0 &&
-                    suggestions?.product?.length > 0 &&
-                    suggestions?.product?.map((item, key) => (
-                      <button className="btn btn-light rounded-pill me-2 mb-2">
-                        {item?.name}
-                      </button>))} */}
-                  </div>
+                  {query?.length == 0 && (
+                    <div className="d-flex flex-wrap">
+                      {populerSearch?.business?.length > 0 &&
+                        populerSearch?.business?.map((item, key) => (
+                          <Link
+                            to={`/businessdetail?id=${item?.id}`}
+                            state={{ id: item?.id }}
+                            className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                          >
+                            <span className="search-img me-2">
+                              <img
+                                className=""
+                                src={item?.business_licence}
+                                alt="#"
+                              />
+                            </span>
+                            {item?.name}
+                          </Link>
+                        ))}
+
+                      {populerSearch?.carrer?.length > 0 &&
+                        populerSearch?.carrer?.map((item, key) => (
+                          <Link
+                            to={`/careerdetail`}
+                            state={{ id: item?.id }}
+                            className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                          >
+                            <span className="search-img me-2">
+                              <img
+                                className=""
+                                src={"images/banner/logo(1).png"}
+                                alt="#"
+                              />
+                            </span>
+                            {item?.post_name}
+                          </Link>
+                        ))}
+
+                      {populerSearch?.category?.length > 0 &&
+                        populerSearch?.category?.map((item, key) => (
+                          <Link
+                            to={`/business`}
+                            state={{ id: item?.id }}
+                            className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                          >
+                            <span className="search-img me-2">
+                              <img className="" src={item?.image} alt="#" />
+                            </span>
+                            {item?.name}
+                          </Link>
+                        ))}
+
+                      {populerSearch?.experience?.length > 0 &&
+                        populerSearch?.experience?.map((item, key) => (
+                          <Link
+                            to={`/latestexoerience`}
+                            state={{ id: item?.id }}
+                            className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                          >
+                            <span className="search-img me-2">
+                              <img className="" src={item?.image} alt="#" />
+                            </span>
+                            {item?.name}
+                          </Link>
+                        ))}
+
+                      {populerSearch?.freelance?.length > 0 &&
+                        populerSearch?.freelance?.map((item, key) => (
+                          <Link
+                            to={`/freelancedetail`}
+                            state={{ id: item?.id }}
+                            className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                          >
+                            <span className="search-img me-2">
+                              <img
+                                className=""
+                                src={item?.business_licence}
+                                alt="#"
+                              />
+                            </span>
+                            {item?.name}
+                          </Link>
+                        ))}
+
+                      {populerSearch?.product?.length > 0 &&
+                        populerSearch?.product?.map((item, key) => (
+                          <Link
+                            to={`/businessdetail?id=${item?.id}`}
+                            state={{ id: item?.id }}
+                            className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                          >
+                            <span className="search-img me-2">
+                              <img
+                                className=""
+                                src={
+                                  item?.images && JSON?.parse(item?.images)[0]
+                                }
+                                alt="#"
+                              />
+                            </span>
+                            {item?.name}
+                          </Link>
+                        ))}
+                    </div>
+                  )}
                 </div>
               )}
               {query?.length > 0 && (
@@ -485,9 +618,13 @@ export default function Header(props) {
                       suggestions?.business?.map((item, key) => (
                         <Link
                           onClick={() =>
-                            handleSetResentSearch(item?.name, item?.id)
+                            handleSetResentSearch(
+                              item?.name,
+                              item?.id,
+                              "business"
+                            )
                           }
-                          to={"/businessdetail"}
+                          to={`/businessdetail?id=${item?.id}`}
                           state={{ id: item?.id }}
                           className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
                         >
@@ -511,7 +648,11 @@ export default function Header(props) {
                       suggestions?.carrer?.map((item, key) => (
                         <Link
                           onClick={() =>
-                            handleSetResentSearch(item?.post_name, item?.id)
+                            handleSetResentSearch(
+                              item?.post_name,
+                              item?.id,
+                              "Carrer"
+                            )
                           }
                           to={"/careerdetail"}
                           state={{ id: item?.id }}
@@ -529,6 +670,36 @@ export default function Header(props) {
                       ))}
                   </div>
 
+                  {suggestions?.freelance?.length > 0 && (
+                    <h4 className="my-3">Freelance</h4>
+                  )}
+                  <div className="d-flex flex-wrap">
+                    {suggestions?.freelance?.length > 0 &&
+                      suggestions?.freelance?.map((item, key) => (
+                        <Link
+                          onClick={() =>
+                            handleSetResentSearch(
+                              item?.name,
+                              item?.id,
+                              "Freelance"
+                            )
+                          }
+                          to={"/freelancedetail"}
+                          state={{ id: item?.id }}
+                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                        >
+                          <span className="search-img me-2">
+                            <img
+                              className=""
+                              src={item?.business_licence}
+                              alt="#"
+                            />
+                          </span>
+                          {item?.name}
+                        </Link>
+                      ))}
+                  </div>
+
                   {suggestions?.category?.length > 0 && (
                     <h4 className="my-3">Categories</h4>
                   )}
@@ -537,7 +708,11 @@ export default function Header(props) {
                       suggestions?.category?.map((item, key) => (
                         <Link
                           onClick={() =>
-                            handleSetResentSearch(item?.name, item?.id)
+                            handleSetResentSearch(
+                              item?.name,
+                              item?.id,
+                              "Categories"
+                            )
                           }
                           to={"/business"}
                           state={{ id: item?.id }}
@@ -558,10 +733,14 @@ export default function Header(props) {
                     {suggestions?.product?.length > 0 &&
                       suggestions?.product?.map((item, key) => (
                         <Link
-                          to={"/businessdetail"}
+                          to={`/businessdetail?id=${item?.BusinessId}`}
                           state={{ id: item?.BusinessId }}
                           onClick={() =>
-                            handleSetResentSearch(item?.name, item?.id)
+                            handleSetResentSearch(
+                              item?.name,
+                              item?.id,
+                              "Products"
+                            )
                           }
                           className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
                         >
@@ -587,7 +766,11 @@ export default function Header(props) {
                           to={"/latestexoerience"}
                           state={{ id: item?.id }}
                           onClick={() =>
-                            handleSetResentSearch(item?.name, item?.id)
+                            handleSetResentSearch(
+                              item?.name,
+                              item?.id,
+                              "Experience"
+                            )
                           }
                           className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
                         >
@@ -626,6 +809,8 @@ export default function Header(props) {
                     id="Country"
                     placeholder="Select for your Country"
                     aria-describedby="Country"
+                    value={searchInput}
+                    onChange={handleSearchCountry}
                   />
 
                   <label for="Country" className="form-label Country-label">
@@ -661,6 +846,7 @@ export default function Header(props) {
                                       JSON?.parse(item?.shopspot_country)?.name
                                     )
                                   );
+                                  setCallApi(true);
                                 }
                                 toggleCountryModal();
                               }}

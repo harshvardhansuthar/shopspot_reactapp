@@ -22,10 +22,10 @@ function App() {
         const { latitude, longitude } = position.coords;
         localStorage.setItem(
           "loction",
-          JSON.stringify({ latitude: latitude, longitude: longitude })
+          JSON?.stringify({ latitude: latitude, longitude: longitude })
         );
         const location =
-          JSON.parse(window.localStorage.getItem("loction")) || {};
+          JSON?.parse(window.localStorage.getItem("loction")) || {};
         dispatch(actionLoction.loction({ location }));
       },
       (error) => console.error(error)
@@ -33,28 +33,28 @@ function App() {
     if (Cookies.get("userDetails")) {
       dispatch(userDetail.userDetails(Cookies.get("userDetails")));
     }
-  }, []);
+  });
 
-  // useEffect(() => {
-  //   if (con) {
-  //     localStorage.setItem("countryName", JSON.stringify(con));
-  //     Cookies.set("country", con);
-  //   }
+  useEffect(() => {
+    if (con) {
+      localStorage.setItem("countryName", JSON?.stringify(con));
+      Cookies.set("country", con);
+    }
 
-  //   let countryName = "";
+    let countryName = "";
 
-  //   const countryNameString = window.localStorage.getItem("countryName");
+    const countryNameString = window.localStorage.getItem("countryName");
 
-  //   if (countryNameString) {
-  //     try {
-  //       countryName = JSON.parse(countryNameString);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
+    if (countryNameString) {
+      try {
+        countryName = JSON?.parse(countryNameString);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  //   dispatch(actionCountryName?.countryName(countryName));
-  // }, [con]);
+    dispatch(actionCountryName?.countryName(countryName));
+  });
 
   return (
     <>

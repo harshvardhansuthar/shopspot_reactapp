@@ -220,7 +220,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Hotel</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a class="twm-job-title">
                           <h4>Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -229,7 +229,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           12 KM Nearby you
@@ -246,7 +246,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Restaurant</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4>Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -255,7 +255,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           3 KM Nearby you
@@ -272,7 +272,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Coffee Store</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4 class="twm-job-title">Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -281,7 +281,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           5 KM Nearby you
@@ -298,7 +298,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Real Estate</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4 class="twm-job-title">Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -307,7 +307,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           7 KM Nearby you
@@ -324,7 +324,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Hotel</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4>Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -333,7 +333,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           12 KM Nearby you
@@ -350,7 +350,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Restaurant</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4>Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -359,7 +359,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                          
                           class="twm-jobs-browse site-text-primary"
                         >
                           3 KM Nearby you
@@ -376,7 +376,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Coffee Store</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4 class="twm-job-title">Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -385,7 +385,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           5 KM Nearby you
@@ -402,7 +402,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Real Estate</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4 class="twm-job-title">Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -411,7 +411,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           7 KM Nearby you
@@ -428,7 +428,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Hotel</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4>Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -437,7 +437,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                         
                           class="twm-jobs-browse site-text-primary"
                         >
                           12 KM Nearby you
@@ -454,7 +454,7 @@ export default function ListGid() {
                       </div>
                       <span class="twm-job-post-duration">Restaurant</span>
                       <div class="twm-mid-content">
-                        <a href="job-detail-v2.html" class="twm-job-title">
+                        <a  class="twm-job-title">
                           <h4>Cygal Systems WLL</h4>
                         </a>
                         <p class="twm-job-address">
@@ -463,7 +463,7 @@ export default function ListGid() {
                       </div>
                       <div class="twm-right-content">
                         <a
-                          href="job-detail-v2.html"
+                          
                           class="twm-jobs-browse site-text-primary"
                         >
                           3 KM Nearby you

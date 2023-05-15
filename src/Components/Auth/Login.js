@@ -3,7 +3,7 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { PostData } from "../../ApiHelper/ApiHelper";
 import Cookies from "js-cookie";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import SignUp from "./SignUp";
@@ -23,7 +23,7 @@ export default function Login(props) {
   const toggleEmailVerifyModal = () => setEmailVerifyModal(!EmailVerifyModal);
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const [modalSignupMap, setModalSignupMap] = useState(false);
   const toggleModalSignupMap = () => setModalSignupMap(!modalSignupMap);
 
@@ -55,25 +55,27 @@ export default function Login(props) {
     console.log(data);
     setLoading(true);
     PostData("auth/login", data).then((response) => {
-      console.log(response);
       if (response?.status == true) {
-        Cookies.set("token", response?.user?.access_token);
-        // console.log("consoleeeee userrrr dataaaa------------", response?.user);
-        Cookies.set("userName", response.user.name);
         Cookies.set("userDetails", response.user);
-        const data = Cookies.get("userDetails");
-        console.log("dataaaaaaaaaaaa", data);
+        Cookies.set("token", response?.user?.access_token);
         Cookies.set("userid", response?.user?.id);
-
+        Cookies.set("userName", response.user.name);
         setIsLogin(true);
         Swal.fire("Success", response.message, "success");
         dispatch(userDetail.userDetails(response?.user));
         dispatch(actionLoginStatus.loginStatus(true));
         toggleModal();
         setLoading(false);
+        navigate("/");
       } else {
+        console.log("ressss", response);
         setLoading(false);
-        Swal.fire("Login Failed", response.message, "Login Failed");
+        Swal.fire({
+          title: "Error !",
+          text: response?.data?.message,
+          icon: "error",
+          showConfirmButton: true, // Set this option to false to remove the OK button
+        });
       }
     });
   };
@@ -233,7 +235,7 @@ export default function Login(props) {
                         {loading == true ? (
                           <span className="spinner-border text-light spinner-border-sm"></span>
                         ) : (
-                          "Login In"
+                          "Login"
                         )}
                       </button>
                       <div className="mt-3 mb-3">
@@ -279,6 +281,3 @@ export default function Login(props) {
     </>
   );
 }
-
-
-

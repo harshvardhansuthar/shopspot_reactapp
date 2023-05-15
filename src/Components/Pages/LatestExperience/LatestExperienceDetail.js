@@ -9,12 +9,13 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import { useSelector } from "react-redux";
 import Loder from "../../commen/Loder";
+import { Link } from "react-router-dom";
 
 export default function LatestExperienceDetail() {
+  const [reletedBusiness, setReletedBusiness] = "";
   const [experienceData, setExperienceData] = useState([]);
   const reduxCountryName = useSelector((state) => state?.countryName?.action);
   const [componentLoader, setComponentLoader] = useState(true);
-
   const id = useLocation();
 
   console.log(id);
@@ -27,7 +28,8 @@ export default function LatestExperienceDetail() {
     });
   }, []);
 
-  console.log(id);
+  console.log("jhgfghjk", experienceData.related_experience);
+
   useEffect(() => {
     setComponentLoader(true);
     GetData(`auth/get-experience-detalis/${id?.state?.id}`).then((res) => {
@@ -39,35 +41,31 @@ export default function LatestExperienceDetail() {
     });
   }, []);
 
-  const convertDate = (data) => {
-    const date = new Date(data);
-    const startTime = date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
+  const handleReletedBusiness = (id) => {
+    setComponentLoader(true);
+    GetData(`auth/get-experience-detalis/${id}`).then((res) => {
+      console.log(res);
+      if (res?.status == true) {
+        setExperienceData(res.data);
+        setComponentLoader(false);
+      }
     });
-
-    date.setHours(date.getHours() + 8); // Assuming 8 hours duration
-    const endTime = date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-    });
-
-    return `${startTime} - ${endTime}`;
   };
 
+  // reactcoural variables
   return (
     <>
       {componentLoader ? (
         <Loder />
       ) : (
         <>
-          {/* <!-- CONTENT START --> */}
+          {/* {/ <!-- CONTENT START --> /} */}
           {reduxCountryName && <Header class={"header-full-width"} />}
           <div className="page-content">
-            {/* <!-- Career Detail START --> */}
+            {/* {/ <!-- Career Detail START --> /} */}
             <div className="section-full p-t50 p-b90 bg-white">
               <div className="container">
-                {/* <!-- BLOG SECTION START --> */}
+                {/* {/ <!-- BLOG SECTION START --> /} */}
                 <div className="section-content">
                   <div className="twm-job-self-wrap twm-job-detail-v2">
                     <div className="twm-job-self-info">
@@ -113,19 +111,47 @@ export default function LatestExperienceDetail() {
                             </ul>
                             <h4 className="twm-s-title">Share Profile</h4>
                             <div className="twm-social-tags">
-                              <a href="#" className="fb-clr">
+                              <a
+                                target="_blank"
+                                href={`tel:${
+                                  experienceData?.experience?.contect &&
+                                  JSON.parse(
+                                    experienceData?.experience?.contect
+                                  )?.phone
+                                }`}
+                                className="fb-clr"
+                              >
                                 <i className="fas fa-phone-alt"></i>
                               </a>
                               <a
-                                href="mailto:email@example.com"
+                                target="_blank"
+                                href={`mailto:${
+                                  experienceData?.experience?.contect &&
+                                  JSON.parse(
+                                    experienceData?.experience?.contect
+                                  )?.email
+                                }`}
                                 className="tw-clr"
                               >
                                 <i className="fas fa-envelope"></i>
                               </a>
-                              <a href="#" className="whats-clr">
+                              <a
+                                target="_blank"
+                                href={`https://web.whatsapp.com/send?phone=${
+                                  experienceData?.experience?.contect &&
+                                  JSON.parse(
+                                    experienceData?.experience?.contect
+                                  )?.whatsapp
+                                }&text=Hello`}
+                                className="whats-clr"
+                              >
                                 <i className="fab fa-whatsapp"></i>
                               </a>
-                              <a href="#" className="pinte-clr">
+                              <a
+                                target="_blank"
+                                href={`https://www.google.com/maps/@${experienceData?.experience?.user?.latitude},${experienceData?.experience?.user?.longitude},15z`}
+                                className="pinte-clr"
+                              >
                                 <i className="fas fa-map-marker-alt"></i>
                               </a>
                             </div>
@@ -133,7 +159,7 @@ export default function LatestExperienceDetail() {
                         </div>
                       </div>
 
-                      {/* <!-- Candidate detail START --> */}
+                      {/* {/ <!-- Candidate detail START --> /} */}
                       <div className="cabdidate-de-info">
                         <h4 className="twm-s-title m-t0">Overview:</h4>
                         <p>{experienceData?.experience?.overview}</p>
@@ -145,23 +171,23 @@ export default function LatestExperienceDetail() {
                 </div>
               </div>
             </div>
-            {/* <!-- Career Detail END --> */}
+            {/* {/ <!-- Career Detail END --> /}
 
-            {/* <!-- Related Career START --> */}
+                    {/ <!-- Related Career START --> /} */}
             <div className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
-              {/* <!-- TITLE START--> */}
+              {/* {/ <!-- TITLE START--> /} */}
               <div className="section-head center wt-small-separator-outer">
                 <div className="wt-small-separator site-text-primary">
                   <div>Top Experience</div>
                 </div>
                 <h2 className="wt-title">Related Experiences</h2>
               </div>
-              {/* <!-- TITLE END--> */}
+              {/* {/ <!-- TITLE END--> /} */}
 
               <div className="container">
                 <div className="section-content">
                   <div className="twm-la-home-blog owl-btn-bottom-center owl-loaded owl-drag">
-                    {/* <!--Block two--> */}
+                    {/* {/ <!--Block two--> /} */}
                     <OwlCarousel
                       className="owl-theme"
                       loop
@@ -185,31 +211,51 @@ export default function LatestExperienceDetail() {
                                 key={key}
                               >
                                 <div className="wt-post-media">
-                                  <a href="experience-detail.html">
+                                  <Link
+                                    to={"/latestexoerience"}
+                                    state={{ id: item?.id }}
+                                    onClick={() =>
+                                      handleReletedBusiness(item?.id)
+                                    }
+                                  >
                                     <img src={item?.image} alt="" />
-                                  </a>
+                                  </Link>
                                 </div>
                                 <div className="wt-post-info">
                                   <div className="wt-post-meta">
                                     <ul>
-                                      {/* <!-- <li className="post-date">April 28 2023</li> --> */}
+                                      {/* <li className="post-date">April 28 2023</li> */}
                                       <li className="post-author">
-                                        <a href="experience-detail.html">
+                                        <Link
+                                          to={"/latestexoerience"}
+                                          state={{ id: item?.id }}
+                                          onClick={() =>
+                                            handleReletedBusiness(item?.id)
+                                          }
+                                        >
                                           {item?.name}
-                                        </a>
+                                        </Link>
                                       </li>
                                     </ul>
                                   </div>
                                   <div className="wt-post-title">
                                     <h4 className="post-title">
-                                      <a href="experience-detail.html">
+                                      <Link
+                                        to={"/latestexoerience"}
+                                        state={{ id: item?.id }}
+                                        onClick={() =>
+                                          handleReletedBusiness(item?.id)
+                                        }
+                                      >
                                         {item?.overview}
-                                      </a>
+                                      </Link>
                                     </h4>
                                   </div>
                                   <div className="wt-post-readmore">
                                     <a
-                                      href="experience-detail.html"
+                                      onClick={() =>
+                                        handleReletedBusiness(item?.id)
+                                      }
                                       className="site-button-link site-text-primary"
                                     >
                                       {item?.place}
@@ -221,175 +267,16 @@ export default function LatestExperienceDetail() {
                           )}
                       </>
 
-                      {/* Add more items as needed */}
+                      {/* {/ Add more items as needed /} */}
                     </OwlCarousel>
-
-                    {/* <div className="item">
-                                    {/* <!--Block three--> */}
-                    {/* <div className="blog-post twm-blog-post-1-outer">
-                                        <div className="wt-post-media">
-                                            <a href="experience-detail.html"
-                                            ><img src="images/experience3.webp" alt=""
-                                                /></a>
-                                        </div>
-                                        <div className="wt-post-info">
-                                            <div className="wt-post-meta"> */}
-                    {/* <ul> */}
-                    {/* <!-- <li className="post-date">April 28 2023</li> --> */}
-                    {/* <li className="post-author">
-                                        {/* <ul> */}
-                    {/* <!-- <li className="post-date">April 28 2023</li> --> */}
-                    {/* <li className="post-author">
-                                                        <a href="experience-detail.html"
-                                                        >Adventures & Experiences</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="wt-post-title">
-                                                <h4 className="post-title">
-                                                    <a href="experience-detail.html"
-                                                    >Nofa Wildlife Park: Full-Day Adventure Safari
-                                                        Tour</a
-                                                    >
-                                                </h4>
-                                            </div>
-                                            <div className="wt-post-readmore">
-                                                <a
-                                                    href="experience-detail.html"
-                                                    className="site-button-link site-text-primary"
-                                                >Riyadh</a
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
-
-                    {/* <div className="item"> */}
-                    {/* <!--Block Four--> */}
-                    {/* <div className="blog-post twm-blog-post-1-outer">
-                                        {/* <div className="item"> */}
-                    {/* <!--Block Four--> */}
-                    {/* <div className="blog-post twm-blog-post-1-outer">
-                                        <div className="wt-post-media">
-                                            <a href="experience-detail.html"
-                                            ><img src="images/experience4.webp" alt=""
-                                                /></a>
-                                        </div>
-                                        <div className="wt-post-info">
-                                            <div className="wt-post-meta">
-                                                <ul> */}
-                    {/* <!-- <li className="post-date">April 28 2023</li> -->
-                                        {/* <!-- <li className="post-date">April 28 2023</li> -->
-                                                    <li className="post-author">
-                                                        <a href="experience-detail.html"
-                                                        >Adventures & Experiences</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="wt-post-title">
-                                                <h4 className="post-title">
-                                                    <a href="experience-detail.html"
-                                                    >Nofa Wildlife Park: Full-Day Adventure Safari
-                                                        Tour</a
-                                                    >
-                                                </h4>
-                                            </div>
-                                            <div className="wt-post-readmore">
-                                                <a
-                                                    href="experience-detail.html"
-                                                    className="site-button-link site-text-primary"
-                                                >Riyadh</a
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
-
-                    {/* <div className="item"> */}
-                    {/* <!--Block Five--> */}
-                    {/* <div className="blog-post twm-blog-post-1-outer">
-                                        <div className="wt-post-media">
-                                            <a href="experience-detail.html"
-                                            ><img src="images/experience5.webp" alt=""
-                                                /></a>
-                                        </div>
-                                        <div className="wt-post-info">
-                                            <div className="wt-post-meta">
-                                                <ul> */}
-                    {/* <!-- <li className="post-date">April 28 2023</li> --> */}
-                    {/* <li className="post-author">
-                                                        <a href="experience-detail.html"
-                                                        >Adventures & Experiences</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="wt-post-title">
-                                                <h4 className="post-title">
-                                                    <a href="experience-detail.html"
-                                                    >Nofa Wildlife Park: Full-Day Adventure Safari
-                                                        Tour</a
-                                                    >
-                                                </h4>
-                                            </div>
-                                            <div className="wt-post-readmore">
-                                                <a
-                                                    href="experience-detail.html"
-                                                    className="site-button-link site-text-primary"
-                                                >Riyadh</a
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
-
-                    {/* <div className="item"> */}
-                    {/* <!--Block Six--> */}
-                    {/* <div className="blog-post twm-blog-post-1-outer">
-                                        <div className="wt-post-media">
-                                            <a href="experience-detail.html"
-                                            ><img src="images/experience3.webp" alt=""
-                                                /></a> */}
-                    {/* </div>
-                                        <div className="wt-post-info">
-                                            <div className="wt-post-meta">
-                                                <ul> */}
-                    {/* <!-- <li className="post-date">April 28 2023</li> --> */}
-                    {/* <li className="post-author">
-                                                        <a href="experience-detail.html"
-                                                        >Adventures & Experiences</a
-                                                        >
-                                                    </li> */}
-                    {/* </ul>
-                                            </div>
-                                            <div className="wt-post-title">
-                                                <h4 className="post-title">
-                                                    <a href="experience-detail.html"
-                                                    >Nofa Wildlife Park: Full-Day Adventure Safari
-                                                        Tour</a
-                                                    >
-                                                </h4>
-                                            </div>
-                                            <div className="wt-post-readmore">
-                                                <a
-                                                    href="experience-detail.html"
-                                                    className="site-button-link site-text-primary"
-                                                >Riyadh</a
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
                   </div>
                 </div>
               </div>
             </div>
-            {/* <!-- Related Career END --> */}
+            {/* {/ <!-- Related Career END --> /} */}
           </div>
-          {/* <!-- CONTENT END --> */}
-          {/* <Footer /> */}
+          {/* {/ <!-- CONTENT END --> /} */}
+          <Footer />
         </>
       )}
     </>
