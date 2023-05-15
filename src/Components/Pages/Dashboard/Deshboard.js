@@ -19,6 +19,7 @@ import {
   countryName,
 } from "../../../store/Action";
 import { StreetViewPanorama } from "react-google-maps";
+import { WhatsappShareButton } from "react-share";
 import Login from "../../Auth/Login";
 import Cookies from "js-cookie";
 import { useWatch } from "react-hook-form";
@@ -28,9 +29,9 @@ export default function Deshboard() {
   // const [findShopId, setFindShopId] = useState("");
   // const [showSuggestions, setShowSuggestions] = useState(false);
   // const [colorRed, setColorRed] = useState(true);
-  const [populerSearch, setPopularSearch] = useState([])
+  const [populerSearch, setPopularSearch] = useState([]);
 
-  const [resentSearch, setResentSearch] = useState([])
+  const [resentSearch, setResentSearch] = useState([]);
   const [wishListColor, setWishListColor] = useState({});
   const [resentData, setResentData] = useState([]);
   const [findShopId, setFindShopId] = useState("");
@@ -49,11 +50,10 @@ export default function Deshboard() {
   const [currentLocationName, setCurrentLocationName] = useState("");
   const [deshboardData, setDeshboardData] = useState([]);
   const [componentLoader, setComponentLoader] = useState(true);
+  const [callApi, setCallApi] = useState(true);
   const reduxCountryName = useSelector((state) => state?.countryName?.action);
-  const [showLogin, setShowLogin] = useState(false)
-  const toggleshowLogin = () => setShowLogin(!showLogin)
-
-
+  const [showLogin, setShowLogin] = useState(false);
+  const toggleshowLogin = () => setShowLogin(!showLogin);
 
   const location = useSelector((state) => state?.loctionn?.action?.location);
   const dispatch = useDispatch();
@@ -63,19 +63,18 @@ export default function Deshboard() {
 
   console.log(countryNameRedux);
 
-  let token = Cookies.get("token")
-
+  let token = Cookies.get("token");
 
   useEffect(() => {
-
     if (reduxCountryName) {
-      GetData(`auth/get-popular-search?country=${reduxCountryName}`).then((res) => {
-        console.log(res)
-        if (res.status == true) {
-          setPopularSearch(res?.data)
-
+      GetData(`auth/get-popular-search?country=${reduxCountryName}`).then(
+        (res) => {
+          console.log(res);
+          if (res.status == true) {
+            setPopularSearch(res?.data);
+          }
         }
-      })
+      );
     }
 
     GetData("category/get-category")
@@ -115,9 +114,9 @@ export default function Deshboard() {
   // }
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("resentSearch")) || []
-    setResentSearch(data)
-  }, [])
+    const data = JSON.parse(localStorage.getItem("resentSearch")) || [];
+    setResentSearch(data);
+  }, []);
 
   useEffect(() => {
     if (currentLocation) {
@@ -142,7 +141,9 @@ export default function Deshboard() {
 
   useEffect(() => {
     if (query?.length > 0) {
-      GetData(`auth/search-business?name=${query}&country=${countryNameRedux}`).then((data) => {
+      GetData(
+        `auth/search-business?name=${query}&country=${countryNameRedux}`
+      ).then((data) => {
         console.log(data);
         setSuggestions(data.data);
       });
@@ -189,6 +190,17 @@ export default function Deshboard() {
     });
   };
 
+  // const handleShowCarrerOnLogin = (id) => {
+  //   if (token) {
+  //     navigate("/careerdetail", { state: { id: id } })
+  //   } else {
+  //     setShowLogin(!showLogin)
+  //   }
+  //   // onClick={() => handleShowCarrerOnLogin(item?.id)}
+
+  // }
+
+
   const handleproductDetail = (id) => {
     setComponentLoader(true);
     GetDataWithToken(`product/product-details/${id}`).then((res) => {
@@ -196,7 +208,8 @@ export default function Deshboard() {
       let info = JSON.parse(res?.data?.data?.info);
       setImages(img);
       setInfo(info);
-      setProduct(res?.data?.data);
+      setProduct(res?.data);
+      console.log("wishlist productssss", product);
       setWishListColor(res?.data?.wishlist);
       if (res) {
         toggleProductModal();
@@ -229,11 +242,14 @@ export default function Deshboard() {
       const response = await GetDataWithToken(
         `product/add-and-delete-wishlist?productId=${id}`
       );
+      GetDataWithToken(`product/product-details/${id}`).then((res) => {
+        setProduct(res?.data);
+      });
       console.log(response);
       if (response.data) {
-        setWishListColor(true); // do something with the response
-      } else {
-        setWishListColor(false); // do something with the response
+        setWishListColor(response.message);
+
+        // do something with the response
       }
     } catch (error) {
       console.error(error); // handle the error
@@ -241,17 +257,17 @@ export default function Deshboard() {
   };
 
   const handleSetResentSearch = (item, id, type) => {
-    const resentSearch = JSON.parse(localStorage.getItem("resentSearch")) || []
+    const resentSearch = JSON.parse(localStorage.getItem("resentSearch")) || [];
 
-    const resentObject = { name: item, id: id, type: type }
+    const resentObject = { name: item, id: id, type: type };
 
     if (resentSearch?.length > 10) {
-      resentSearch.shift()
+      resentSearch.shift();
     }
-    resentSearch.push(resentObject)
+    resentSearch.push(resentObject);
 
-    localStorage.setItem("resentSearch", JSON.stringify(resentSearch))
-  }
+    localStorage.setItem("resentSearch", JSON.stringify(resentSearch));
+  };
 
   return (
     <>
@@ -370,52 +386,61 @@ export default function Deshboard() {
                             <div className="Recent-search">
                               <h4 className="mb-3">Recent search</h4>
                               <div className="d-flex flex-wrap">
-                                {resentSearch?.length > 0 && resentSearch?.map((item, key) => (
-                                  <Link
-                                    to={item?.type == "business" ? `/businessdetail?id=${item?.id}` :
-                                      item?.type == "Carrer" ? "/careerdetail" :
-                                        item?.type == "Freelance" ? "/freelancedetail" :
-                                          item?.type == "Experience" ? "/latestexperience" :
-                                            item?.type == "Products" ? `/businessdetail?id=${item?.id}` :
-                                              item?.type == "Categories" ? "/business" : "/"}
-                                    state={{ id: item?.id }}
-                                    className="btn btn-light rounded-pill me-2 mb-2"
-                                    key={key}>
-                                    <span className="me-2">
-                                      <i className="fas fa-history"></i>
-                                    </span>
-                                    {item?.name}
-                                  </Link>
-                                ))}
-
+                                {resentSearch?.length > 0 &&
+                                  resentSearch?.map((item, key) => (
+                                    <Link
+                                      to={
+                                        item?.type == "business"
+                                          ? `/businessdetail?id=${item?.id}`
+                                          : item?.type == "Carrer"
+                                            ? "/careerdetail"
+                                            : item?.type == "Freelance"
+                                              ? "/freelancedetail"
+                                              : item?.type == "Experience"
+                                                ? "/latestexperience"
+                                                : item?.type == "Products"
+                                                  ? `/businessdetail?id=${item?.id}`
+                                                  : item?.type == "Categories"
+                                                    ? "/business"
+                                                    : "/"
+                                      }
+                                      state={{ id: item?.id }}
+                                      className="btn btn-light rounded-pill me-2 mb-2"
+                                      key={key}
+                                    >
+                                      <span className="me-2">
+                                        <i className="fas fa-history"></i>
+                                      </span>
+                                      {item?.name}
+                                    </Link>
+                                  ))}
                               </div>
                             </div>
                             <div className="popular-search mt-4">
                               <h4 className="mb-3">Popular search</h4>
-                              {query?.length > 0 &&
+                              {query?.length > 0 && (
                                 <div className="d-flex flex-wrap">
-                                  {
-                                    populerSearch?.business?.length > 0 &&
-                                    populerSearch?.business?.map((item, key) => (
-                                      <Link
-                                        to={`/businessdetail?id=${item?.id}`}
-                                        state={{ id: item?.id }}
-                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                      >
-                                        <span className="search-img me-2">
-                                          <img
-                                            className=""
-                                            src={item?.business_licence}
-                                            alt="#"
-                                          />
-                                        </span>
-                                        {item?.name}
-                                      </Link>
-                                    ))}
+                                  {populerSearch?.business?.length > 0 &&
+                                    populerSearch?.business?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/businessdetail?id=${item?.id}`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.business_licence}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
 
-
-                                  {
-                                    populerSearch?.carrer?.length > 0 &&
+                                  {populerSearch?.carrer?.length > 0 &&
                                     populerSearch?.carrer?.map((item, key) => (
                                       <Link
                                         to={`/careerdetail`}
@@ -425,7 +450,7 @@ export default function Deshboard() {
                                         <span className="search-img me-2">
                                           <img
                                             className=""
-                                            src={'images/banner/logo(1).png'}
+                                            src={"images/banner/logo(1).png"}
                                             alt="#"
                                           />
                                         </span>
@@ -433,66 +458,67 @@ export default function Deshboard() {
                                       </Link>
                                     ))}
 
+                                  {populerSearch?.category?.length > 0 &&
+                                    populerSearch?.category?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/business`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.image}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
 
-                                  {
-                                    populerSearch?.category?.length > 0 &&
-                                    populerSearch?.category?.map((item, key) => (
-                                      <Link
-                                        to={`/business`}
-                                        state={{ id: item?.id }}
-                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                      >
-                                        <span className="search-img me-2">
-                                          <img
-                                            className=""
-                                            src={item?.image}
-                                            alt="#"
-                                          />
-                                        </span>
-                                        {item?.name}
-                                      </Link>
-                                    ))}
+                                  {populerSearch?.experience?.length > 0 &&
+                                    populerSearch?.experience?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/latestexoerience`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.image}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
 
-                                  {
-                                    populerSearch?.experience?.length > 0 &&
-                                    populerSearch?.experience?.map((item, key) => (
-                                      <Link
-                                        to={`/latestexoerience`}
-                                        state={{ id: item?.id }}
-                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                      >
-                                        <span className="search-img me-2">
-                                          <img
-                                            className=""
-                                            src={item?.image}
-                                            alt="#"
-                                          />
-                                        </span>
-                                        {item?.name}
-                                      </Link>
-                                    ))}
+                                  {populerSearch?.freelance?.length > 0 &&
+                                    populerSearch?.freelance?.map(
+                                      (item, key) => (
+                                        <Link
+                                          to={`/freelancedetail`}
+                                          state={{ id: item?.id }}
+                                          className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                        >
+                                          <span className="search-img me-2">
+                                            <img
+                                              className=""
+                                              src={item?.business_licence}
+                                              alt="#"
+                                            />
+                                          </span>
+                                          {item?.name}
+                                        </Link>
+                                      )
+                                    )}
 
-                                  {
-                                    populerSearch?.freelance?.length > 0 &&
-                                    populerSearch?.freelance?.map((item, key) => (
-                                      <Link
-                                        to={`/freelancedetail`}
-                                        state={{ id: item?.id }}
-                                        className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
-                                      >
-                                        <span className="search-img me-2">
-                                          <img
-                                            className=""
-                                            src={item?.business_licence}
-                                            alt="#"
-                                          />
-                                        </span>
-                                        {item?.name}
-                                      </Link>
-                                    ))}
-
-                                  {
-                                    populerSearch?.product?.length > 0 &&
+                                  {populerSearch?.product?.length > 0 &&
                                     populerSearch?.product?.map((item, key) => (
                                       <Link
                                         to={`/businessdetail?id=${item?.id}`}
@@ -502,22 +528,34 @@ export default function Deshboard() {
                                         <span className="search-img me-2">
                                           <img
                                             className=""
-                                            src={item?.images && JSON?.parse(item?.images)[0]}
+                                            src={
+                                              item?.images &&
+                                              JSON?.parse(item?.images)[0]
+                                            }
                                             alt="#"
                                           />
                                         </span>
                                         {item?.name}
                                       </Link>
                                     ))}
-                                </div>}
-
+                                </div>
+                              )}
                             </div>
                             <div className="search-every mt-4">
-                              {suggestions?.business?.length > 0 && <h4 className="my-3">Business</h4>}
+                              {suggestions?.business?.length > 0 && (
+                                <h4 className="my-3">Business</h4>
+                              )}
                               <div className="d-flex flex-wrap">
                                 {suggestions?.business?.length > 0 &&
                                   suggestions?.business?.map((item, key) => (
-                                    <Link onClick={() => handleSetResentSearch(item?.name, item?.id, "business")}
+                                    <Link
+                                      onClick={() =>
+                                        handleSetResentSearch(
+                                          item?.name,
+                                          item?.id,
+                                          "business"
+                                        )
+                                      }
                                       to={`/businessdetail?id=${item?.id}`}
                                       state={{ id: item?.id }}
                                       className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -534,11 +572,20 @@ export default function Deshboard() {
                                   ))}
                               </div>
 
-                              {suggestions?.carrer?.length > 0 && <h4 className="my-3">Carrer</h4>}
+                              {suggestions?.carrer?.length > 0 && (
+                                <h4 className="my-3">Carrer</h4>
+                              )}
                               <div className="d-flex flex-wrap">
                                 {suggestions?.carrer?.length > 0 &&
                                   suggestions?.carrer?.map((item, key) => (
-                                    <Link onClick={() => handleSetResentSearch(item?.post_name, item?.id, "Carrer")}
+                                    <Link
+                                      onClick={() =>
+                                        handleSetResentSearch(
+                                          item?.post_name,
+                                          item?.id,
+                                          "Carrer"
+                                        )
+                                      }
                                       to={"/careerdetail"}
                                       state={{ id: item?.id }}
                                       className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -546,7 +593,7 @@ export default function Deshboard() {
                                       <span className="search-img me-2">
                                         <img
                                           className=""
-                                          src={'images/banner/logo(1).png'}
+                                          src={"images/banner/logo(1).png"}
                                           alt="#"
                                         />
                                       </span>
@@ -555,11 +602,20 @@ export default function Deshboard() {
                                   ))}
                               </div>
 
-                              {suggestions?.category?.length > 0 && <h4 className="my-3">Categories</h4>}
+                              {suggestions?.category?.length > 0 && (
+                                <h4 className="my-3">Categories</h4>
+                              )}
                               <div className="d-flex flex-wrap">
                                 {suggestions?.category?.length > 0 &&
                                   suggestions?.category?.map((item, key) => (
-                                    <Link onClick={() => handleSetResentSearch(item?.name, item?.id, "Categories")}
+                                    <Link
+                                      onClick={() =>
+                                        handleSetResentSearch(
+                                          item?.name,
+                                          item?.id,
+                                          "Categories"
+                                        )
+                                      }
                                       to={`/businessdetail?id=${item?.id}`}
                                       state={{ id: item?.id }}
                                       className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -576,11 +632,24 @@ export default function Deshboard() {
                                   ))}
                               </div>
 
-                              {suggestions?.product?.length > 0 && <h4 className="my-3">Products</h4>}
+                              {suggestions?.product?.length > 0 && (
+                                <h4 className="my-3">Products</h4>
+                              )}
                               <div className="d-flex flex-wrap">
                                 {suggestions?.product?.length > 0 &&
                                   suggestions?.product?.map((item, key) => (
-                                    <Link to={`/businessdetail?id=${item?.id}`} state={{ id: item?.BusinessId, }} onClick={() => handleSetResentSearch(item?.name, item?.id, "Products")} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                    <Link
+                                      to={`/businessdetail?id=${item?.id}`}
+                                      state={{ id: item?.BusinessId }}
+                                      onClick={() =>
+                                        handleSetResentSearch(
+                                          item?.name,
+                                          item?.id,
+                                          "Products"
+                                        )
+                                      }
+                                      className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                    >
                                       <span className="search-img me-2">
                                         <img
                                           className=""
@@ -596,11 +665,24 @@ export default function Deshboard() {
                                   ))}
                               </div>
 
-                              {suggestions?.experience?.length > 0 && <h4 className="my-3">Experience</h4>}
+                              {suggestions?.experience?.length > 0 && (
+                                <h4 className="my-3">Experience</h4>
+                              )}
                               <div className="d-flex flex-wrap">
                                 {suggestions?.experience?.length > 0 &&
                                   suggestions?.experience?.map((item, key) => (
-                                    <Link to={"/latestexoerience"} state={{ id: item?.id, }} onClick={() => handleSetResentSearch(item?.name, item?.id, "Experience")} className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center">
+                                    <Link
+                                      to={"/latestexoerience"}
+                                      state={{ id: item?.id }}
+                                      onClick={() =>
+                                        handleSetResentSearch(
+                                          item?.name,
+                                          item?.id,
+                                          "Experience"
+                                        )
+                                      }
+                                      className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
+                                    >
                                       <span className="search-img me-2">
                                         <img
                                           className=""
@@ -613,12 +695,20 @@ export default function Deshboard() {
                                   ))}
                               </div>
 
-                              {suggestions?.freelance?.length > 0 && <h4 className="my-3">Freelance</h4>}
+                              {suggestions?.freelance?.length > 0 && (
+                                <h4 className="my-3">Freelance</h4>
+                              )}
                               <div className="d-flex flex-wrap">
-                                {
-                                  suggestions?.freelance?.length > 0 &&
+                                {suggestions?.freelance?.length > 0 &&
                                   suggestions?.freelance?.map((item, key) => (
-                                    <Link onClick={() => handleSetResentSearch(item?.name, item?.id, "Freelance")}
+                                    <Link
+                                      onClick={() =>
+                                        handleSetResentSearch(
+                                          item?.name,
+                                          item?.id,
+                                          "Freelance"
+                                        )
+                                      }
                                       to={"/freelancedetail"}
                                       state={{ id: item?.id }}
                                       className="btn btn-light rounded-pill me-2 mb-2 d-flex align-items-center justify-content-center"
@@ -634,7 +724,6 @@ export default function Deshboard() {
                                     </Link>
                                   ))}
                               </div>
-
                             </div>
                           </div>
                         )}
@@ -922,9 +1011,9 @@ export default function Deshboard() {
                               <div className="twm-media">
                                 <img src={item?.business_licence} alt="#" />
                               </div>
-                              <span className="twm-job-post-duration">
+                              <Link to={"/business"} state={{ id: item?.Category?.id }} className="twm-job-post-duration">
                                 {item?.Category?.name}
-                              </span>
+                              </Link>
                               <div className="twm-mid-content">
                                 <a
                                   onClick={() => handleSetId(item.id)}
@@ -985,9 +1074,13 @@ export default function Deshboard() {
                             {/* <!--Block one--> */}
                             <div className="blog-post twm-blog-post-3-outer">
                               <div className="wt-post-media">
-                                <a onClick={() => {
-                                  token ? handleproductDetail(item.id) : setShowLogin(!showLogin)
-                                }}>
+                                <a
+                                  onClick={() => {
+                                    token
+                                      ? handleproductDetail(item.id)
+                                      : setShowLogin(!showLogin);
+                                  }}
+                                >
                                   <img
                                     className="product-img"
                                     src={JSON.parse(item.images)?.[0]}
@@ -1138,7 +1231,15 @@ export default function Deshboard() {
                                           {item?.Business?.name}
                                         </a>
                                         <p className="company-address">
-                                          {item?.address}.
+                                          <a
+                                            // to={'/careerdetail'}
+                                            // state={{ id: item.id }}
+                                            onClick={() => { token ? navigate("/careerdetail", { state: { id: item?.id } }) : setShowLogin(!showLogin) }}
+
+                                            className="aplybtn"
+                                          >
+                                            <i className="fas fa-chevron-right"></i>
+                                          </a>                                        {item?.address}.
                                         </p>
                                       </div>
                                     </div>
@@ -1148,13 +1249,7 @@ export default function Deshboard() {
                                       </h4>
                                     </div>
                                     <div className="aply-btn-area">
-                                      <Link
-                                        to={'/careerdetail'}
-                                        state={{ id: item.id }}
-                                        className="aplybtn"
-                                      >
-                                        <i className="fas fa-chevron-right"></i>
-                                      </Link>
+
                                     </div>
                                   </div>
                                 </div>
@@ -1165,9 +1260,9 @@ export default function Deshboard() {
                       </div>
                     </div>
                     <div className="text-center job-categories-btn">
-                      <Link to={"/careerlist"} className="site-button">
-                        Show All Freelance
-                      </Link>
+                      <a onClick={() => { token ? navigate("/careerlist") : setShowLogin(!showLogin) }} className="site-button">
+                        Show All Career
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1199,7 +1294,7 @@ export default function Deshboard() {
                             margin={10}
                             nav
                             navText={[
-                              `<i className="fas fa-chevron-left"></i>`,
+                              `< i className="fas fa-chevron-left"></i>`,
                               `<i className="fas fa-chevron-right"></i>`,
                             ]}
                             // autoPlay={true}
@@ -1302,13 +1397,14 @@ export default function Deshboard() {
                                 </span>
                               </div>
                               <div className="details">
-                                <Link
-                                  to={"/freelancedetail"}
-                                  state={{ id: item?.id }}
+                                <a
+                                  // to={"/freelancedetail"}
+                                  // state={{ id: item?.id }}
+                                  onClick={() => { token ? navigate("/freelancedetail", { state: { id: item?.id } }) : setShowLogin(!showLogin) }}
                                   className="btn stretched-link p-0"
                                 >
                                   {item?.address}
-                                </Link>
+                                </a>
                               </div>
                             </div>
                           </div>
@@ -1372,7 +1468,9 @@ export default function Deshboard() {
                         </div>
                         {/* <!-- TITLE END--> */}
                         <div className="twm-read-more">
-                          <a className="site-button">Refer your Friend</a>
+                          <a className="site-button"
+                            onClick={() => { token ? navigate("/profile", { state: { id: "2" } }) : setShowLogin(!showLogin) }}
+                          >Refer your Friend</a>
                         </div>
                       </div>
                     </div>
@@ -1480,26 +1578,29 @@ export default function Deshboard() {
 
                 <div className="description mt-3 position-relative">
                   <div className="share-icons">
-                    <span className="btn share">
-                      {wishListColor == null && (
-                        <i
-                          className={`${"far fa-heart"}`}
-                          onClick={() => handleWishList(product?.id)}
-                        ></i>
+                    <span
+                      className="btn share"
+                      onClick={() => handleWishList(product?.data?.id)}
+                    >
+                      {product?.wishlist === null && (
+                        <i className="far fa-heart"></i>
                       )}
-                      {wishListColor && (
-                        <i
-                          className={`fas fa-heart`}
-                          onClick={() => handleWishList(product?.id)}
-                        ></i>
-                      )}
+
+                      {product?.wishlist && <i className="fas fa-heart"> </i>}
                     </span>
-                    <span className="btn">
-                      <i className="far fa-share-square"></i>
-                    </span>
+                    <WhatsappShareButton
+                      url={`image=${product?.data?.images &&
+                        JSON.parse(product?.data?.images)?.[0]
+                        } name=${product?.data?.name}price=${product?.data?.price
+                        }description=${product?.data?.description}`}
+                    >
+                      <span className="btn">
+                        <i className="far fa-share-square"></i>
+                      </span>
+                    </WhatsappShareButton>
                   </div>
-                  <h5>{product?.name}</h5>
-                  <p>{product?.description}</p>
+                  <h5>{product?.data?.name}</h5>
+                  <p>{product?.data?.description}</p>
                   {info &&
                     info.length > 0 &&
                     info.map((item, key) => (
@@ -1513,16 +1614,23 @@ export default function Deshboard() {
                     ))}
                   <div className="d-flex align-items-center justify-content-between">
                     <h5>Price </h5>
-                    <h5>{"BD" + " " + product.price}</h5>
+                    <h5>{"BD" + " " + product?.data?.price}</h5>
                   </div>
                   <div className="text-end">
-                    <button
-                      type="submit"
-                      className="site-button"
-                      style={{ width: "auto", marginLeft: "auto" }}
+                    <WhatsappShareButton
+                      url={`image=${product?.data?.images &&
+                        JSON.parse(product?.data?.images)?.[0]
+                        } name=${product?.data?.name}price=${product?.data?.price
+                        }description=${product?.data?.description}`}
                     >
-                      Book Now
-                    </button>
+                      <a
+                        // type="submit"
+                        className="site-button"
+                        style={{ width: "auto", marginLeft: "auto" }}
+                      >
+                        Book Now
+                      </a>
+                    </WhatsappShareButton>
                   </div>
                 </div>
               </ModalBody>

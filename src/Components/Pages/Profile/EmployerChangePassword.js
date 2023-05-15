@@ -23,10 +23,11 @@ export default function EmployerChangePassword() {
         </p>
       );
     } else {
-      setComponentLoader(true)
-      PostDataWithToken("auth/edit-profile", data).then((res) => {
-        console.log(res);
-        if (res.status == true) {
+      // setComponentLoader(true)
+
+      PostDataWithToken('auth/edit-profile', data).then((res) => {
+        if (res.status === true) {
+          console.log("true-------------", res)
           reset({
             old_password: "",
             new_password: "",
@@ -40,8 +41,47 @@ export default function EmployerChangePassword() {
             timer: 1000,
             showConfirmButton: false, // Set this option to false to remove the OK button
           });
+        } else {
+          console.log("false-------------", res)
+          Swal.fire({
+            title: "Error !",
+            text: `${res?.data?.message}`,
+            icon: "error",
+            showConfirmButton: true, // Set this option to false to remove the OK button
+          })
         }
-      });
+      })
+
+      // PostDataWithToken("auth/edit-profile", data).then((res) => {
+      //   console.log("----------------------------", res);
+      //   if (res.status) {
+
+      //     reset({
+      //       old_password: "",
+      //       new_password: "",
+      //       Confirm_password: "",
+      //     });
+      //     setComponentLoader(false)
+      //     Swal.fire({
+      //       title: "Updated !",
+      //       text: "password changed successfully.",
+      //       icon: "success",
+      //       timer: 1000,
+      //       showConfirmButton: false, // Set this option to false to remove the OK button
+      //     });
+      //   } else {
+      //     Swal.fire({
+      //       title: "Error !",
+      //       text: `${res?.data?.message}`,
+      //       icon: "success",
+      //       timer: 1000,
+      //       showConfirmButton: false, // Set this option to false to remove the OK button
+      //     });
+      //     setComponentLoader(false)
+      //     console.log("jhgfdfghjh---------")
+
+      //   }
+      // });
     }
   };
   return (

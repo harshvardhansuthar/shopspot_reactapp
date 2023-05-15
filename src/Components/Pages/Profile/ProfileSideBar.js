@@ -65,7 +65,7 @@ export default function ProfileSideBar(props) {
     });
   };
 
-  dispatch(userDetail.userDetails({ userData }));
+  // dispatch(userDetail.userDetails({ userData }));
 
   // setUserLogo(
   //   `${userData?.name?.split(" ")[0]?.charAt(0)}${userData?.name
@@ -94,11 +94,10 @@ export default function ProfileSideBar(props) {
                     <div className="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
                       <div className="side-bar-st-1">
                         <div class="twm-candidate-profile-pic">
-                          <h5>{`${userData?.name
-                            ?.split(" ")[0]
-                            ?.charAt(0)}${userData?.name
-                              ?.split(" ")[1]
-                              ?.charAt(0)}`}</h5>
+                          <h5>                            {`${userData?.name?.toUpperCase()?.split(" ")[0]?.charAt(0)}${userData?.name?.split(" ")[1]
+                            ? userData?.name?.toUpperCase()?.split(" ")[1]?.charAt(0)
+                            : ""
+                            }`}</h5>
                         </div>
                         <div className="twm-mid-content text-center">
                           <a href="javascript:void(0)" className="twm-job-title">

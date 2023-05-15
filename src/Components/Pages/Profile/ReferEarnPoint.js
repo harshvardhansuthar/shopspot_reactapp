@@ -9,29 +9,28 @@ export default function ReferEarnPoint(props) {
   const [offerProduct, setOfferProduct] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
   const [showOfferDetail, setShowOfferDetali] = useState(false);
-  const [OfferDetailData, setOfferDetailData] = useState([])
-  const [componentLoader, setComponentLoader] = useState(true);
-
+  const [OfferDetailData, setOfferDetailData] = useState([]);
+  const [componentLoader, setComponentLoader] = useState(false);
 
   useEffect(() => {
-    setComponentLoader(true)
+    setComponentLoader(false);
     GetDataWithToken("offer/offer-product").then((res) => {
       if (res?.status == true) {
         setOfferProduct(res.data);
-        setComponentLoader(false)
+        setComponentLoader(false);
       }
     });
   }, []);
 
   const handleOfferDetail = (id) => {
-    setComponentLoader(true)
+    // setComponentLoader(true)
     GetDataWithToken(`offer/offer-product?id=${id}`).then((res) => {
       if (res?.status == true) {
-        setOfferDetailData(res.data)
-        setComponentLoader(false)
+        setOfferDetailData(res.data);
+        // setComponentLoader(false)
       }
-    })
-  }
+    });
+  };
 
   const toggleTab = (id) => {
     setActiveTab(id);
@@ -42,7 +41,7 @@ export default function ReferEarnPoint(props) {
         <Loder />
       ) : (
         <>
-          {!showOfferDetail &&
+          {!showOfferDetail && (
             <div className="twm-right-section-panel candidate-save-job site-bg-light">
               <div className="twm-candidates-grid-wrap">
                 <h5>Your shopspot referral point balance</h5>
@@ -155,8 +154,8 @@ export default function ReferEarnPoint(props) {
 
                               <div className="twm-fot-content">
                                 <div className="twm-left-info justify-content-center">
-                                  <a onClick={() => handleOfferDetail(item.id)}
-
+                                  <a
+                                    onClick={() => handleOfferDetail(item.id)}
                                     className="twm-job-title"
                                   >
                                     <div className="twm-jobs-vacancies">
@@ -283,7 +282,9 @@ export default function ReferEarnPoint(props) {
                             </a>
                           </div>
                           <div className="text-start">
-                            <h4 className="twm-candidate-address">How to use</h4>
+                            <h4 className="twm-candidate-address">
+                              How to use
+                            </h4>
                           </div>
                         </div>
                       </div>
@@ -292,7 +293,7 @@ export default function ReferEarnPoint(props) {
                 </div>
               </div>
             </div>
-          }
+          )}
           <TabContent activeTab={activeTab}>
             <TabPane tabId="3">
               <OfferDetail OfferDetailData={OfferDetailData} />

@@ -3,7 +3,7 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
-import { PostData } from "../../ApiHelper/ApiHelper";
+import { GetData, PostData } from "../../ApiHelper/ApiHelper";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
@@ -11,10 +11,10 @@ export default function VerifyOtp() {
   const [modal, setModal] = useState(true);
   const toggleModal = () => setModal(!modal);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const email = location.state?.data?.email;
-
+  const [resendState, setResendState] = useState(false);
   const {
     register,
     formState: { errors },
@@ -32,7 +32,7 @@ export default function VerifyOtp() {
     }).then((result) => {
       if (result.isConfirmed) {
         toggleModal();
-        navigate("/")
+        navigate("/");
       }
     });
 
@@ -44,22 +44,46 @@ export default function VerifyOtp() {
       otp: data.otp,
     };
 
+    setLoading(true);
+
     PostData("auth/verify-otp", verifyData).then((responce) => {
       console.log(responce);
       if (responce.status == true) {
         Cookies.set("token", responce.user.access_token);
+        setLoading(false);
         Swal.fire({
           title: "Verified !",
-          text: "SignUp successfully.",
+          text: "Signed up successfully.",
           icon: "success",
           timer: 1000,
           showConfirmButton: false, // Set this option to false to remove the OK button
         });
         toggleModal();
         navigate("/");
+      } else {
+        setLoading(false);
+        Swal.fire({
+          title: "Error !",
+          text: `${responce?.data?.message}`,
+          icon: "error",
+          showConfirmButton: true, // Set this option to false to remove the OK button
+        });
       }
     });
   };
+
+  const resendHandler = () => {
+    setResendState(true);
+    PostData("auth/otp-resend", { email }).then((response) => {
+      if (response.status == true) {
+        Swal?.fire("OTP resend")
+        setResendState(false);
+      } else {
+        setResendState(false);
+      }
+    });
+  };
+
   return (
     <>
       {" "}
@@ -86,7 +110,7 @@ export default function VerifyOtp() {
                 Verify your OTP
               </h4>
               <p class="text-center">
-                We have sent you a code at johndoe@gmail.com
+                We have sent you a code at <strong> {email}</strong>
                 <br class="d-none d-md-block" />
                 please check your inbox to verify your account
               </p>
@@ -114,12 +138,18 @@ export default function VerifyOtp() {
                     )}
                   </div>
                 </div>
-                <div class="mb-3">
-                  <button class="twm-backto-login">Enter OTP</button>
+                <div class="mb-3" onClick={resendHandler}>
+                  <button class="twm-backto-login">
+                    {resendState ? "Sending OTP" : "Resend OTP"}
+                  </button>
                 </div>
                 <div class="col-lg-3 col-md-4 col-12">
                   <button type="submit" class="site-button">
-                    Verify
+                    {loading == true ? (
+                      <span className="spinner-border text-light spinner-border-sm"></span>
+                    ) : (
+                      "Verify"
+                    )}
                   </button>
                 </div>
               </div>

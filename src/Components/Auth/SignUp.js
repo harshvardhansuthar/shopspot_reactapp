@@ -1,4 +1,3 @@
-
 // import React, { useState, useEffect } from "react";
 // import { Modal, ModalBody, ModalHeader } from "reactstrap";
 // import { useForm } from "react-hook-form";
@@ -385,67 +384,7 @@
 //   );
 // }
 
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import React, { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
@@ -456,14 +395,16 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 import { CountryCodeJson } from "../commen/CountryCodeJson";
+import Swal from "sweetalert2";
 
 export default function SignUp(props) {
   const [modal, setModal] = useState(true);
   const toggleModal = () => setModal(!modal);
+  const [loading, setLoading] = useState(false);
   const [modalLogin, setModalLogin] = useState(false);
   const toggleModalLogin = () => setModalLogin(!modalLogin);
   const [location, setLocation] = useState({ latitude: null, logitude: null });
-  const [countryCode, setCountryCode] = useState(CountryCodeJson)
+  const [countryCode, setCountryCode] = useState(CountryCodeJson);
   const navigate = useNavigate();
   const {
     register,
@@ -471,6 +412,10 @@ export default function SignUp(props) {
     formState: { errors },
     handleSubmit,
   } = useForm({ mode: "onBlur" });
+
+  // const filteredCountryCode = () => {
+  //   return countryCode;
+  // };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -491,19 +436,34 @@ export default function SignUp(props) {
     //   .then((response) => response.json())
     //   .then((data) => setCountryCode(data.data))
     //   .catch((err) => console.log(err));
-
   }, []);
 
+  // const handleChange = (event) => {
+  //   setCountryVal(event.target.value);
+  // };
+
   const handlerSignUp = (data) => {
+    console.log(data);
+    setLoading(true);
     let signUpData = {
       location: location,
       ...data,
     };
     PostData("auth/signUp", signUpData).then((responce) => {
       console.log(responce);
-      if (responce.status == true) {
-        // Cookies.set("token", responce.user.access_token);
+      if (responce.status === true) {
+        setLoading(false);
+        Swal.fire("Success", responce?.message, "success");
         navigate("/verifyotp", { state: { data: data } });
+      } else {
+        setLoading(false);
+        Swal.fire({
+          title: "Error !",
+          text: `${responce?.data?.message}`,
+          icon: "error",
+          showConfirmButton: true, // Set this option to false to remove the OK button
+        })
+
       }
     });
   };
@@ -642,44 +602,49 @@ export default function SignUp(props) {
 
                     <div className="col-lg-6">
                       <div className="input-group mb-3">
+                        {/* <input
+                          type="text"
+                          maxLength={3}
+                          onClick={handleChange}
+                        /> */}
                         <span
                           className="input-group-text p-0 border-0"
                           id="basic-addon1"
                         >
                           <select
+                            // value={countryVal}
+                            // onChange={(e) => setCountryVal(e.target.value)}
                             className="form-control"
                             {...register("country_code", {
                               required: "country_code is required",
                             })}
                           >
-                            {errors.country_code &&
-                              errors.country_code.message && (
-                                <p
-                                  className="f-error m-0"
-                                  style={{ color: "red", fontSize: 15 }}
-                                >
-                                  <i className="fa-regular fa-circle-xmark" />
-                                  {errors.country_code &&
-                                    errors.country_code.message}
-                                </p>
-                              )}
                             <option selected disabled value="">
                               +913
                             </option>
                             {countryCode &&
                               countryCode.length > 0 &&
                               countryCode.map((item, key) => (
-                                <option key={key} value={item.dial_code} >
+                                <option key={key} value={item.dial_code}>
                                   {`${item?.dial_code}`}
                                 </option>
                               ))}
                           </select>
                         </span>
+                        {errors.country_code && errors.country_code.message && (
+                          <p
+                            className="f-error m-0"
+                            style={{ color: "red", fontSize: 15 }}
+                          >
+                            <i className="fa-regular fa-circle-xmark" />
+                            {errors.country_code && errors.country_code.message}
+                          </p>
+                        )}
                         <input
                           name="phone"
                           type="text"
+                          maxLength={10}
                           className="form-control"
-                          required=""
                           placeholder="Phone*"
                           {...register("phone", {
                             required: "phone number is required",
@@ -775,7 +740,11 @@ export default function SignUp(props) {
 
                     <div className="col-md-6">
                       <button type="submit" className="site-button">
-                        Sign Up
+                        {loading == true ? (
+                          <span className="spinner-border text-light spinner-border-sm"></span>
+                        ) : (
+                          "Sign up"
+                        )}
                       </button>
                     </div>
 
@@ -790,7 +759,6 @@ export default function SignUp(props) {
                               required: "This field is required", // Add validation rule(s) here
                             })}
                           />
-
 
                           <label className="form-check-label" for="agree1">
                             I agree to the
@@ -818,7 +786,6 @@ export default function SignUp(props) {
                               Log in here
                             </Link>
                           </p>
-
                         </div>
                       </div>
                     </div>

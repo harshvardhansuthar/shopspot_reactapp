@@ -4,7 +4,7 @@ import Loder from "../../commen/Loder";
 
 export default function OfferDetail(props) {
   const [coupenCode, setCoupenCode] = useState(null)
-  const [componentLoader, setComponentLoader] = useState(true);
+  const [componentLoader, setComponentLoader] = useState(false);
 
   const handleGenerateCoupen = () => {
     setComponentLoader(true);

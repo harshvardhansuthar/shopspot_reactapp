@@ -572,7 +572,6 @@
 //                     </div>
 //                   </div>
 
-
 //                   {/* <Modal
 //                     Modal
 //                     className="modal-dialog-centered twm-sign-up"
@@ -613,7 +612,6 @@
 //                           </div>
 //                         </div>
 //                       </div>
-
 
 //                       <div className="description mt-3 position-relative">
 //                         <div className="share-icons">
@@ -712,198 +710,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import Footer from "../../commen/Footer";
 import HeaderMap from "../../commen/HeaderMap";
@@ -917,21 +723,26 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import { Modal, ModalBody } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Header from "../../commen/Header";
+import moment from "moment/moment";
 import { useSearchParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import Loder from "../../commen/Loder";
 import { WhatsappShareButton } from "react-share";
+import Login from "../../Auth/Login";
 // import OwlCarousel from "react-owl-carousel";
 // import "owl.carousel/dist/assets/owl.carousel.css";
 // import "owl.carousel/dist/assets/owl.theme.default.css";
 export default function BusinessDetail() {
-  const [wishListColor, setWishListColor] = useState({})
-  const [wishListData, setWishListData] = useState({})
-  const [eventModal, setEventModal] = useState(false)
-  const toggleEventModal = () => setEventModal(!eventModal)
+  const [wishListColor, setWishListColor] = useState({});
+  const [wishListData, setWishListData] = useState({});
+  const [eventModal, setEventModal] = useState(false);
+  const toggleEventModal = () => setEventModal(!eventModal);
   const [formetTime, setFormetTime] = useState({});
   const [eventDataImage, setEventDataImage] = useState([]);
   const [eventData, setEventData] = useState([]);
+  const [eventWishList, setEventWishList] = useState([]);
+  const [copy, setCopy] = useState(false)
+
   const [componentLoader, setComponentLoader] = useState(true);
   const [businessDetail, setBusinessDetail] = useState([]);
   const location1 = useSelector((state) => state?.loctionn?.action?.location);
@@ -943,27 +754,36 @@ export default function BusinessDetail() {
   const [product, setProduct] = useState([]);
   const [images, setImages] = useState([]);
   const [info, setInfo] = useState([]);
+  const [showLogin, setShowLogin] = useState(false);
+  const toggleshowLogin = () => setShowLogin(!showLogin);
+  const countryNameRedux = useSelector((state) => state?.countryName?.action);
+
+
   const { id } = useParams();
 
   // const location = useSelector((state) => state.businessDetailId.action);
   const [searchParams, setSearchParams] = useSearchParams();
-  const paramId = searchParams.get('id')
+  const paramId = searchParams.get("id");
 
   const url = new URL(window.location.href);
-  const yourParamName = url.searchParams.get('id');
-  const businessId = id?.state?.id || paramId
-  const userId = Cookies.get("userid") || ''
+  const yourParamName = url.searchParams.get("id");
+  const businessId = id?.state?.id || paramId;
+  const userId = Cookies.get("userid") || "";
+  let token = Cookies.get("token");
 
 
   const copyReferral = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/businessdetail?id=${businessId}`);
+    navigator.clipboard.writeText(
+      `http://localhost:3000/businessdetail?id=${businessId}`
+    );
+    setCopy(true)
   };
 
   useEffect(() => {
     if (callApi == true && location1?.latitude) {
-      setComponentLoader(true);
+      // setComponentLoader(true);
       GetDataWithToken(
-        `business/business-details/${businessId}?lat=${location1?.latitude}&lng=${location1?.longitude}&sub_category=${categoryCallApi}&userId=${userId}`
+        `business/business-details/${businessId}?lat=${location1?.latitude}&lng=${location1?.longitude}&sub_category=${categoryCallApi}&userId=${userId}&country=${countryNameRedux}`
       ).then((res) => {
         setCallApi(false);
         setBusinessDetail(res.data);
@@ -979,7 +799,7 @@ export default function BusinessDetail() {
       let info = JSON.parse(res?.data?.data?.info);
       setImages(img);
       setInfo(info);
-      setProduct(res?.data?.data);
+      setProduct(res?.data);
       if (res) {
         toggleProductModal();
         setComponentLoader(false);
@@ -998,28 +818,88 @@ export default function BusinessDetail() {
       let img = JSON.parse(res?.data?.event?.image);
       setEventDataImage(img);
       setEventData(res.data?.event);
+      setEventWishList(res?.data)
+
+      toggleEventModal();
 
       let time = JSON.parse(res?.data?.event?.time);
-      toggleEventModal()
+      toggleEventModal();
       setFormetTime(time);
     });
   };
 
   const handleWishList = async (id) => {
     try {
-      const response = await GetDataWithToken(`product/add-and-delete-wishlist?eventId=${id}`);
-      console.log(response)
-      if (response.data) {
-        setWishListColor(true)
-      } else {
-        setWishListColor(false)
+      const response = await GetDataWithToken(
+        `product/add-and-delete-wishlist?eventId=${id}`
+      );
+      console.log(response);
+      GetDataWithToken(`event/get-event?id=${id}`).then((res) => {
+        setEventData(res.data?.event);
+        setEventWishList(res?.data)
+      })
 
-      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleWishListProduct = async (id) => {
+
+    try {
+      await GetDataWithToken(
+        `product/add-and-delete-wishlist?productId=${id}`
+      );
+      GetDataWithToken(`product/product-details/${id}`).then((res) => {
+        // let img = JSON.parse(res?.data?.data?.images);
+        // let info = JSON.parse(res?.data?.data?.info);
+        // setImages(img);
+        // setInfo(info);
+        setProduct(res?.data);
+        // if (res) {
+        //   toggleProductModal();
+        //   setComponentLoader(false);
+        // }
+      });
+
+
+
+
+      // if (response.data) {
+
+      //   setWishListColor(true);
+      // } else {
+      //   setWishListColor(false);
+      // }
       // do something with the response
     } catch (error) {
       console.error(error); // handle the error
     }
   };
+
+
+
+
+  const wishHandler = (id) => {
+    GetDataWithToken(`product/add-and-delete-wishlist?businessId=${id}`).then(
+      (response) => {
+        if (response.status === true) {
+          console.log(response);
+          setCallApi(true);
+        }
+      }
+    );
+  };
+
+  const dateHandle = (date) => {
+    var d = (new Date(date) + "").split(" ");
+    d[2] = d[2] + ",";
+    console.log(d);
+    //     Date date = Calendar.getInstance().getTime();
+    //  DateFormat dateFormat = new SimpleDateFormat(businessDetail?.business?.createdAt);
+  };
+
+
   return (
     <>
       {componentLoader ? (
@@ -1057,9 +937,9 @@ export default function BusinessDetail() {
 
                             <h4 className="twm-job-title">
                               {businessDetail?.business?.name}
-                              <span className="twm-job-post-duration">
+                              <Link to={"/business"} state={{ id: businessDetail?.business?.Category?.id }} className="twm-job-post-duration">
                                 {"/" + businessDetail?.business?.Category?.name}
-                              </span>
+                              </Link>
                             </h4>
                             <p className="twm-job-address">
                               <i className="feather-map-pin"></i>
@@ -1074,12 +954,16 @@ export default function BusinessDetail() {
                                 >
                                   {businessDetail?.business?.website_url}
                                 </a>
+
                                 <a class="twm-job-title" onClick={copyReferral}>
                                   <div class="twm-jobs-vacancies">
                                     <span>
                                       <img src="images/Vector (3).svg" alt="" />
                                     </span>
+                                    {copy && <span>copied</span>}
+
                                   </div>
+
                                 </a>
                               </div>
                             </div>
@@ -1105,9 +989,19 @@ export default function BusinessDetail() {
                                       Created Date
                                     </span>
                                     <div className="twm-s-info-discription">
-                                      {businessDetail?.business?.createdAt?.split(
-                                        "T05:54:46.000Z"
-                                      )}
+                                      {
+                                        moment(
+                                          businessDetail?.business?.createdAt
+                                        ).format("MMMM Do YYYY")
+                                        // dateHandle(
+                                        //   businessDetail?.business?.createdAt
+                                        // )
+                                        // new Date(
+                                        //   businessDetail?.business?.createdAt.split(
+                                        //     " "
+                                        //   ).
+                                        // )
+                                      }
                                     </div>
                                   </div>
                                 </li>
@@ -1171,33 +1065,83 @@ export default function BusinessDetail() {
                         in culpa qui officia deserunt mollitia animi.
                       </p> */}
 
-                          <h4 className="twm-s-title">Share Profile</h4>
-                          {userId && <div className="twm-social-tags">
-                            <a
-                              href={`tel:${businessDetail?.business?.contact?.phone}`}
-                              className="fb-clr"
-                            >
-                              <i className="fas fa-phone-alt"></i>
-                            </a>
-                            <a
-                              href="mailto:email@example.com"
-                              className="tw-clr"
-                            >
-                              <i className="fas fa-envelope"></i>
-                            </a>
-                            <a
-                              href={`https://wa.me/${businessDetail?.business?.contact?.whatapp}`}
-                              className="whats-clr"
-                            >
-                              <i className="fab fa-whatsapp"></i>
-                            </a>
-                            <a
-                              href={"https://www.google.com/maps"}
-                              className="pinte-clr"
-                            >
-                              <i className="fas fa-map-marker-alt"></i>
-                            </a>
-                          </div>}
+                          {userId && <h4 className="twm-s-title">Share Profile</h4>}
+                          {userId && (
+                            <div className="twm-social-tags">
+                              <a
+                                href={`tel:${businessDetail?.business?.contact &&
+                                  JSON.parse(businessDetail?.business?.contact)
+                                    ?.phone
+                                  }`}
+                                className="fb-clr"
+                              >
+                                <i className="fas fa-phone-alt"></i>
+                              </a>
+
+                              <a
+                                target="_blank"
+                                // href="mailto:jeetsingh@gmail.com"
+                                href={`mailto:${businessDetail?.business?.contact &&
+                                  JSON.parse(businessDetail?.business?.contact)
+                                    ?.email
+                                  }`}
+                                className="tw-clr"
+                              >
+                                <i className="fas fa-envelope"></i>
+                              </a>
+
+                              <a
+                                target="_blank"
+                                href={`https://web.whatsapp.com/send?phone=${businessDetail?.business?.contact &&
+                                  JSON.parse(businessDetail?.business?.contact)
+                                    ?.whatsapp
+                                  }&text=Hello`}
+                                // href={`https://wa.me/${
+                                //   businessDetail?.business?.contact &&
+                                //   JSON.parse(businessDetail?.business?.contact)
+                                //     ?.whatapp
+                                // }`}
+                                // onClick={() =>
+                                //   whatsappSendHandler(
+                                //     businessDetail?.business?.contact &&
+                                //       JSON.parse(
+                                //         businessDetail?.business?.contact
+                                //       )?.whatapp
+                                //   )
+
+                                className="whats-clr"
+                              >
+                                <i className="fab fa-whatsapp"></i>
+                              </a>
+                              <a
+                                target="_blank"
+                                href={`https://www.google.com/maps/@${businessDetail?.business?.latitude},${businessDetail?.business?.longitude},15z`}
+                                className="pinte-clr"
+                              >
+                                <i className="fas fa-map-marker-alt"></i>
+                              </a>
+                              <a
+                                onClick={() =>
+                                  wishHandler(businessDetail?.business?.id)
+                                }
+                                className="pinte-clr"
+                              >
+                                {businessDetail?.wishlist === null && (
+                                  <i className="far fa-heart"></i>
+                                )}
+                                {businessDetail?.wishlist && (
+                                  <i className="fas fa-heart"></i>
+                                )}
+                              </a>
+                              <WhatsappShareButton
+                                url={`${businessDetail?.business?.website_url} image=${businessDetail?.business?.business_licence} Details=${businessDetail?.business?.description}`}
+                              >
+                                <a className="pinte-clr">
+                                  <i className="far fa-share-square"></i>
+                                </a>
+                              </WhatsappShareButton>
+                            </div>
+                          )}
 
                           <h4 className="twm-s-title">Location</h4>
                           <div className="twm-m-map mb-5">
@@ -1216,7 +1160,7 @@ export default function BusinessDetail() {
                             </div>
                           </div>
 
-                          <h4 className="twm-s-title">Events</h4>
+                          {businessDetail?.business?.events?.length > 0 && <h4 className="twm-s-title">Events</h4>}
                           <div className="tw-sidebar-gallery-2">
                             <div className="row">
                               {businessDetail &&
@@ -1227,12 +1171,10 @@ export default function BusinessDetail() {
                                       <div className="tw-service-gallery-thumb">
                                         <a
                                           onClick={() => {
-                                            handleEventData(item.id)
-                                            toggleEventModal()
-                                          }
-                                          }
-                                          className=""
+                                            token ? handleEventData(item.id) : setShowLogin(!showLogin)
 
+                                          }}
+                                          className=""
                                         >
                                           <img
                                             src={JSON.parse(item?.image)[0]}
@@ -1247,7 +1189,7 @@ export default function BusinessDetail() {
                             </div>
                           </div>
 
-                          <h4 className="twm-s-title">Products</h4>
+                          {businessDetail?.business?.Products?.length > 0 && <h4 className="twm-s-title">Products</h4>}
                           <div className="tw-sidebar-gallery-2">
                             <div className="row">
                               {businessDetail?.business?.Products &&
@@ -1262,8 +1204,10 @@ export default function BusinessDetail() {
                                       <div className="tw-service-gallery-thumb">
                                         <a
                                           className=""
-                                          onClick={() =>
-                                            handleProductDetail(item.id)
+                                          onClick={() => {
+                                            token ? handleProductDetail(item?.id) : setShowLogin(!showLogin);
+
+                                          }
                                           }
                                         >
                                           <img
@@ -1298,7 +1242,7 @@ export default function BusinessDetail() {
               </div>
               {/* <!-- TITLE END--> */}
 
-              <div className="container">
+              < div className="container">
                 <div className="section-content">
                   <div className=" twm-related-jobs-carousel owl-btn-vertical-center">
                     {
@@ -1314,19 +1258,17 @@ export default function BusinessDetail() {
                           {businessDetail?.related_Business?.length > 0 &&
                             businessDetail?.related_Business?.map(
                               (item, key) => (
-                                <div
-                                  className="twm-jobs-grid-style2"
-                                  key={key}
-                                >
+                                <div className="twm-jobs-grid-style2" key={key}>
                                   <div className="twm-media">
                                     <img src={item?.business_licence} alt="#" />
                                   </div>
-                                  <span className="twm-job-post-duration">
+                                  <Link to={"/business"} state={{ id: item?.Category?.id }} className="twm-job-post-duration">
                                     {item?.Category?.name}
-                                  </span>
+                                  </Link>
                                   <div className="twm-mid-content">
-                                    <Link to={`/businessdetail?id=${item?.id}`} state={{ id: item?.id }}
-
+                                    <Link
+                                      to={`/businessdetail?id=${item?.id}`}
+                                      state={{ id: item?.id }}
                                       className="twm-job-title"
                                     >
                                       <h4>{item?.name}</h4>
@@ -1336,10 +1278,7 @@ export default function BusinessDetail() {
                                     </p>
                                   </div>
                                   <div className="twm-right-content justify-content-center">
-                                    <a
-
-                                      className="twm-jobs-browse site-text-primary"
-                                    >
+                                    <a className="twm-jobs-browse site-text-primary">
                                       {item?.distance.toFixed(2) +
                                         " " +
                                         "KM Nearby you"}
@@ -1403,25 +1342,26 @@ export default function BusinessDetail() {
                           </div>
                         ))}
                     </OwlCarousel>
-
                   </div>
-
                 </div>
               </div>
 
               <div className="description mt-3 position-relative">
                 <div className="share-icons">
-                  <span className="btn share">
-                    <i className="far fa-heart"></i>
-                  </span>
+                  <span className="btn share" onClick={() => handleWishListProduct(product?.data?.id)}>
+                    {product?.wishlist === null && (
+                      <i className="far fa-heart"></i>
+                    )}
+
+                    {product?.wishlist && <i className="fas fa-heart"> </i>}                  </span>
                   <span className="btn">
-                    <WhatsappShareButton url={product?.url}>
+                    <WhatsappShareButton url={product?.data?.url}>
                       <i className="far fa-share-square"></i>
                     </WhatsappShareButton>
                   </span>
                 </div>
-                <h5>{product?.name}</h5>
-                <p>{product?.description}</p>
+                <h5>{product?.data?.name}</h5>
+                <p>{product?.data?.description}</p>
                 {/* <p>
               Mi volutpat ornare euismod, arcu aliquam curabitur himenaeos
               curabitur, faucibus nisi.
@@ -1439,16 +1379,23 @@ export default function BusinessDetail() {
                   ))}
                 <div className="d-flex align-items-center justify-content-between">
                   <h5>Price </h5>
-                  <h5>{"BD" + " " + product.price}</h5>
+                  <h5>{"BD" + " " + product?.data?.price}</h5>
                 </div>
                 <div className="text-end">
-                  <button
-                    type="submit"
-                    className="site-button"
-                    style={{ width: "auto", marginLeft: "auto" }}
+                  <WhatsappShareButton
+                    url={`image=${product?.data?.images &&
+                      JSON.parse(product?.data?.images)?.[0]
+                      } name=${product?.data?.name}price=${product?.price
+                      }description=${product?.data?.description}`}
                   >
-                    Book Now
-                  </button>
+                    <a
+                      // type="submit"
+                      className="site-button"
+                      style={{ width: "auto", marginLeft: "auto" }}
+                    >
+                      Book Now
+                    </a>
+                  </WhatsappShareButton>
                 </div>
               </div>
             </ModalBody>
@@ -1501,9 +1448,20 @@ export default function BusinessDetail() {
               </div>
               <div className="description mt-3 position-relative">
                 <div className="share-icons">
-                  <span className="btn share">
-                    {wishListColor == null && <i className={`${'far fa-heart'}`} onClick={() => handleWishList(product?.id)}></i>}
-                    {wishListColor && <i className={`fas fa-heart ${wishListColor?.id && ""}  `} onClick={() => handleWishList(product?.id)}></i>}                  </span>
+                  <span className="btn share" onClick={() => handleWishList(eventData?.id)}>
+                    {eventWishList?.wishlist == null && (
+                      <i
+                        className={`${"far fa-heart"}`}
+
+                      ></i>
+                    )}
+                    {eventWishList?.wishlist && (
+                      <i
+                        className={`fas fa-heart `}
+                      // onClick={() => handleWishList(product?.id)}
+                      ></i>
+                    )}{" "}
+                  </span>
                   <span className="btn">
                     <i className="far fa-share-square"></i>
                   </span>
@@ -1544,110 +1502,9 @@ export default function BusinessDetail() {
           {/* <!-- Business Event Modal end here... --> */}
 
           <Footer />
+          {showLogin && <Login toggle={toggleshowLogin} />}
         </div>
       )}
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

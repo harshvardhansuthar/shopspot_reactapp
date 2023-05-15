@@ -68,11 +68,10 @@ export default function Activity(props) {
   const [componentLoader, setComponentLoader] = useState(true);
 
   useEffect(() => {
-    setComponentLoader(true)
+    setComponentLoader(true);
     GetDataWithToken("auth/get-activity").then((res) => {
       setActivityData(res.data);
-      setComponentLoader(false)
-
+      setComponentLoader(false);
     });
   }, []);
 
@@ -120,7 +119,9 @@ export default function Activity(props) {
                               <a href="#">{item?.Business?.name}</a>
                               <h5>{item?.Business?.Category?.name}</h5>
                             </div>
-                            <h4 className="mb-0">{timeFormet(item?.createdAt)}</h4>
+                            <h4 className="mb-0">
+                              {timeFormet(item?.createdAt)}
+                            </h4>
                           </div>
                         </div>
                       ))}

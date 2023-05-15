@@ -1,7 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import Login from "../Auth/Login";
 export default function Footer() {
+
+  const [showLogin, setShowLogin] = useState(false);
+  const toggleshowLogin = () => setShowLogin(!showLogin);
+  const token = Cookies.get("token")
+  const navigate = useNavigate();
+
   return (
     <>
       {/* <!-- FOOTER START --> */}
@@ -56,7 +63,7 @@ export default function Footer() {
                     <div className="widget widget_services ftr-list-center">
                       <ul>
                         <li>
-                          <Link to={"/profile"}>Profile</Link>
+                          <a onClick={() => { token ? navigate("/profile") : setShowLogin(!showLogin) }}>Profile</a>
                         </li>
 
                         <li>
@@ -64,7 +71,7 @@ export default function Footer() {
                         </li>
 
                         <li>
-                          <a>FAQs</a>
+                          <a onClick={() => { token ? navigate("/profile") : setShowLogin(!showLogin) }} >FAQs</a>
                         </li>
 
                         <li>
@@ -86,7 +93,7 @@ export default function Footer() {
                         </li>
 
                         <li>
-                          <a>Business details</a>
+                          <Link to={"/business"}> Business details</Link>
                         </li>
                       </ul>
                     </div>
@@ -127,6 +134,8 @@ export default function Footer() {
       <button className="scroltop">
         <span class="fa fa-angle-up relative" id="btn-vibrate"></span>
       </button>
+      {showLogin && <Login toggle={toggleshowLogin} />}
+
     </>
   );
 }

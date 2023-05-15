@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import InfoWindow from "react-google-maps/lib/components/InfoWindow";
 import {
   GoogleMap,
   LoadScript,
   Marker,
   useJsApiLoader,
   useLoadScript,
+  InfoWindow,
 } from "@react-google-maps/api";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -15,8 +15,8 @@ const containerStyle = {
   height: "440px",
 };
 const center = {
-  lat: 37.7749,
-  lng: -122.4194,
+  lat: 23.377556,
+  lng: 73.063889,
 };
 const redMarkerIcon = {
   url: "https://cdn-icons-png.flaticon.com/128/684/684908.png",
@@ -28,6 +28,8 @@ const redMarkerIcon = {
 export default function Map(props) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
+  const [showinfoIndex, setShowInfoIndex] = useState(0);
+  const [showInfoWindow, setShowInfoWindow] = useState(false);
 
   console.log("user location", props.userLocation);
   console.log("business details", props.businessDetail);
@@ -53,6 +55,12 @@ export default function Map(props) {
     lng: props?.latitude?.longitude,
   };
 
+  const divStyle = {
+    // background: `white`,
+    // border: `1px solid #ccc`,
+    padding: 8,
+  };
+
   const handleMouseOver = (business) => {
     setSelectedBusiness(business);
   };
@@ -66,33 +74,81 @@ export default function Map(props) {
 
   console.log("//////////////////////////////////", props);
 
-  const HandleShow = (item, businessDetail) => {
-    console.log("mjbń", item?.item?.latitude);
+  const onLoad = (infoWindow) => {
+    console.log("infoWindow: ", infoWindow);
+  };
+
+  const handleInfoWindow = (data) => {
+    console.log(data);
+    setShowInfoIndex(data);
+  };
+
+  const HandleShow = (item) => {
+    // setShowInfoIndex(data);
+    // // alert("");
+    // // console.log("mjbń", item?.item?.latitude);
+    // // console.log("cccData", item);
     return (
       <>
         <Marker
+          // clickable={true}
           position={{ lat: item?.item?.latitude, lng: item?.item?.longitude }}
           icon={redMarkerIcon}
-        />
+          onClick={() => handleInfoWindow(item?.item?.id)}
+        >
+          {item?.item && showinfoIndex && showinfoIndex === item?.item?.id && (
+            <InfoWindow
+              // onLoad={onLoad}
+              position={{
+                lat: item?.item?.latitude,
+                lng: item?.item?.longitude,
+              }}
+            >
+              <div style={divStyle}>
+                <h1>{item?.item?.name}</h1>
+              </div>
+            </InfoWindow>
+          )}
+        </Marker>
         <Marker
           position={{
             lat: props?.businessDetail?.lat,
             lng: props?.businessDetail?.lng,
           }}
+          onClick={handleInfoWindow}
           icon={redMarkerIcon}
-        ></Marker>
+        >
+          {props?.businessDetail && showInfoWindow && (
+            <InfoWindow
+              onCloseClick={() => {}}
+              onLoad={onLoad}
+              visible={showInfoWindow}
+              position={{
+                lat: props?.businessDetail?.lat,
+                lng: props?.businessDetail?.lng,
+              }}
+            >
+              <div style={divStyle}>
+                <h1>business</h1>
+              </div>
+            </InfoWindow>
+          )}
+        </Marker>
 
         <Marker position={props?.userLocation} icon={redMarkerIcon}></Marker>
 
-        <Marker position={{ lat: props?.freeLanceDetail?.freelance?.latitude, lng: props?.freeLanceDetail?.freelance?.longitude }} icon={redMarkerIcon}></Marker>
-
-
+        <Marker
+          position={{
+            lat: props?.freeLanceDetail?.freelance?.latitude,
+            lng: props?.freeLanceDetail?.freelance?.longitude,
+          }}
+          icon={redMarkerIcon}
+        ></Marker>
       </>
     );
   };
 
-  console.log(props)
-
+  console.log(props);
 
   const mapLoction = () => {
     if (props.businessDetail) {
@@ -104,8 +160,6 @@ export default function Map(props) {
     return currentLocation;
   };
 
-
-
   return (
     <>
       <div>
@@ -115,7 +169,7 @@ export default function Map(props) {
             //   src={`http://maps.google.com/maps?q=${props.userLocation.latitude},${props.userLocation.logitude}&z=16&output=embed`}
             //   height="450"
             //   width="600"
-            // >
+            // >0
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={mapLoction()}
@@ -124,19 +178,20 @@ export default function Map(props) {
               {props?.business?.business?.rows.length > 0 &&
                 props?.business?.business?.rows?.map((item, key) => (
                   <HandleShow item={item} />
-
-
                 ))}
               {/* This marker is business Detail page  */}
               {props?.businessDetail?.lat && (
-                <HandleShow businessDetail={props?.businessDetail} />
+                <div onClick={() => alert("jitu")}>
+                  <HandleShow
+                    businessDetail={props?.businessDetail}
+                    onClick={() => alert("jitu")}
+                  />
+                </div>
               )}
 
               {props?.userLocation && <HandleShow />}
 
               {props?.freeLanceDetail?.freelance?.latitude && <HandleShow />}
-
-
             </GoogleMap>
           ) : (
             // </iframe>
@@ -147,45 +202,3 @@ export default function Map(props) {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

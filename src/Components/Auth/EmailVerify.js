@@ -5,6 +5,7 @@ import { PostData } from "../../ApiHelper/ApiHelper";
 import { useNavigate } from "react-router-dom";
 import NewPassword from "./NewPassword";
 import Swal from "sweetalert2";
+
 export default function EmailVerify(props) {
   const [modalForgetPassword, setmodalForgetPassword] = useState(true);
   const toggleModalForgetPassword = () =>
@@ -22,17 +23,15 @@ export default function EmailVerify(props) {
   const handleVerifyEmail = (data) => {
     setEmail(data);
     PostData("auth/forget-password", data).then((res) => {
-      if (res) {
+      if (res?.status == true) {
         toggleModalForgetPassword();
         toggleModalNewPassword();
       } else {
         Swal.fire({
-          title: "User dose not exist",
+          title: "Error !",
+          text: `${res?.data?.message}`,
           icon: "error",
-          showCancelButton: true,
-          cancelButtonColor: "#d33",
-          confirmButtonColor: "rgb(0, 128, 0)",
-          confirmButtonText: "Ok",
+          showConfirmButton: true, // Set this option to false to remove the OK button
         });
       }
     });
@@ -119,7 +118,9 @@ export default function EmailVerify(props) {
         </ModalBody>
       </Modal>
       {/* <!--OTP popup --> */}
-      {modalNewPassword && <NewPassword toggle={()=>props.toggle()} email={email && email} />}
+      {modalNewPassword && (
+        <NewPassword toggle={() => props.toggle()} email={email && email} />
+      )}
     </>
   );
 }

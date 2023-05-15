@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { PostData } from "../../ApiHelper/ApiHelper";
 import Cookies from "js-cookie";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import SignUp from "./SignUp";
@@ -12,10 +11,9 @@ import EmailVerify from "./EmailVerify";
 import { useDispatch } from "react-redux";
 import { actionLoginStatus } from "../../store/Action";
 import { userDetail } from "../../store/Action";
-
+import Swal from "sweetalert2";
 
 export default function Login(props) {
-
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -24,10 +22,10 @@ export default function Login(props) {
   const [EmailVerifyModal, setEmailVerifyModal] = useState(false);
   const toggleEmailVerifyModal = () => setEmailVerifyModal(!EmailVerifyModal);
   const [userData, setUserData] = useState([]);
-
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
   const [modalSignupMap, setModalSignupMap] = useState(false);
   const toggleModalSignupMap = () => setModalSignupMap(!modalSignupMap);
-
 
   const clientId =
     "1056687895620-on8ip3n5m5j4f68i5jiuhg9iq3s7pace.apps.googleusercontent.com";
@@ -55,16 +53,29 @@ export default function Login(props) {
   }
   const handleLoginSubmit = (data) => {
     console.log(data);
+    setLoading(true);
     PostData("auth/login", data).then((response) => {
-      console.log(response);
       if (response?.status == true) {
+        Cookies.set("userDetails", response.user);
         Cookies.set("token", response?.user?.access_token);
         Cookies.set("userid", response?.user?.id);
-
+        Cookies.set("userName", response.user.name);
         setIsLogin(true);
-        dispatch(userDetail.userDetails(response.user));
+        Swal.fire("Success", response.message, "success");
+        dispatch(userDetail.userDetails(response?.user));
         dispatch(actionLoginStatus.loginStatus(true));
         toggleModal();
+        setLoading(false);
+        navigate("/")
+      } else {
+        console.log("ressss", response)
+        setLoading(false);
+        Swal.fire({
+          title: "Error !",
+          text: response?.data?.message,
+          icon: "error",
+          showConfirmButton: true, // Set this option to false to remove the OK button
+        })
       }
     });
   };
@@ -72,6 +83,7 @@ export default function Login(props) {
   const onSuccess = (response) => {
     console.log("Login success:", response);
     console.log(response);
+    // setLoading(true);
     if (response) {
       PostData("auth/google-login", { tokenId: response?.tokenId }).then(
         (responce) => {
@@ -79,8 +91,13 @@ export default function Login(props) {
           if (responce?.status === true) {
             Cookies.set("token", responce?.data?.access_token);
             setIsLogin(true);
+            // setLoading(false);
+            Swal.fire("Success", response.message, "success");
             dispatch(actionLoginStatus.loginStatus(true));
             toggleModal();
+          } else {
+            // setLoading(false);
+            Swal.fire("Login Failed", response.message, "Login Failed");
           }
         }
       );
@@ -97,14 +114,14 @@ export default function Login(props) {
         Modal
         className="modal-dialog modal-dialog-centered modal-lg twm-sign-up"
         isOpen={modal}
-        toggle={() => props?.toggle ? props.toggle() : toggleModal()}
+        toggle={() => (props?.toggle ? props.toggle() : toggleModal())}
       >
         <div className="modal-header mt-0 py-0">
           <button
             type="button"
             classNameName="btn-close"
             onClick={() => {
-              props.toggle ? props?.toggle() : toggleModal()
+              props.toggle ? props?.toggle() : toggleModal();
             }}
           ></button>
         </div>
@@ -135,7 +152,7 @@ export default function Login(props) {
                           type="text"
                           required=""
                           className="form-control"
-                          placeholder="Usearname*"
+                          placeholder="Email*"
                           {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -202,7 +219,6 @@ export default function Login(props) {
                                 toggleModal();
                                 toggleEmailVerifyModal();
                               }}
-
                             >
                               Forgot Password ?
                             </Link>
@@ -216,7 +232,11 @@ export default function Login(props) {
                         className="site-button py-2"
                         style={{ width: "auto" }}
                       >
-                        Log in
+                        {loading == true ? (
+                          <span className="spinner-border text-light spinner-border-sm"></span>
+                        ) : (
+                          "Login"
+                        )}
                       </button>
                       <div className="mt-3 mb-3">
                         Don't have an account ?
@@ -261,6 +281,3 @@ export default function Login(props) {
     </>
   );
 }
-
-
-
