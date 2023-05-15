@@ -742,7 +742,7 @@ export default function BusinessDetail() {
   const [eventData, setEventData] = useState([]);
   const [eventWishList, setEventWishList] = useState([]);
   const [copy, setCopy] = useState(false);
-
+  const [reletedBusiness, setReletedBusiness] = useState([]);
   const [componentLoader, setComponentLoader] = useState(true);
   const [businessDetail, setBusinessDetail] = useState([]);
   const location1 = useSelector((state) => state?.loctionn?.action?.location);
@@ -786,6 +786,16 @@ export default function BusinessDetail() {
         setCallApi(false);
         setBusinessDetail(res.data);
         setComponentLoader(false);
+        let arr = [];
+        for (let i = 0; i < res?.data?.related_Business?.length; i++) {
+          console.log(res?.data?.business?.id);
+          console.log(res?.data?.related_Business[i]?.id);
+
+          if (res?.data?.related_Business[i]?.id != res?.data?.business?.id) {
+            arr.push(res?.data?.related_Business[i]);
+          }
+        }
+        setReletedBusiness(arr);
       });
     }
   }, [callApi, location1]);
@@ -1232,32 +1242,32 @@ export default function BusinessDetail() {
             {/* <!-- Job Detail V.2 END --> */}
 
             {/* <!-- Related Jobs START --> */}
-            <div className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
-              {/* <!-- TITLE START--> */}
-              <div className="section-head center wt-small-separator-outer">
-                <div className="wt-small-separator site-text-primary">
-                  <div>Top Business</div>
+            {reletedBusiness?.length > 0 && (
+              <div className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
+                {/* <!-- TITLE START--> */}
+                <div className="section-head center wt-small-separator-outer">
+                  <div className="wt-small-separator site-text-primary">
+                    <div>Top Business</div>
+                  </div>
+                  <h2 className="wt-title">Related Business</h2>
                 </div>
-                <h2 className="wt-title">Related Business</h2>
-              </div>
-              {/* <!-- TITLE END--> */}
+                {/* <!-- TITLE END--> */}
 
-              <div className="container">
-                <div className="section-content">
-                  <div className=" twm-related-jobs-carousel owl-btn-vertical-center">
-                    {
-                      <div className="item">
-                        <OwlCarousel
-                          className="owl-theme"
-                          loop
-                          items={3}
-                          margin={10}
-                          nav
-                          navText={["<", ">"]}
-                        >
-                          {businessDetail?.related_Business?.length > 0 &&
-                            businessDetail?.related_Business?.map(
-                              (item, key) => (
+                <div className="container">
+                  <div className="section-content">
+                    <div className=" twm-related-jobs-carousel owl-btn-vertical-center">
+                      {
+                        <div className="item">
+                          <OwlCarousel
+                            className="owl-theme"
+                            loop
+                            items={3}
+                            margin={10}
+                            nav
+                            navText={["<", ">"]}
+                          >
+                            {reletedBusiness?.length > 0 &&
+                              reletedBusiness?.map((item, key) => (
                                 <div className="twm-jobs-grid-style2" key={key}>
                                   <div className="twm-media">
                                     <img src={item?.business_licence} alt="#" />
@@ -1289,15 +1299,15 @@ export default function BusinessDetail() {
                                     </a>
                                   </div>
                                 </div>
-                              )
-                            )}
-                        </OwlCarousel>
-                      </div>
-                    }
+                              ))}
+                          </OwlCarousel>
+                        </div>
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
             {/* <!-- Related Jobs END --> */}
           </div>
           {/* <!-- CONTENT END --> </> */}

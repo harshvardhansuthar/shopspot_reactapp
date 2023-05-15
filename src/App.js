@@ -22,10 +22,10 @@ function App() {
         const { latitude, longitude } = position.coords;
         localStorage.setItem(
           "loction",
-          JSON?.stringify({ latitude: latitude, longitude: longitude })
+          JSON.stringify({ latitude: latitude, longitude: longitude })
         );
         const location =
-          JSON?.parse(window.localStorage.getItem("loction")) || {};
+          JSON.parse(window.localStorage.getItem("loction")) || {};
         dispatch(actionLoction.loction({ location }));
       },
       (error) => console.error(error)
@@ -37,7 +37,7 @@ function App() {
 
   useEffect(() => {
     if (con) {
-      localStorage.setItem("countryName", JSON?.stringify(con));
+      localStorage.setItem("countryName", JSON.stringify(con));
       Cookies.set("country", con);
     }
 
@@ -47,7 +47,7 @@ function App() {
 
     if (countryNameString) {
       try {
-        countryName = JSON?.parse(countryNameString);
+        countryName = JSON.parse(countryNameString);
       } catch (error) {
         console.error(error);
       }
