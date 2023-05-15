@@ -742,7 +742,7 @@ export default function BusinessDetail() {
   const [eventData, setEventData] = useState([]);
   const [eventWishList, setEventWishList] = useState([]);
   const [copy, setCopy] = useState(false)
-
+  const [reletedBusiness, setReletedBusiness] = useState([])
   const [componentLoader, setComponentLoader] = useState(true);
   const [businessDetail, setBusinessDetail] = useState([]);
   const location1 = useSelector((state) => state?.loctionn?.action?.location);
@@ -788,6 +788,18 @@ export default function BusinessDetail() {
         setCallApi(false);
         setBusinessDetail(res.data);
         setComponentLoader(false);
+        let arr = []
+        for (let i = 0; i < res?.data?.related_Business?.length; i++) {
+          console.log(res?.data?.business?.id)
+          console.log(res?.data?.related_Business[i]?.id)
+
+          if (res?.data?.related_Business[i]?.id != res?.data?.business?.id) {
+            arr.push(res?.data?.related_Business[i])
+
+          }
+        }
+        setReletedBusiness(arr)
+
       });
     }
   }, [callApi, location1]);
@@ -1232,7 +1244,7 @@ export default function BusinessDetail() {
             {/* <!-- Job Detail V.2 END --> */}
 
             {/* <!-- Related Jobs START --> */}
-            <div className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
+            {reletedBusiness?.length > 0 && <div className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
               {/* <!-- TITLE START--> */}
               <div className="section-head center wt-small-separator-outer">
                 <div className="wt-small-separator site-text-primary">
@@ -1255,8 +1267,8 @@ export default function BusinessDetail() {
                           nav
                           navText={["<", ">"]}
                         >
-                          {businessDetail?.related_Business?.length > 0 &&
-                            businessDetail?.related_Business?.map(
+                          {reletedBusiness?.length > 0 &&
+                            reletedBusiness?.map(
                               (item, key) => (
                                 <div className="twm-jobs-grid-style2" key={key}>
                                   <div className="twm-media">
@@ -1293,7 +1305,7 @@ export default function BusinessDetail() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div>}
             {/* <!-- Related Jobs END --> */}
           </div>
           {/* <!-- CONTENT END --> </> */}

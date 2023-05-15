@@ -13,6 +13,8 @@ export default function CarrerDetail() {
     const [careerdetail, setCareerDetail] = useState({})
     const [otherInfo, setOtherInfo] = useState({})
     const [componentLoader, setComponentLoader] = useState(true);
+    const [reletedCarrer, setReletedCareer] = useState([])
+
 
     const id = useLocation()
 
@@ -26,6 +28,19 @@ export default function CarrerDetail() {
                 setCareerDetail(res.data)
                 setComponentLoader(false)
             }
+
+            let arr = []
+            for (let i = 0; i < res?.data?.career?.length; i++) {
+                console.log(res?.data?.business?.id)
+                console.log(res?.data?.career[i]?.id)
+
+                if (res?.data?.career[i]?.id != res?.data?.career?.id) {
+                    arr.push(res?.data?.career[i])
+
+                }
+            }
+            console.log("fghjklkjhgfghjklkjhgfghjklkjhgfghjkjhgchjkjhgfghjkjhgfd", arr)
+            setReletedCareer(arr)
         })
     }, [])
     console.log('....................', careerdetail)
@@ -122,7 +137,7 @@ export default function CarrerDetail() {
                         {/* <!-- Career Detail END --> */}
 
                         {/* <!-- Related Career START --> */}
-                        <div
+                        {reletedCarrer?.length > 0 && <div
                             className="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap"
                         >
                             {/* <!-- TITLE START--> */}
@@ -154,9 +169,9 @@ export default function CarrerDetail() {
                                                 dots={false}
                                             >
                                                 <div>
-                                                    {careerdetail?.related_career &&
-                                                        careerdetail?.related_career?.length > 0 &&
-                                                        careerdetail?.related_career?.map((item, key) => (
+                                                    {
+                                                        reletedCarrer?.length > 0 &&
+                                                        reletedCarrer?.map((item, key) => (
                                                             <div className="hpage-6-featured-block">
                                                                 <div className="inner-content">
                                                                     <div className="mid-content">
@@ -188,7 +203,7 @@ export default function CarrerDetail() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         {/* <!-- Related Career END --> */}
                         <Footer />
                     </div>
