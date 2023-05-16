@@ -55,7 +55,9 @@ export default function VerifyOtp() {
     PostData("auth/verify-otp", verifyData).then((responce) => {
       console.log(responce);
       if (responce.status == true) {
+        Cookies.set("userid", responce?.user?.id);
         Cookies.set("token", responce.user.access_token);
+        Cookies.set("userName", responce.user.name);
         setLoading(false);
         Swal.fire({
           title: "Verified !",
@@ -86,6 +88,7 @@ export default function VerifyOtp() {
 
     PostData("auth/otp-resend", { email }).then((response) => {
       if (response.status === true) {
+
         Swal?.fire("OTP resend");
       } else {
         Swal?.fire(response?.message);

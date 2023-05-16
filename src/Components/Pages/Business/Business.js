@@ -26,6 +26,7 @@ export default function Business() {
   const [callApi, setCallApi] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const id = useLocation();
+
   console.log(location);
   const {
     register,
@@ -81,7 +82,7 @@ export default function Business() {
   const submitHandler = (data) => {
     console.log(data);
     GetData(
-      `business/filters?name=${data?.name}&CategoryId=${data?.categoryId}&type=${data?.type}&min_distance=${data?.radius1}&max_distance=${data?.radius2}&address=${suggestionValue}&lat=${location.latitude}&lng=${location.longitude}`
+      `business/filters?name=${data?.name}&CategoryId=${data?.categoryId}&type=${data?.type}&min_distance=${data?.radius1}&max_distance=${data?.radius2}&address=${suggestionValue ? suggestionValue : ''}&lat=${location.latitude}&lng=${location.longitude}&country=${countryNameRedux}`
     ).then((response) => {
       if (response.status === true) {
         setBusiness(response.data);
@@ -174,7 +175,7 @@ export default function Business() {
                                         type="text"
                                         placeholder="Type Title"
                                         {...register("name", {
-                                          required: "value is required",
+                                          // required: "value is required",
                                         })}
                                       />
                                       <i className="fs-input-icon fa fa-address-card"></i>
@@ -194,7 +195,7 @@ export default function Business() {
                                         id="j-category"
                                         data-bv-field="size"
                                         {...register("categoryId", {
-                                          required: "value is required",
+                                          // required: "value is required",
                                         })}
                                       >
                                         <option disabled selected value="">
@@ -223,7 +224,7 @@ export default function Business() {
                                         id="s-category"
                                         data-bv-field="size"
                                         {...register("type", {
-                                          required: "value is required",
+                                          // required: "value is required",
                                         })}
                                       >
                                         <option
@@ -385,7 +386,7 @@ export default function Business() {
 
                         <div className="pagination-outer">
                           <div className="pagination-style1">
-                            <ul className="clearfi'x">
+                            {business?.totalPages?.length > 0 && <ul className="clearfi'x">
                               <li className="prev">
                                 <a
                                   // className={classActive == 1 ? "d-none" : ""}
@@ -455,7 +456,7 @@ export default function Business() {
                                   </span>
                                 </a>
                               </li>
-                            </ul>
+                            </ul>}
                           </div>
                         </div>
                       </div>

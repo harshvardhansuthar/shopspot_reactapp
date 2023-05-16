@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import {
   GetData,
   GetDataWithToken,
@@ -13,7 +14,7 @@ export default function ProfileForm(props) {
   const [componentLoader, setComponentLoader] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [loction, setLoction] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
 
 
@@ -34,6 +35,7 @@ export default function ProfileForm(props) {
       post_code: props?.userData?.post_code,
       country_name: props?.userData?.country,
     });
+    setQuery(props?.userData?.full_address)
   }, [props])
 
 
@@ -79,7 +81,9 @@ export default function ProfileForm(props) {
     setComponentLoader(true)
     PostDataWithToken("auth/edit-profile", allData).then((res) => {
       if (res?.status == true) {
+        Cookies.set("userName", data?.name);
         setComponentLoader(false)
+
       }
     });
   };
@@ -292,7 +296,10 @@ export default function ProfileForm(props) {
                           type="text"
                           value={query}
                           placeholder="Loaction"
-                          onChange={async (e) => await setQuery(e.target.value)}
+                          onChange={async (e) => {
+                            await setQuery(e.target.value)
+                            setShowSuggestions(true)
+                          }}
                         // {...register("address", {
                         // })}
                         />

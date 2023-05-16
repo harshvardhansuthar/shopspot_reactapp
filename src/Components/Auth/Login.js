@@ -89,12 +89,17 @@ export default function Login(props) {
         (responce) => {
           console.log(responce);
           if (responce?.status === true) {
+            Cookies.set("userDetails", responce?.data.user);
             Cookies.set("token", responce?.data?.access_token);
+            Cookies.set("userid", responce?.data?.id);
+            Cookies.set("userName", responce.data.name);
             setIsLogin(true);
-            // setLoading(false);
-            Swal.fire("Success", response.message, "success");
+            Swal.fire("Success", responce.message, "success");
+            dispatch(userDetail.userDetails(responce?.data?.user));
             dispatch(actionLoginStatus.loginStatus(true));
             toggleModal();
+            setLoading(false);
+            navigate("/")
           } else {
             // setLoading(false);
             Swal.fire("Login Failed", response.message, "Login Failed");

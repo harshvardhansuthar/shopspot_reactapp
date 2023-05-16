@@ -9,6 +9,7 @@ import {
 } from "@react-google-maps/api";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const containerStyle = {
   width: "100%",
@@ -99,17 +100,26 @@ export default function Map(props) {
           {item?.item && showinfoIndex && showinfoIndex === item?.item?.id && (
             <InfoWindow
               // onLoad={onLoad}
+              onCloseClick={() => setShowInfoIndex(0)}
               position={{
                 lat: item?.item?.latitude,
                 lng: item?.item?.longitude,
               }}
             >
-              <div style={divStyle}>
-                <h1>{item?.item?.name}</h1>
+              <div className="map-box"><Link className="listing-img-container">
+                <img src={item?.item?.business_licence} alt="" />
+                <div className="listing-item-content"><h3>{item?.item?.name}</h3>
+                  <span>{item?.item?.address}</span>
+                </div>
+              </Link>
               </div>
+
+              {/* <div style={divStyle}>
+                <h1>{item?.item?.name}</h1>
+              </div> */}
             </InfoWindow>
           )}
-        </Marker>
+        </Marker >
         <Marker
           position={{
             lat: props?.businessDetail?.lat,
@@ -120,7 +130,7 @@ export default function Map(props) {
         >
           {props?.businessDetail && showInfoWindow && (
             <InfoWindow
-              onCloseClick={() => {}}
+              onCloseClick={() => { }}
               onLoad={onLoad}
               visible={showInfoWindow}
               position={{

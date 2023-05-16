@@ -583,7 +583,7 @@ export default function SignUp(props) {
                       <div className="form-group mb-3">
                         <input
                           name="email"
-                          type="text"
+                          type="password"
                           className="form-control"
                           required=""
                           placeholder="Password*"

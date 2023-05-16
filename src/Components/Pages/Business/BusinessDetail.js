@@ -835,8 +835,9 @@ export default function BusinessDetail() {
       toggleEventModal();
 
       let time = JSON.parse(res?.data?.event?.time);
-      toggleEventModal();
       setFormetTime(time);
+      toggleEventModal();
+
     });
   };
 
@@ -911,6 +912,7 @@ export default function BusinessDetail() {
     //  DateFormat dateFormat = new SimpleDateFormat(businessDetail?.business?.createdAt);
   };
 
+  console.log("////////dgfghjhgfghjkjhgvghjkjhgvhjhgfhjhgfo", formetTime)
 
   return (
     <>
@@ -1091,12 +1093,12 @@ export default function BusinessDetail() {
                               </a>
 
                               <a
-                                target="_blank"
-                                // href="mailto:jeetsingh@gmail.com"
-                                href={`mailto:${businessDetail?.business?.contact &&
-                                  JSON.parse(businessDetail?.business?.contact)
-                                    ?.email
-                                  }`}
+                                target="blank"
+                                href="mailto:jeetsingh@gmail.com"
+                                // href={`mailto:${businessDetail?.business?.contact &&
+                                //   JSON.parse(businessDetail?.business?.contact)
+                                //     ?.email
+                                //   }`}
                                 className="tw-clr"
                               >
                                 <i className="fas fa-envelope"></i>
@@ -1108,18 +1110,6 @@ export default function BusinessDetail() {
                                   JSON.parse(businessDetail?.business?.contact)
                                     ?.whatsapp
                                   }&text=Hello`}
-                                // href={`https://wa.me/${
-                                //   businessDetail?.business?.contact &&
-                                //   JSON.parse(businessDetail?.business?.contact)
-                                //     ?.whatapp
-                                // }`}
-                                // onClick={() =>
-                                //   whatsappSendHandler(
-                                //     businessDetail?.business?.contact &&
-                                //       JSON.parse(
-                                //         businessDetail?.business?.contact
-                                //       )?.whatapp
-                                //   )
 
                                 className="whats-clr"
                               >
@@ -1394,20 +1384,19 @@ export default function BusinessDetail() {
                   <h5>{"BD" + " " + product?.data?.price}</h5>
                 </div>
                 <div className="text-end">
-                  <WhatsappShareButton
-                    url={`image=${product?.data?.images &&
-                      JSON.parse(product?.data?.images)?.[0]
-                      } name=${product?.data?.name}price=${product?.price
-                      }description=${product?.data?.description}`}
-                  >
-                    <a
-                      // type="submit"
-                      className="site-button"
-                      style={{ width: "auto", marginLeft: "auto" }}
+                  <div className="d-flex align-items-center justify-content-end">
+
+                    <a className="site-button w-auto"
+                      target="_blank"
+                      href={`https://web.whatsapp.com/send?phone=${product?.data?.Business?.contact &&
+                        JSON.parse(product?.data?.Business?.contact)?.whatsapp
+
+                        }&text=Hello  product name${product?.data?.name}  address${product?.data?.full_address} `}
                     >
                       Book Now
                     </a>
-                  </WhatsappShareButton>
+
+                  </div>
                 </div>
               </div>
             </ModalBody>
@@ -1474,9 +1463,18 @@ export default function BusinessDetail() {
                       ></i>
                     )}{" "}
                   </span>
-                  <span className="btn">
-                    <i className="far fa-share-square"></i>
-                  </span>
+
+                  <WhatsappShareButton
+                    url={`${businessDetail?.business?.website_url} image=${eventDataImage[0]} Details=${eventData?.description}`}
+                  >
+                    <span className="btn">
+                      <i className="far fa-share-square"></i>
+                    </span>
+                  </WhatsappShareButton>
+
+
+                  <i className="far fa-share-square"></i>
+
                 </div>
                 <h5>{eventData?.name}</h5>
                 <p>{"Artist:" + "  " + eventData?.artists}</p>
@@ -1504,9 +1502,17 @@ export default function BusinessDetail() {
                 </div>
                 <p>{eventData?.description}</p>
                 <div className="d-flex align-items-center justify-content-end">
-                  <button type="submit" className="site-button w-auto">
+
+                  <a className="site-button w-auto"
+                    target="_blank"
+                    href={`https://web.whatsapp.com/send?phone=${eventData?.contact &&
+                      JSON.parse(eventData?.contact)?.whasapp
+
+                      }&text=Hello  eventName${eventData?.name}  address${eventData?.full_address} `}
+                  >
                     Book Now
-                  </button>
+                  </a>
+
                 </div>
               </div>
             </ModalBody>

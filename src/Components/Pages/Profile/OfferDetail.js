@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { GetDataWithToken } from "../../../ApiHelper/ApiHelper";
 import Loder from "../../commen/Loder";
+import Swal from "sweetalert2";
 
 export default function OfferDetail(props) {
   const [coupenCode, setCoupenCode] = useState(null)
   const [componentLoader, setComponentLoader] = useState(false);
 
   const handleGenerateCoupen = () => {
-    setComponentLoader(true);
+    // setComponentLoader(true);
     GetDataWithToken(`offer/generate-offer/${props?.OfferDetailData?.id}`).then((res) => {
       console.log(res)
-      if (res?.status == true) {
-        setCoupenCode(res.data)
-        setComponentLoader(false)
-      }
+      setCoupenCode(res)
+
     })
   }
+
+  console.log(coupenCode)
   return (
     <>
       {componentLoader ? (
@@ -89,7 +90,7 @@ export default function OfferDetail(props) {
               </ul>
               <div className="text-end">
                 {coupenCode && <button type="submit" className="site-button outline-primary me-2">
-                  {coupenCode?.coupon_code}
+                  {coupenCode?.data?.coupon_code ? coupenCode?.data?.coupon_code : coupenCode?.message}
                 </button>}
                 <button type="submit" className="site-button" onClick={handleGenerateCoupen}>
                   Avail for {props?.OfferDetailData?.points} points

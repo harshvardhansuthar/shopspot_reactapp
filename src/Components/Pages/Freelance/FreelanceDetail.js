@@ -10,6 +10,7 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import Loder from "../../commen/Loder";
+import { Modal, ModalBody } from "reactstrap";
 
 
 export default function FreelanceDetail() {
@@ -21,6 +22,8 @@ export default function FreelanceDetail() {
   const reduxCountryName = useSelector((state) => state?.countryName?.action);
   const [componentLoader, setComponentLoader] = useState(true);
   const [reletedFreelance, setReletedFreelance] = useState([])
+  const [imageModal, setImageModal] = useState(false)
+  const toggleImageModal = () => setImageModal(!imageModal)
 
 
 
@@ -237,41 +240,11 @@ export default function FreelanceDetail() {
                               {images && images?.length > 0 && images.map((item, key) => (<div className="col-lg-3 col-md-3 col-sm-6">
                                 <div className="tw-service-gallery-thumb">
                                   <a className="" key={key}>
-                                    <img src={item} alt="" />
+                                    <img src={item} alt="" onClick={() => toggleImageModal()} />
                                     <i className="fa fa-file-image"></i>
                                   </a>
                                 </div>
                               </div>))}
-
-                              {/* <div className="col-lg-3 col-md-3 col-sm-6">
-                            <div className="tw-service-gallery-thumb">
-                              <a className="" href="#">
-                                <img src="images/Rectangle 204.png" alt="" />
-                                <i className="fa fa-file-image"></i>
-                              </a>
-                            </div>
-                          </div> */}
-
-                              {/* <div className="col-lg-3 col-md-3 col-sm-6">
-                            <div className="tw-service-gallery-thumb">
-                              <a className="" href="#">
-                                <img src="images/Rectangle 205.png" alt="" />
-                                <i className="fa fa-file-image"></i>
-                              </a>
-                            </div>
-                          </div> */}
-
-                              {/* <div className="col-lg-3 col-md-3 col-sm-6">
-                            <div className="tw-service-gallery-thumb">
-                              <a className="" href="#">
-                                <img
-                                  src="images/gallery/thumb/pic4.jpg"
-                                  alt=""
-                                />
-                                <i className="fa fa-file-image"></i>
-                              </a>
-                            </div>
-                          </div> */}
                             </div>
                           </div>
 
@@ -355,6 +328,54 @@ export default function FreelanceDetail() {
             </div>}
             {/* <!-- Related Freelance END --> */}
             <Footer />
+
+
+
+            <Modal
+              Modal
+              className="modal-dialog-centered product-details-modal twm-sign-up"
+              id="EventModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+              isOpen={imageModal}
+              toggle={toggleImageModal}
+            >
+              <ModalBody>
+                <div className="product-details">
+                  <div id="EventCarousel" className="carousel slide">
+                    <div className="carousel-inner">
+                      <OwlCarousel
+                        className="owl-theme"
+                        loop
+                        items={1}
+                        margin={10}
+                        nav
+                        navText={[
+                          `<i class="fas fa-chevron-left"></i>`,
+                          `<i class="fas fa-chevron-right"></i>`,
+                        ]}
+                        autoPlay={true}
+                        autoplayTimeout={3000}
+                        dots={false}
+                      >
+                        {images && images?.length > 0 && images.map((item, key) => (
+                          <div className="carousel-item shadow-sm active">
+                            <img
+                              src={item}
+                              className="d-block w-100"
+                              alt="..."
+                            />
+                          </div>
+                        ))}
+                      </OwlCarousel>
+                    </div>
+                  </div>
+                </div>
+              </ModalBody>
+            </Modal>
+
+
           </div>
           {/* <!-- CONTENT END --></>   */}
         </>

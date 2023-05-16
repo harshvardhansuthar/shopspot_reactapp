@@ -60,7 +60,7 @@ export default function ReferEarnPoint(props) {
                             </div>
                             <div className="twm-jobs-vacancies">
                               <a
-                                href="Refer&Earn-Point.html"
+                                // href="Refer&Earn-Point.html"
                                 className="twm-job-title"
                               >
                                 <div className="twm-jobs-vacancies">
@@ -69,7 +69,7 @@ export default function ReferEarnPoint(props) {
                                 </div>
                               </a>
                               <a
-                                href="Refer&Earn-Point.html"
+                                // href="Refer&Earn-Point.html"
                                 className="twm-job-title"
                               >
                                 <div className="twm-jobs-vacancies">
@@ -94,7 +94,7 @@ export default function ReferEarnPoint(props) {
                             </div>
                             <div className="twm-jobs-vacancies">
                               <a
-                                href="Refer&Earn-Point.html"
+                                // href="Refer&Earn-Point.html"
                                 className="twm-job-title"
                               >
                                 <div className="twm-jobs-vacancies">
@@ -102,7 +102,7 @@ export default function ReferEarnPoint(props) {
                                 </div>
                               </a>
                               <a
-                                href="Refer&Earn-Point.html"
+                                // href="Refer&Earn-Point.html"
                                 className="twm-job-title"
                               >
                                 <div className="twm-jobs-vacancies">
@@ -123,7 +123,7 @@ export default function ReferEarnPoint(props) {
                   <h5>Available gift items for you</h5>
                   <a href="Refer&Earn-Point.html" className="twm-job-title">
                     <div className="twm-jobs-vacancies">
-                      <span>Show all</span>
+                      {/* <span>Show all</span> */}
                     </div>
                   </a>
                 </div>
@@ -138,7 +138,7 @@ export default function ReferEarnPoint(props) {
                             <div className="twm-media">
                               <div className="twm-media-pic">
                                 <img
-                                  src={JSON.parse(item?.Product?.images)[0]}
+                                  src={item?.Product?.images && JSON.parse(item?.Product?.images)[0]}
                                   alt="#"
                                 />
                               </div>
