@@ -407,9 +407,9 @@ export default function Header(props) {
                       )}
                     </div>
                     <div className="twm-nav-btn-right">
-                      <a className="twm-nav-post-a-job">
+                      <Link className="twm-nav-post-a-job">
                         <i className="feather-briefcase"></i> Become a Vendor
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -789,6 +789,9 @@ export default function Header(props) {
       </header>
 
       {modal && <Login toggle={() => toggleModal()} />}
+
+      {/* <!-- Country popup start here... --> */}
+
       {
         <Modal
           Modal
@@ -863,9 +866,29 @@ export default function Header(props) {
           </ModalBody>
         </Modal>
       }
-      {/* <!-- Country popup start here... --> */}
 
       {/* <!-- Country popup end here... --> */}
+
+      {/* Become Vendor popup start here... */}
+      {/* <Modal
+        className="modal-dialog modal-dialog-centered modal-lg twm-sign-up"
+        isOpen={modal}
+        // toggle={toggleBecomeModal}
+        toggle={() => {
+          toggleBecomeModal();
+        }}
+      >
+        <div class="modal-header mt-0 py-0">
+          <button
+            type="button"
+            class="btn-close"
+            onClick={() => {
+              props.toggle ? props?.toggle() : toggleModal();
+            }}
+          ></button>
+        </div>
+        <ModalBody className="p-0"></ModalBody>
+      </Modal> */}
       {/* {<SignUp/>} */}
       {/* <!-- HEADER END --> */}
     </>
