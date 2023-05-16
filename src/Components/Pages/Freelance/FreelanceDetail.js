@@ -27,7 +27,7 @@ export default function FreelanceDetail() {
 
   useEffect(() => {
     setComponentLoader(true)
-    GetDataWithToken(`freelance/frelance-details/${id?.state?.id}?freelanceId=${id?.state?.id}&userid=${userId}`).then((res) => {
+    GetDataWithToken(`freelance/frelance-details/${id?.state?.id}?freelanceId=${id?.state?.id}&userId=${userId}`).then((res) => {
       console.log(res)
       if (res?.status == true) {
         let info = JSON.parse(res?.data?.freelance?.info)
@@ -79,9 +79,9 @@ export default function FreelanceDetail() {
                                     <h4 className="twm-job-title">
                                       {freeLanceData?.freelance?.name}
                                       <br />
-                                      <span className="twm-job-post-duration">
+                                      <Link to={"/business"} state={{ id: freeLanceData?.freelance?.Category?.id }} className="twm-job-post-duration">
                                         {freeLanceData?.freelance?.Category?.name}
-                                      </span>
+                                      </Link>
                                     </h4>
                                   </div>
                                 </div>

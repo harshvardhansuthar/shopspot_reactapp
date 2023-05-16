@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import { GetData, PostData } from "../../ApiHelper/ApiHelper";
@@ -81,43 +81,35 @@ export default function VerifyOtp() {
 
 
   const resendHandler = () => {
-    setTimeout(() => {
-      setResendState(false);
-      setDisable(false)
-      // setButtonDisabled(false);
-    }, 60000);
-
     setResendState(true);
-    PostData("auth/otp-resend", { email }).then((response) => {
-      if (response.status == true) {
-        Swal?.fire("OTP resend")
-        setResendState(false);
-        setDisable(true)
+    setDisable(true);
 
+    PostData("auth/otp-resend", { email }).then((response) => {
+      if (response.status === true) {
+        Swal?.fire("OTP resend");
       } else {
-        setResendState(false);
+        Swal?.fire(response?.message);
+
       }
     });
 
-    let timer;
-    if (countdown > 0) {
-      timer = setInterval(() => {
-        if (countdown > 0) {
-          setCountdown(countdown = countdown - 1);
-        } else {
-          clearInterval();
+    let countdownValue = 60;
+    setCountdown(countdownValue);
 
-        }
-      }, 1000);
-    } else if (timer == 0) {
-      clearInterval()
-    }
+    const timer = setInterval(() => {
+      countdownValue--;
+      setCountdown(countdownValue);
 
-
-    // return () => {
-    //   clearInterval(timer);
-    // };
+      if (countdownValue <= 0) {
+        clearInterval(timer);
+        setResendState(false);
+        setDisable(false);
+      }
+    }, 1000);
   };
+
+
+
 
   return (
     <>
