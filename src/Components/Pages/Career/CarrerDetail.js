@@ -30,12 +30,12 @@ export default function CarrerDetail() {
             }
 
             let arr = []
-            for (let i = 0; i < res?.data?.career?.length; i++) {
+            for (let i = 0; i < res?.data?.related_career?.length; i++) {
                 console.log(res?.data?.business?.id)
                 console.log(res?.data?.career[i]?.id)
 
-                if (res?.data?.career[i]?.id != res?.data?.career?.id) {
-                    arr.push(res?.data?.career[i])
+                if (res?.data?.related_career[i]?.id != res?.data?.career?.id) {
+                    arr.push(res?.data?.related_career[i])
 
                 }
             }

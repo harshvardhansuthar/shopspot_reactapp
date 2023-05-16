@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 const token = Cookies.get("token");
 
-const serverUrl = "http://0.tcp.in.ngrok.io:13377";
+const serverUrl = "http://0.tcp.in.ngrok.io:10592";
 const middleUrl = "/api/v1/";
 
 var headers = {
@@ -39,7 +39,7 @@ export const GetData = (url) => {
 export function PostDataWithToken(url, data) {
   // body..
   //
-  Cookies?.get("token");
+  const token = Cookies?.get("token");
   let tokens = "";
   // if (cookie.load("telimedicineToken")) {
   //   tokens = cookie.load("telimedicineToken");

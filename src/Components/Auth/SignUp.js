@@ -427,6 +427,7 @@ export default function SignUp(props) {
         console.error("Error getting geolocation:", error);
       }
     );
+
     // fetch("http://0.tcp.in.ngrok.io:18544/api/v1/auth/countrys", {
     //   method: "get",
     //   headers: new Headers({
@@ -669,7 +670,9 @@ export default function SignUp(props) {
                           className="form-control"
                           required=""
                           placeholder="Date"
-                          max={new Date().toISOString().split("T")[0]}
+                          max="2000-01-01"
+                          // max={new Date(, 0, 31)}
+                          // initialDate={initialDate}
                           {...register("dob", {
                             required: "This field is required", // Add validation rule(s) here
                           })}
@@ -719,9 +722,9 @@ export default function SignUp(props) {
                           required=""
                           placeholder="Referral code"
                           {...register("refer_code", {
-                            minLength: {
+                            maxLength: {
                               value: 6,
-                              message: "refer code min length 6 Character",
+                              message: "refer code max length 6 Character",
                             },
                           })}
                         />
@@ -738,7 +741,11 @@ export default function SignUp(props) {
                     </div>
 
                     <div className="col-md-6">
-                      <button type="submit" className="site-button">
+                      <button
+                        type="submit"
+                        className="site-button"
+                        disabled={loading}
+                      >
                         {loading == true ? (
                           <span className="spinner-border text-light spinner-border-sm"></span>
                         ) : (

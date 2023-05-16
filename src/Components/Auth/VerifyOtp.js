@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import { GetData, PostData } from "../../ApiHelper/ApiHelper";
@@ -15,6 +15,9 @@ export default function VerifyOtp() {
   const location = useLocation();
   const email = location.state?.data?.email;
   const [resendState, setResendState] = useState(false);
+  const [disable, setDisable] = useState(false);
+  let [countdown, setCountdown] = useState(60); // Initial countdown value in seconds
+
   const {
     register,
     formState: { errors },
@@ -74,14 +77,29 @@ export default function VerifyOtp() {
 
   const resendHandler = () => {
     setResendState(true);
+    setDisable(true);
+
     PostData("auth/otp-resend", { email }).then((response) => {
-      if (response.status == true) {
+      if (response.status === true) {
         Swal?.fire("OTP resend");
-        setResendState(false);
       } else {
-        setResendState(false);
+        Swal?.fire(response?.message);
       }
     });
+
+    let countdownValue = 60;
+    setCountdown(countdownValue);
+
+    const timer = setInterval(() => {
+      countdownValue--;
+      setCountdown(countdownValue);
+
+      if (countdownValue <= 0) {
+        clearInterval(timer);
+        setResendState(false);
+        setDisable(false);
+      }
+    }, 1000);
   };
 
   return (
@@ -138,9 +156,14 @@ export default function VerifyOtp() {
                     )}
                   </div>
                 </div>
-                <div class="mb-3" onClick={resendHandler}>
-                  <button class="twm-backto-login">
-                    {resendState ? "Sending OTP" : "Resend OTP"}
+                <div class="mb-3">
+                  <button
+                    class="twm-backto-login"
+                    onClick={resendHandler}
+                    disabled={disable}
+                  >
+                    {resendState ? "Sending OTP" : "Resend OTP"}{" "}
+                    {disable && countdown}
                   </button>
                 </div>
                 <div class="col-lg-3 col-md-4 col-12">

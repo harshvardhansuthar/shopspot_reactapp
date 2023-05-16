@@ -16,6 +16,8 @@ export default function LatestExperienceDetail() {
   const [experienceData, setExperienceData] = useState([]);
   const reduxCountryName = useSelector((state) => state?.countryName?.action);
   const [componentLoader, setComponentLoader] = useState(true);
+  const [reletedExperience, setReletedExperience] = useState([]);
+
   const id = useLocation();
 
   console.log(id);
@@ -38,6 +40,18 @@ export default function LatestExperienceDetail() {
         setExperienceData(res.data);
         setComponentLoader(false);
       }
+
+      let arr = [];
+      for (let i = 0; i < res?.data?.related_experience?.length; i++) {
+        if (res?.data?.related_experience[i]?.id != res?.data?.experience?.id) {
+          arr.push(res?.data?.related_experience[i]);
+        }
+      }
+      console.log(
+        "fghjklkjhgfghjklkjhgfghjklkjhgfghjkjhgchjkjhgfghjkjhgfd",
+        arr
+      );
+      setReletedExperience(arr);
     });
   }, []);
 
@@ -203,43 +217,28 @@ export default function LatestExperienceDetail() {
                       dots={false}
                     >
                       <>
-                        {experienceData?.related_experience &&
-                          experienceData?.related_experience.map(
-                            (item, key) => (
-                              <div
-                                className="blog-post twm-blog-post-1-outer"
-                                key={key}
-                              >
-                                <div className="wt-post-media">
-                                  <Link
-                                    to={"/latestexoerience"}
-                                    state={{ id: item?.id }}
-                                    onClick={() =>
-                                      handleReletedBusiness(item?.id)
-                                    }
-                                  >
-                                    <img src={item?.image} alt="" />
-                                  </Link>
-                                </div>
-                                <div className="wt-post-info">
-                                  <div className="wt-post-meta">
-                                    <ul>
-                                      {/* <li className="post-date">April 28 2023</li> */}
-                                      <li className="post-author">
-                                        <Link
-                                          to={"/latestexoerience"}
-                                          state={{ id: item?.id }}
-                                          onClick={() =>
-                                            handleReletedBusiness(item?.id)
-                                          }
-                                        >
-                                          {item?.name}
-                                        </Link>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="wt-post-title">
-                                    <h4 className="post-title">
+                        {reletedExperience?.length > 0 &&
+                          reletedExperience?.map((item, key) => (
+                            <div
+                              className="blog-post twm-blog-post-1-outer"
+                              key={key}
+                            >
+                              <div className="wt-post-media">
+                                <Link
+                                  to={"/latestexoerience"}
+                                  state={{ id: item?.id }}
+                                  onClick={() =>
+                                    handleReletedBusiness(item?.id)
+                                  }
+                                >
+                                  <img src={item?.image} alt="" />
+                                </Link>
+                              </div>
+                              <div className="wt-post-info">
+                                <div className="wt-post-meta">
+                                  <ul>
+                                    {/* <li className="post-date">April 28 2023</li> */}
+                                    <li className="post-author">
                                       <Link
                                         to={"/latestexoerience"}
                                         state={{ id: item?.id }}
@@ -247,24 +246,37 @@ export default function LatestExperienceDetail() {
                                           handleReletedBusiness(item?.id)
                                         }
                                       >
-                                        {item?.overview}
+                                        {item?.name}
                                       </Link>
-                                    </h4>
-                                  </div>
-                                  <div className="wt-post-readmore">
-                                    <a
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div className="wt-post-title">
+                                  <h4 className="post-title">
+                                    <Link
+                                      to={"/latestexoerience"}
+                                      state={{ id: item?.id }}
                                       onClick={() =>
                                         handleReletedBusiness(item?.id)
                                       }
-                                      className="site-button-link site-text-primary"
                                     >
-                                      {item?.place}
-                                    </a>
-                                  </div>
+                                      {item?.overview}
+                                    </Link>
+                                  </h4>
+                                </div>
+                                <div className="wt-post-readmore">
+                                  <a
+                                    onClick={() =>
+                                      handleReletedBusiness(item?.id)
+                                    }
+                                    className="site-button-link site-text-primary"
+                                  >
+                                    {item?.place}
+                                  </a>
                                 </div>
                               </div>
-                            )
-                          )}
+                            </div>
+                          ))}
                       </>
 
                       {/* {/ Add more items as needed /} */}

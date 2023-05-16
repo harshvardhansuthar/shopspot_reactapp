@@ -42,7 +42,6 @@ export default function EmployerChangePassword() {
             showConfirmButton: false, // Set this option to false to remove the OK button
           });
         } else {
-          console.log("false-------------", res)
           Swal.fire({
             title: "Error !",
             text: `${res?.data?.message}`,

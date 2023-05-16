@@ -209,7 +209,7 @@ export default function Favourite(props) {
         );
         console.log(response);
         if (response?.status == true) {
-          setCallApi(true);
+          setCallApi(!callApi);
           setComponentLoader(false);
         }
       }
@@ -220,7 +220,7 @@ export default function Favourite(props) {
         );
         console.log(response);
         if (response?.status == true) {
-          setCallApi(true);
+          setCallApi(!callApi);
           setComponentLoader(false);
         }
       }
@@ -231,7 +231,7 @@ export default function Favourite(props) {
         );
         console.log(response);
         if (response?.status == true) {
-          setCallApi(true);
+          setCallApi(!callApi);
           setComponentLoader(false);
         }
       }

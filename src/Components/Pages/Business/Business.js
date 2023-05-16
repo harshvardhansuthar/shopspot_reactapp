@@ -350,9 +350,9 @@ export default function Business() {
                                   <div className="twm-media">
                                     <img src={item?.business_licence} alt="#" />
                                   </div>
-                                  <span className="twm-job-post-duration">
+                                  <Link to={"/business"} state={{ id: item?.Category?.id }} className="twm-job-post-duration">
                                     {item?.Category?.name}
-                                  </span>
+                                  </Link>
                                   <div className="twm-mid-content">
                                     <Link
                                       to={
