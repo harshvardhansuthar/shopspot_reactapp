@@ -328,7 +328,7 @@ export default function Header(props) {
                   </div>
                 </div>
                 <div className="extra-cell">
-                  <div className="header-nav-btn-section">
+                  <div className="header-nav-btn-section align-items-center">
                     <div className="twm-nav-btn-left">
                       {!token && (
                         <Link

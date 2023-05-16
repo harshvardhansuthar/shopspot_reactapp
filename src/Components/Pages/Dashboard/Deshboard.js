@@ -350,8 +350,8 @@ export default function Deshboard() {
                         <form>
                           <div class="row">
                             {/* <!--Location--> */}
-                            <div class="form-group col-xl-9 col-lg-9 col-md-9">
-                              <div class="form-group">
+                            <div class="form-group m-0 col-xl-9 col-lg-9 col-md-9">
+                              <div class="form-group m-0">
                                 <label>Search</label>
                                 <div class="twm-inputicon-box">
                                   <input
@@ -370,7 +370,7 @@ export default function Deshboard() {
                             </div>
 
                             {/* <!--Find job btn--> */}
-                            <div class="form-group col-xl-3 col-lg-6 col-md-6">
+                            <div class="form-group m-0 col-xl-3 col-lg-3 col-md-3">
                               <Link
                                 type="button"
                                 class="site-button text-center"
@@ -1249,10 +1249,7 @@ export default function Deshboard() {
                                                   })
                                                 : setShowLogin(!showLogin);
                                             }}
-                                            className="aplybtn"
-                                          >
-                                            <i className="fas fa-chevron-right"></i>
-                                          </a>{" "}
+                                          ></a>{" "}
                                           {item?.address}.
                                         </p>
                                       </div>
@@ -1262,7 +1259,14 @@ export default function Deshboard() {
                                         {item?.post_name}
                                       </h4>
                                     </div>
-                                    <div className="aply-btn-area"></div>
+                                    <div className="aply-btn-area">
+                                      <a
+                                        href="javascript:void(0)"
+                                        class="aplybtn"
+                                      >
+                                        <i class="fas fa-chevron-right"></i>
+                                      </a>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1313,7 +1317,7 @@ export default function Deshboard() {
                             margin={10}
                             nav
                             navText={[
-                              `< i className="fas fa-chevron-left"></i>`,
+                              `<i className="fas fa-chevron-left"></i>`,
                               `<i className="fas fa-chevron-right"></i>`,
                             ]}
                             // autoPlay={true}
@@ -1447,7 +1451,7 @@ export default function Deshboard() {
               <div className="container">
                 <div className="h-page-6-getjobs-wrap">
                   <div className="row">
-                    <div className="col-lg-7 col-md-12">
+                    <div className="col-xl-7 col-lg-6 col-md-12">
                       <div className="h-page-6-getjobs-left">
                         <div className="twm-media">
                           <img src="./images/rewards.png" alt="#" />
@@ -1464,7 +1468,7 @@ export default function Deshboard() {
                       </div>
                     </div>
 
-                    <div className="col-lg-5 col-md-12">
+                    <div className="col-xl-5 col-lg-6 col-md-12">
                       <div className="h-page-6-getjobs-right">
                         {/* <!-- TITLE START--> */}
                         <div className="section-head left wt-small-separator-outer">
@@ -1516,7 +1520,7 @@ export default function Deshboard() {
             <div className="section-full p-t120 p-b120 twm-for-employee-area site-bg-white">
               <div className="container">
                 <div className="section-content">
-                  <div className="row">
+                  <div className="row justify-content-around">
                     <div className="col-lg-5 col-md-12">
                       <div className="twm-explore-media-wrap">
                         <div className="twm-media">
@@ -1525,7 +1529,7 @@ export default function Deshboard() {
                       </div>
                     </div>
 
-                    <div className="col-lg-7 col-md-12">
+                    <div className="col-xl-7 col-lg-6 col-md-12">
                       <div className="twm-explore-content-outer-3">
                         <div className="twm-explore-content-3">
                           <div className="twm-title-large">

@@ -12,7 +12,6 @@ import Header from "../../commen/Header";
 import { useForm } from "react-hook-form";
 import Loder from "../../commen/Loder";
 
-
 export default function Business() {
   const [loadMap, setLoadMap] = useState(false);
   const location = useSelector((state) => state?.loctionn?.action?.location);
@@ -50,7 +49,7 @@ export default function Business() {
 
   useEffect(() => {
     setTimeout(() => {
-      setLoadMap(true);
+      // setLoadMap(true);
     }, 1000);
 
     GetData("category/get-category").then((response) => {
@@ -64,8 +63,10 @@ export default function Business() {
       setComponentLoader(true);
       if (countryNameRedux) {
         GetData(
-          `business/get-business?lat=${location?.latitude}&lng=${location?.longitude
-          }&page=${classActive}&country=${countryNameRedux}&categoryId=${id?.state?.id ? id?.state?.id : ""
+          `business/get-business?lat=${location?.latitude}&lng=${
+            location?.longitude
+          }&page=${classActive}&country=${countryNameRedux}&categoryId=${
+            id?.state?.id ? id?.state?.id : ""
           }`
         ).then((res) => {
           setBusiness(res.data);
@@ -279,39 +280,39 @@ export default function Business() {
 
                                 {/* <!--Radius--> */}
 
-                                <div className="col-md-12">
+                                <div className="col-xl-4 col-lg-6 col-md-12">
                                   <div className="form-group">
                                     <label>Radius min:</label>
-
-                                    <div className="twm-radius-range">
+                                    <div className="ls-inputicon-box">
                                       <input
                                         id="ex2"
-                                        type="text"
-                                        className="span2"
+                                        type="number"
+                                        className="form-control"
                                         data-slider-min="10"
                                         data-slider-max="100"
                                         data-slider-step="5"
                                         data-slider-value="[20,80]"
                                         {...register("radius1")}
                                       />
+                                      <i class="fs-input-icon far fa-minus-square"></i>
                                     </div>
                                   </div>
                                 </div>
-                                <div className="col-md-12">
+                                <div className="col-xl-4 col-lg-6 col-md-12">
                                   <div className="form-group">
                                     <label>Radius max</label>
-
-                                    <div className="twm-radius-range">
+                                    <div className="ls-inputicon-box">
                                       <input
                                         id="ex2"
-                                        type="text"
-                                        className="span2"
+                                        type="number"
+                                        className="form-control"
                                         data-slider-min="10"
                                         data-slider-max="100"
                                         data-slider-step="5"
                                         data-slider-value="[20,80]"
                                         {...register("radius2")}
                                       />
+                                      <i class="fs-input-icon far fa-plus-square"></i>
                                     </div>
                                   </div>
                                 </div>
@@ -350,14 +351,18 @@ export default function Business() {
                                   <div className="twm-media">
                                     <img src={item?.business_licence} alt="#" />
                                   </div>
-                                  <Link to={"/business"} state={{ id: item?.Category?.id }} className="twm-job-post-duration">
+                                  <Link
+                                    to={"/business"}
+                                    state={{ id: item?.Category?.id }}
+                                    className="twm-job-post-duration"
+                                  >
                                     {item?.Category?.name}
                                   </Link>
                                   <div className="twm-mid-content">
                                     <Link
                                       to={
                                         item?.type?.toLowerCase() ===
-                                          "freelance"
+                                        "freelance"
                                           ? "/freelancedetail"
                                           : `/businessdetail?id=${item?.id}`
                                       }
@@ -482,7 +487,7 @@ export default function Business() {
                         <div id="map" data-map-zoom="9">
                           {/* <!-- map goes here --> */}
                           <div className="map-height">
-                            {loadMap === true && <Map business={business} />}
+                            {<Map business={business} />}
                           </div>
                         </div>
                       </div>
@@ -495,9 +500,8 @@ export default function Business() {
               {/* <!-- SECTION CONTENT END  --> */}
             </div>
           </div>
-        </div >
-      )
-      }
+        </div>
+      )}
     </>
   );
 }

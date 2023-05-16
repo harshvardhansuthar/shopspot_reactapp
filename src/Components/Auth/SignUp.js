@@ -494,7 +494,6 @@ export default function SignUp(props) {
             type="button"
             className="btn-close"
             onClick={() => {
-              // toggleModal();
               props.toggle ? props.toggle() : props.toggleSignUp();
             }}
           ></button>
@@ -502,7 +501,7 @@ export default function SignUp(props) {
         <ModalBody className="p-0">
           <form onSubmit={handleSubmit(handlerSignUp)}>
             <div class="row">
-              <div class="col-lg-6 col-12">
+              <div class="col-lg-6 col-12 d-none d-lg-block">
                 <div class="login-overlay-img">
                   <img src="./images/featured-cities/city3.jpg" alt="" />
                 </div>
@@ -517,7 +516,7 @@ export default function SignUp(props) {
                   </p>
                   <div className="row">
                     <div className="col-lg-12">
-                      <div className="form-group mb-3">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="phone"
                           type="text"
@@ -535,17 +534,22 @@ export default function SignUp(props) {
                         {errors.email && errors.email.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.email && errors.email.message}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="form-group mb-3">
+                    <div className="col-lg-12">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="username"
                           type="text"
@@ -563,20 +567,25 @@ export default function SignUp(props) {
                         {errors.name && errors.name.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.name && errors.name.message}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="form-group mb-3">
+                    <div className="col-lg-12">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="email"
-                          type="text"
+                          type="password"
                           className="form-control"
                           required=""
                           placeholder="Password*"
@@ -591,79 +600,91 @@ export default function SignUp(props) {
                         {errors.password && errors.password.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.password && errors.password.message}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="input-group mb-3">
-                        {/* <input
-                          type="text"
-                          maxLength={3}
-                          onClick={handleChange}
-                        /> */}
-                        <span
-                          className="input-group-text p-0 border-0"
-                          id="basic-addon1"
-                        >
-                          <select
-                            // value={countryVal}
-                            // onChange={(e) => setCountryVal(e.target.value)}
-                            className="form-control"
-                            {...register("country_code", {
-                              required: "country_code is required",
-                            })}
+                    <div className="col-lg-12">
+                      <div className="form-group mb-4 position-relative">
+                        <div className="input-group">
+                          <span
+                            className="input-group-text p-0 border-0"
+                            id="basic-addon1"
                           >
-                            <option selected disabled value="">
-                              +913
-                            </option>
-                            {countryCode &&
-                              countryCode.length > 0 &&
-                              countryCode.map((item, key) => (
-                                <option key={key} value={item.dial_code}>
-                                  {`${item?.dial_code}`}
-                                </option>
-                              ))}
-                          </select>
-                        </span>
+                            <select
+                              // value={countryVal}
+                              // onChange={(e) => setCountryVal(e.target.value)}
+                              className="form-control"
+                              {...register("country_code", {
+                                required: "country_code is required",
+                              })}
+                            >
+                              <option selected disabled value="">
+                                +913
+                              </option>
+                              {countryCode &&
+                                countryCode.length > 0 &&
+                                countryCode.map((item, key) => (
+                                  <option key={key} value={item.dial_code}>
+                                    {`${item?.dial_code}`}
+                                  </option>
+                                ))}
+                            </select>
+                          </span>
+                          <input
+                            name="phone"
+                            type="text"
+                            maxLength={10}
+                            className="form-control"
+                            placeholder="Phone*"
+                            {...register("phone", {
+                              required: "phone number is required",
+                            })}
+                          />
+                        </div>
                         {errors.country_code && errors.country_code.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.country_code && errors.country_code.message}
                           </p>
                         )}
-                        <input
-                          name="phone"
-                          type="text"
-                          maxLength={10}
-                          className="form-control"
-                          placeholder="Phone*"
-                          {...register("phone", {
-                            required: "phone number is required",
-                          })}
-                        />
                         {errors.phone && errors.phone.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              right: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.phone && errors.phone.message}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="form-group mb-3">
+                    <div className="col-lg-12">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="date"
                           type="date"
@@ -680,17 +701,22 @@ export default function SignUp(props) {
                         {errors.dob && errors.dob.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.dob && errors.dob.message}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="form-group mb-3">
+                    <div className="col-lg-12">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="CPR"
                           type="text"
@@ -704,17 +730,22 @@ export default function SignUp(props) {
                         {errors.cpr && errors.cpr.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.cpr && errors.cpr.message}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="form-group mb-3">
+                    <div className="col-lg-12">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="Refer"
                           type="text"
@@ -731,9 +762,14 @@ export default function SignUp(props) {
                         {errors.Refer && errors.Refer.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.Refer && errors.Refer.message}
                           </p>
                         )}
@@ -743,7 +779,7 @@ export default function SignUp(props) {
                     <div className="col-md-6">
                       <button
                         type="submit"
-                        className="site-button"
+                        className="site-button py-2"
                         disabled={loading}
                       >
                         {loading == true ? (
@@ -768,7 +804,7 @@ export default function SignUp(props) {
 
                           <label className="form-check-label" for="agree1">
                             I agree to the
-                            <a>Terms and conditions</a>
+                            <a className="ms-1">Terms and conditions</a>
                           </label>
                           {errors.checkbox && errors.checkbox.message && (
                             <p

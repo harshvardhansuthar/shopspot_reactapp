@@ -111,24 +111,23 @@ export default function Login(props) {
   return (
     <>
       <Modal
-        Modal
         className="modal-dialog modal-dialog-centered modal-lg twm-sign-up"
         isOpen={modal}
         toggle={() => (props?.toggle ? props.toggle() : toggleModal())}
       >
-        <div className="modal-header mt-0 py-0">
+        <div class="modal-header mt-0 py-0">
           <button
             type="button"
-            classNameName="btn-close"
+            class="btn-close"
             onClick={() => {
               props.toggle ? props?.toggle() : toggleModal();
             }}
           ></button>
         </div>
-        <ModalBody classNameName="p-0">
+        <ModalBody className="p-0">
           <form onSubmit={handleSubmit(handleLoginSubmit)}>
             <div className="row">
-              <div className="col-lg-6 col-12">
+              <div className="col-lg-6 col-12 d-none d-lg-block">
                 <div className="login-overlay-img">
                   <img src="./images/featured-cities/city1.jpg" alt="" />
                 </div>
@@ -146,7 +145,7 @@ export default function Login(props) {
                   </p>
                   <div className="row">
                     <div className="col-lg-12">
-                      <div className="form-group mb-3">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="username"
                           type="text"
@@ -164,10 +163,15 @@ export default function Login(props) {
                         />
                         {errors.email && errors.email.message && (
                           <p
-                            className="f-error m-0 fa-circle-xmark"
-                            style={{ color: "red", fontSize: 15 }}
+                            className="f-error m-0"
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.email && errors.email.message}
                           </p>
                         )}
@@ -175,7 +179,7 @@ export default function Login(props) {
                     </div>
 
                     <div className="col-lg-12">
-                      <div className="form-group mb-3">
+                      <div className="form-group mb-4 position-relative">
                         <input
                           name="password"
                           type="password"
@@ -193,9 +197,14 @@ export default function Login(props) {
                         {errors.password && errors.password.message && (
                           <p
                             className="f-error m-0"
-                            style={{ color: "red", fontSize: 15 }}
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              position: "absolute",
+                              bottom: "-20px",
+                              left: "8px",
+                            }}
                           >
-                            <i className="fa-regular fa-circle-xmark" />
                             {errors.password && errors.password.message}
                           </p>
                         )}
@@ -227,18 +236,31 @@ export default function Login(props) {
                       </div>
                     </div>
                     <div className="col-md-12">
-                      <button
-                        type="submit"
-                        className="site-button py-2"
-                        style={{ width: "auto" }}
-                        disabled={loading}
-                      >
-                        {loading == true ? (
-                          <span className="spinner-border text-light spinner-border-sm"></span>
-                        ) : (
-                          "Login"
-                        )}
-                      </button>
+                      <div className="d-flex flex-md-row flex-column align-items-center justify-content-between">
+                        <button
+                          type="submit"
+                          className="site-button login-btn py-2"
+                          disabled={loading}
+                        >
+                          {loading == true ? (
+                            <span className="spinner-border text-light spinner-border-sm"></span>
+                          ) : (
+                            "Login"
+                          )}
+                        </button>
+                        <div className="login-button-between my-2 my-md-0">
+                          or
+                        </div>
+                        <GoogleLogin
+                          className="google-btn"
+                          clientId="1056687895620-on8ip3n5m5j4f68i5jiuhg9iq3s7pace.apps.googleusercontent.com"
+                          buttonText="Login"
+                          onSuccess={onSuccess}
+                          onFailure={onFailure}
+                          cookiePolicy={"single_host_origin"}
+                          isSignedIn={false}
+                        />
+                      </div>
                       <div className="mt-3 mb-3">
                         Don't have an account ?
                         <Link
@@ -253,17 +275,6 @@ export default function Login(props) {
                           Sign Up
                         </Link>
                       </div>
-                    </div>
-
-                    <div className="col-md-12">
-                      <GoogleLogin
-                        clientId="1056687895620-on8ip3n5m5j4f68i5jiuhg9iq3s7pace.apps.googleusercontent.com"
-                        buttonText="Login"
-                        onSuccess={onSuccess}
-                        onFailure={onFailure}
-                        cookiePolicy={"single_host_origin"}
-                        isSignedIn={false}
-                      />
                     </div>
                   </div>
                 </div>

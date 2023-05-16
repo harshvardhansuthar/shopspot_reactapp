@@ -54,7 +54,7 @@ function App() {
     }
 
     dispatch(actionCountryName?.countryName(countryName));
-  });
+  }, [con]);
 
   return (
     <>

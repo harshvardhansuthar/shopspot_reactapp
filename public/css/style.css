@@ -2949,7 +2949,7 @@ ol li {
 
 @media (max-width: 1199px) {
   .header-style-3 .logo-header {
-    width: 130px;
+    width: 150px;
   }
 }
 
@@ -3163,7 +3163,7 @@ ol li {
 
 @media (max-width: 1199px) {
   .header-style-3 .header-nav .nav > li > a {
-    padding: 12px 12px;
+    padding: 6px 6px;
   }
 }
 
@@ -8880,7 +8880,7 @@ ol.comment-list li.comment .comment-respond .comment-form p {
 
 @media (max-width: 1024px) {
   .twm-w-process-steps-2 {
-    padding-left: 50px;
+    padding-left: 8px;
   }
 }
 
@@ -10775,7 +10775,7 @@ ol.comment-list li.comment .comment-respond .comment-form p {
 @media (max-width: 1199px) {
   .twm-bnr-search-bar {
     height: auto;
-    padding: 10px;
+    padding: 5px 5px 5px 10px;
   }
 
   .twm-bnr-search-bar .form-group {
@@ -12776,7 +12776,7 @@ ol.comment-list li.comment .comment-respond .comment-form p {
 
 @media (max-width: 1199px) {
   .twm-home2-banner-section .twm-home-2-bnr-images {
-    max-width: 450px;
+    max-width: 360px;
   }
 }
 
@@ -12832,7 +12832,8 @@ ol.comment-list li.comment .comment-respond .comment-form p {
 
 @media (max-width: 1360px) {
   .twm-home2-banner-section .twm-home-2-bnr-images .bnr-image-2 {
-    width: 280px;
+    width: 230px;
+    right: -140px;
   }
 }
 
@@ -12867,7 +12868,7 @@ ol.comment-list li.comment .comment-respond .comment-form p {
   .twm-home2-banner-section .twm-home-2-bnr-images .bnr-image-2:after {
     right: -30px;
     top: -30px;
-    height: 340px;
+    height: 290px;
     width: 220px;
   }
 }
@@ -23959,8 +23960,8 @@ strong {
 
 @media (max-width: 1199px) {
   .h-page-6-getjobs-wrap .h-page-6-getjobs-left .twm-media {
-    width: 500px;
-    height: 500px;
+    width: 440px;
+    height: 440px;
   }
 }
 
@@ -27334,10 +27335,11 @@ input :-internal-autofill-selected {
   position: absolute;
   padding: 0px !important;
   margin: 0px !important;
-  top: 90%;
+  top: 90px;
 }
 
 .btn.afterloginuserbtn + ul.dropdown-menu.show {
+  position: absolute;
   top: 90px;
   width: 220px;
   right: -10px;
@@ -27345,6 +27347,8 @@ input :-internal-autofill-selected {
   padding: 20px 10px 20px 10px !important;
   box-shadow: 0px 0px 19.0375px rgba(0, 0, 0, 0.1);
   border: 0px;
+  transform: none !important;
+  inset: 90px -10px auto auto !important;
 }
 
 .btn.afterloginuserbtn + ul .userintro {
@@ -27579,6 +27583,54 @@ input :-internal-autofill-selected {
   object-fit: cover;
 }
 
+.twm-sign-up .twm-tabs-style-2 .google-btn {
+  background-color: rgb(6, 48, 155) !important;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(255, 255, 255) !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px 0px,
+    rgba(0, 0, 0, 0.24) 0px 0px 1px 0px;
+  padding: 0px;
+  border-radius: 10px !important;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Roboto, sans-serif;
+  width: 100%;
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  -ms-border-radius: 10px !important;
+  -o-border-radius: 10px !important;
+}
+
+.twm-sign-up .twm-tabs-style-2 .google-btn div {
+  background: transparent !important;
+  margin-right: 0px !important;
+}
+
+.twm-sign-up .twm-tabs-style-2 .login-button-between {
+  position: relative;
+}
+
+.twm-sign-up .twm-tabs-style-2 .login-button-between::before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 20px;
+  border: 1px solid #ccc;
+  width: 70px;
+}
+
+.twm-sign-up .twm-tabs-style-2 .login-button-between::after {
+  position: absolute;
+  content: "";
+  top: 50%;
+  right: 20px;
+  border: 1px solid #ccc;
+  width: 70px;
+}
+
 @media screen and (min-width: 992px) {
   .category-megamenu.dropdown-menu {
     transform: translate(-160px, 60px) !important;
@@ -27586,5 +27638,153 @@ input :-internal-autofill-selected {
     -moz-transform: translate(-160px, 60px) !important;
     -ms-transform: translate(-160px, 60px) !important;
     -o-transform: translate(-160px, 60px) !important;
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .site-button.login-btn {
+    width: auto;
+  }
+
+  .twm-sign-up .twm-tabs-style-2 .google-btn {
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .btn.afterloginuserbtn {
+    background: transparent;
+    color: #06309b;
+    border: 2px solid #06309b;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .header-style-3 .main-bar {
+    padding: 10px 13px;
+  }
+
+  .twm-home2-banner-section {
+    position: relative;
+    padding-top: 100px;
+    overflow: hidden;
+  }
+
+  .twm-home2-banner-section .twm-bnr2-right-content .twm-img-bg-circle-area2 {
+    position: absolute;
+    bottom: 70px;
+    left: 0px;
+  }
+
+  .twm-home2-banner-section
+    .twm-bnr2-right-content
+    .twm-img-bg-circle-area2
+    .twm-outline-ring-wrap:after {
+    content: "";
+    position: absolute;
+    top: 90px;
+    left: 100px;
+    border: 1px solid #ccc;
+    width: 290px;
+    height: 290px;
+    border-radius: 50%;
+  }
+
+  .twm-home2-banner-section
+    .twm-bnr2-right-content
+    .twm-img-bg-circle-area2
+    .twm-outline-ring-wrap:before {
+    content: "";
+    position: absolute;
+    top: 35px;
+    left: 50px;
+    border: 1px solid #ccc;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+  }
+
+  .twm-home2-banner-section
+    .twm-bnr2-right-content
+    .twm-img-bg-circle-area2
+    .twm-outline-ring-wrap {
+    width: 450px;
+    height: 450px;
+    border: 1px solid #ccc;
+    position: relative;
+    border-radius: 50%;
+  }
+
+  .section-head.left.wt-small-separator-outer h2 {
+    margin-bottom: 35px;
+    font-size: 36px;
+  }
+
+  .description-list li {
+    padding-left: 30px;
+    list-style: none;
+    position: relative;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .description-list li i {
+    background-color: #06309b;
+    color: #fff;
+    line-height: 26px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    text-align: center;
+    font-size: 13px;
+    width: 20px;
+    height: 20px;
+    line-height: 22px;
+    border-radius: 50%;
+  }
+
+  .twm-hpage-6-featured-bg-warp .twm-media {
+    max-width: 339px;
+    position: absolute;
+    right: 9px;
+    bottom: 0px;
+  }
+
+  .h-page-6-getjobs-wrap .h-page-6-getjobs-left .twm-media img {
+    margin: auto;
+    display: block;
+    position: relative;
+    z-index: 5;
+    max-width: 380px;
+  }
+
+  .twm-explore-media-wrap .twm-media {
+    position: absolute;
+    left: -50px;
+    max-width: 588px;
+  }
+
+  .twm-explore-content-outer-3 .twm-explore-content-3 {
+    background-color: #fff;
+    box-shadow: 0px 0px 40px rgba(56, 152, 226, 0.3);
+    border-radius: 10px;
+    padding: 32px 40px;
+    position: relative;
+    margin-top: 70px;
+    margin-left: 30px;
+    z-index: 1;
+  }
+
+  .twm-explore-content-outer-3 .twm-explore-content-3 .twm-title-large h2 {
+    color: #17171d;
+    margin-bottom: 40px;
+    font-size: 36px;
   }
 }
